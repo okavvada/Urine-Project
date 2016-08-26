@@ -92,7 +92,7 @@ def find_distance_regeneration_scheduled(dataframe, k_means_labels):
         total_peop = size_all[i]['num_people_int'].sum()
         totals = (i, total_peop, total_distance_schedule)
         size_all_distance.append(totals)
-    return totals_all_df
+    return size_all_distance
 
 
 def find_distance_collection(k_means_cluster_centers):
