@@ -35,7 +35,7 @@ class logistics_model():
 
 	def logistics_distances(self):
 		building_virtual_buildings_df = get_virtual_buildings(self.path)
-		distance_regeneration = find_distance_regeneration_scheduled(building_virtual_buildings_df, self.k_means_labels_regen)
+		distance_regeneration = find_distance_regeneration_scheduled(building_virtual_buildings_df, self.k_means_labels_regen)/1000
 
-		distance_collection = find_distance_collection(self.k_means_cluster_centers_regen)
+		distance_collection = find_distance_collection(self.k_means_cluster_centers_regen)/1000
 		return distance_regeneration, distance_collection
