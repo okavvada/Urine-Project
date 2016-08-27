@@ -35,15 +35,15 @@ class resin():
     def mass_resin_household(self):
         daily_urine_household = self.household_size*urine_production_scaled #L/day
         volume_urine_treated_before_replacement = time_between_catridge_regeneration*daily_urine_household #L
-        mass_resin_household=volume_urine_treated_before_replacement*N_urine/(adsorption_density*molar_mass_N) *self.number_of_houses_per_facility#kg
+        mass_resin_household=volume_urine_treated_before_replacement*N_urine/(adsorption_density*molar_mass_N)#kg
         return mass_resin_household #kg
     
     def resin_energy(self):
-        resin_energy = self.mass_resin_household()*resin_energy_MJ_kg/resin_lifetime
+        resin_energy = self.mass_resin_household()*resin_energy_MJ_kg/resin_lifetime*self.number_of_houses_per_facility
         return resin_energy #MJ_y
     
     def resin_GHG(self):
-        resin_GHG = self.mass_resin_household()*resin_GHG_kg_kg/resin_lifetime
+        resin_GHG = self.mass_resin_household()*resin_GHG_kg_kg/resin_lifetime*self.number_of_houses_per_facility
         return resin_GHG #kg_y
     
     def transportation_energy(self):
@@ -67,7 +67,7 @@ class catridge():
     def __init__(self, diameter, mass_resin_household, number_of_houses_per_facility):
         self.diameter = diameter
         self.number_of_houses_per_facility = number_of_houses_per_facility
-        self.mass_resin_household = mass_resin_household/self.number_of_houses_per_facility
+        self.mass_resin_household = mass_resin_household
         
     def catridge_volume(self):
         catridge_volume = self.mass_resin_household/resin_density*1000 #L
@@ -243,12 +243,13 @@ class pump_flow():
 
 
 class regeneration():
-    def __init__(self, mass_resin, acid_per_resin):
+    def __init__(self, mass_resin, acid_per_resin, number_of_houses_per_facility):
         self.mass_resin=mass_resin
         self.acid_per_resin=acid_per_resin
+        self.number_of_houses_per_facility = number_of_houses_per_facility
         
     def mass_sulphuric_facility(self):
-        mass_sulphuric_facility=self.mass_resin*self.acid_per_resin*365/time_between_catridge_regeneration
+        mass_sulphuric_facility=self.mass_resin*self.number_of_houses_per_facility*self.acid_per_resin*365/time_between_catridge_regeneration
         return mass_sulphuric_facility #kg_y
     
     def sulphuric_energy(self):
