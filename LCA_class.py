@@ -173,8 +173,8 @@ class pump_flow():
         return headloss
     
     def pump_power(self):
-        daily_urine_household = (household_size*urine_production_scaled)/(24*3600*1000) #m3/s
-        p_hp = specific_weight*daily_urine_household*self.headloss()/(0.4*motor_efficiency)*1.34
+        daily_urine_household = (household_size*urine_production_scaled)/(24*3600*1000)*self.number_of_houses_per_facility #m3/s
+        p_hp = specific_weight*daily_urine_household*self.headloss()*self.number_of_houses_per_facility/(0.4*motor_efficiency)*1.34
         if p_hp<3:
             pump_efficiency=0.4
         elif 3<=p_hp<7:
@@ -187,7 +187,8 @@ class pump_flow():
             pump_efficiency=0.6
         else:
             pump_efficiency=0.7
-        power = specific_weight*daily_urine_household*self.headloss()/(pump_efficiency*motor_efficiency)
+
+        power = specific_weight*daily_urine_household*self.headloss()*self.number_of_houses_per_facility/(pump_efficiency*motor_efficiency)
         return power #KW
     
     def pump_size(self):
@@ -203,23 +204,23 @@ class pump_flow():
         return mass_pump
     
     def pump_operating_energy(self):
-        energy = self.pump_power()*24*365*3.6*self.number_of_houses_per_facility
+        energy = self.pump_power()*24*365*3.6
         return energy #MJ/y
     
     def pump_operating_GHG(self):
-        GHG = self.pump_operating_energy()*electricity_EF
+        GHG = self.pump_operating_energy()/3.6*electricity_EF
         return GHG #Kg/y
     
     def pump_embodied_energy(self):
         pump_index=pump_construction_data.set_index('Rating_hp')
         pump_size = self.pump_size()
-        pump_energy_MJ=pump_index.Embodied_Energy_MJ[pump_size]/pump_lifetime*(self.number_of_houses_per_facility*0.1)
+        pump_energy_MJ=pump_index.Embodied_Energy_MJ[pump_size]/pump_lifetime
         return pump_energy_MJ #MJ/y
     
     def pump_embodied_GHG(self):
         pump_index=pump_construction_data.set_index('Rating_hp')
         pump_size = self.pump_size()
-        pump_GHG_kg=pump_index.Emissions_kgCO_eq[pump_size]/pump_lifetime*(self.number_of_houses_per_facility*0.1)
+        pump_GHG_kg=pump_index.Emissions_kgCO_eq[pump_size]/pump_lifetime
         return pump_GHG_kg #MJ/y
         
     def transportation_energy(self):

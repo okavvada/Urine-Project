@@ -39,10 +39,12 @@ class logistics_model():
 		building_virtual_buildings_df = get_virtual_buildings(self.path)
 
 		if self.schedule == 'scheduled':
-			distance_regeneration = find_distance_regeneration_scheduled(building_virtual_buildings_df, self.k_means_labels_regen)*365/time_between_catridge_regeneration
+			distance_regeneration = find_distance_regeneration_scheduled(building_virtual_buildings_df, self.k_means_labels_regen)
+			distance_regeneration['total_dist_m'] = distance_regeneration['total_dist_m']*365/time_between_catridge_regeneration
 
 		elif self.schedule == 'unscheduled':
-			distance_regeneration = find_distance_regeneration_scheduled(building_virtual_buildings_df, self.k_means_labels_regen)*365
+			distance_regeneration = find_distance_regeneration_scheduled(building_virtual_buildings_df, self.k_means_labels_regen)
+			distance_regeneration['total_dist_m'] = distance_regeneration['total_dist_m']*365
 
 		else:
 			print "Error scheduling was not specified"
