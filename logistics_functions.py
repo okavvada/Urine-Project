@@ -7,6 +7,7 @@ from math import radians, cos, sin, asin, sqrt
 import doctest
 from itertools import permutations
 from scipy.spatial.distance import cdist
+import warnings
 
 
 def read_buildings(path):
@@ -40,8 +41,10 @@ def find_unique(data, field):
 
 
 def clustering(dataframe, n):
-    k_means = KMeans(init='k-means++', n_clusters=n)
-    k_means.fit(dataframe)
+    k_means = MiniBatchKMeans(init='k-means++', n_clusters=n)
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore")
+        k_means.fit(dataframe)
 
     k_means_labels = k_means.labels_
     k_means_cluster_centers = k_means.cluster_centers_
@@ -60,8 +63,8 @@ def find_distance_regeneration(dataframe, k_means_labels, k_means_cluster_center
     size_all_distance=[[] for i in range(k_means_labels.max())]
     for i in range (k_means_labels.max()):
         for index, row in size_all[i].iterrows():
-            harv=haversine(row['lat'],row['lon'], k_means_cluster_centers[i][0], k_means_cluster_centers[i][1])
-            row['eu_dist'] = harv
+            harv=haversine(row['lat_lat'],row['lon_lon'], k_means_cluster_centers[i][0], k_means_cluster_centers[i][1])
+            row['eu_dist'] = harv/100
             size_all_distance[i].append(row)
 
     total_dist_all=[]
@@ -88,7 +91,7 @@ def find_distance_regeneration_scheduled(dataframe, k_means_labels):
         for index, row in size_all[i].iterrows():
             meters = merc(row['lat_lat'], row['lon_lon'])
             cluster_center_meters[i].append(meters)
-        total_distance_schedule = total_distance(optimized_travelling_salesman(cluster_center_meters[i]))
+        total_distance_schedule = total_distance(optimized_travelling_salesman(cluster_center_meters[i]))/1000
         total_peop = size_all[i]['num_people_int'].sum()
         totals = (i, total_peop, total_distance_schedule)
         size_all_distance.append(totals)
@@ -102,7 +105,7 @@ def find_distance_collection(k_means_cluster_centers):
         meters = merc(item[0], item[1])
         cluster_center_meters.append(meters)
 
-    collection_distance = total_distance(optimized_travelling_salesman(cluster_center_meters))
+    collection_distance = total_distance(optimized_travelling_salesman(cluster_center_meters))/1000
     return collection_distance
 
 

@@ -28,12 +28,11 @@ def find_nearest(array,value):
 
 
 class resin():
-    def __init__(self, household_size, number_of_houses_per_facility):
-    	self.household_size = household_size
-        self.number_of_houses_per_facility = number_of_houses_per_facility
+    def __init__(self, number_of_people_per_facility):
+        self.number_of_houses_per_facility = number_of_people_per_facility/household_size
 
     def mass_resin_household(self):
-        daily_urine_household = self.household_size*urine_production_scaled #L/day
+        daily_urine_household = household_size*urine_production_scaled #L/day
         volume_urine_treated_before_replacement = time_between_catridge_regeneration*daily_urine_household #L
         mass_resin_household=volume_urine_treated_before_replacement*N_urine/(adsorption_density*molar_mass_N)#kg
         return mass_resin_household #kg
@@ -64,9 +63,9 @@ class resin():
 
 
 class catridge():
-    def __init__(self, diameter, mass_resin_household, number_of_houses_per_facility):
+    def __init__(self, diameter, mass_resin_household, number_of_people_per_facility):
         self.diameter = diameter
-        self.number_of_houses_per_facility = number_of_houses_per_facility
+        self.number_of_houses_per_facility = number_of_people_per_facility/household_size
         self.mass_resin_household = mass_resin_household
         
     def catridge_volume(self):
@@ -95,7 +94,7 @@ class catridge():
         pipe_index=pipe_construction_data.set_index('size_mm')
         diameter_mm=self.diameter
         diameter=find_nearest(nominal_diameter_list,diameter_mm)
-        PVC_GHG_kg=pipe_index.Emissions_kgCO2_eq_m[diameter]*self.catridge_length()/PVC_lifetime
+        PVC_GHG_kg=pipe_index.Emissions_kgCO2_eq_m[diameter]*self.catridge_length()*self.number_of_houses_per_facility/PVC_lifetime
         return PVC_GHG_kg #kg_y
     
     def transportation_energy(self):
@@ -116,12 +115,11 @@ class catridge():
 
 
 class flow_equalization_plastic():
-    def __init__(self, household_size, number_of_houses_per_facility):
-    	self.household_size = household_size
-    	self.number_of_houses_per_facility = number_of_houses_per_facility
+    def __init__(self, number_of_people_per_facility):
+    	self.number_of_houses_per_facility = number_of_people_per_facility/household_size
         
     def volume(self):
-        daily_urine_household = self.household_size*urine_production_scaled #L/day
+        daily_urine_household = household_size*urine_production_scaled #L/day
         volume = daily_urine_household*flow_equalization_retention_time/1000*self.number_of_houses_per_facility
         return volume #m3
     
@@ -163,20 +161,19 @@ class flow_equalization_plastic():
 
 
 class pump_flow():
-    def __init__(self, household_size, catridge_diameter,catridge_length, number_of_houses_per_facility):
-    	self.household_size = household_size
+    def __init__(self, catridge_diameter,catridge_length, number_of_people_per_facility):
         self.catridge_diameter = catridge_diameter
         self.catridge_length = catridge_length
-        self.number_of_houses_per_facility =number_of_houses_per_facility
+        self.number_of_houses_per_facility =number_of_people_per_facility/household_size
 
     def headloss(self):
-        daily_urine_household = (self.household_size*urine_production_scaled)/(24*3600*1000) #m3/s
+        daily_urine_household = (household_size*urine_production_scaled)/(24*3600*1000) #m3/s
         surface_area = math.pi*(self.catridge_diameter/1000/2)**2
         headloss = daily_urine_household*self.catridge_length/(surface_area*hydraulic_conductivity)
         return headloss
     
     def pump_power(self):
-        daily_urine_household = (self.household_size*urine_production_scaled)/(24*3600*1000) #m3/s
+        daily_urine_household = (household_size*urine_production_scaled)/(24*3600*1000) #m3/s
         p_hp = specific_weight*daily_urine_household*self.headloss()/(0.4*motor_efficiency)*1.34
         if p_hp<3:
             pump_efficiency=0.4
@@ -216,13 +213,13 @@ class pump_flow():
     def pump_embodied_energy(self):
         pump_index=pump_construction_data.set_index('Rating_hp')
         pump_size = self.pump_size()
-        pump_energy_MJ=pump_index.Embodied_Energy_MJ[pump_size]/pump_lifetime*self.number_of_houses_per_facility
+        pump_energy_MJ=pump_index.Embodied_Energy_MJ[pump_size]/pump_lifetime*(self.number_of_houses_per_facility*0.1)
         return pump_energy_MJ #MJ/y
     
     def pump_embodied_GHG(self):
         pump_index=pump_construction_data.set_index('Rating_hp')
         pump_size = self.pump_size()
-        pump_GHG_kg=pump_index.Emissions_kgCO_eq[pump_size]/pump_lifetime*self.number_of_houses_per_facility
+        pump_GHG_kg=pump_index.Emissions_kgCO_eq[pump_size]/pump_lifetime*(self.number_of_houses_per_facility*0.1)
         return pump_GHG_kg #MJ/y
         
     def transportation_energy(self):
@@ -243,10 +240,10 @@ class pump_flow():
 
 
 class regeneration():
-    def __init__(self, mass_resin, acid_per_resin, number_of_houses_per_facility):
+    def __init__(self, mass_resin, acid_per_resin, number_of_people_per_facility):
         self.mass_resin=mass_resin
         self.acid_per_resin=acid_per_resin
-        self.number_of_houses_per_facility = number_of_houses_per_facility
+        self.number_of_houses_per_facility = number_of_people_per_facility/household_size
         
     def mass_sulphuric_facility(self):
         mass_sulphuric_facility=self.mass_resin*self.number_of_houses_per_facility*self.acid_per_resin*365/time_between_catridge_regeneration

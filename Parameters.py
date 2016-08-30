@@ -6,7 +6,7 @@ resin_density = 750 #g/L
 resin_cost = 32 #$/kg
 resin_energy_MJ_kg = 31 #MJ/kg ion exchange resin WEST
 resin_GHG_kg_kg= 1 #kg/kg ion exchange resin WEST
-hydraulic_conductivity = 1 #m/s
+hydraulic_conductivity = 0.00253 #m/s
 resin_lifetime = 10 #years
 
 
