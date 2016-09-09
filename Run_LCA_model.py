@@ -9,8 +9,9 @@ from logistics_functions import *
 from LCA_urine_model import LCA_urine_model, LCA_collection
 from logistics_model import logistics_model
 
-def Run_LCA_model(path, n_regen, n_collection, schedule):
-	Logistics = logistics_model(path, n_regen, n_collection, schedule)
+def Run_LCA_model(path, n_regen, n_collection, schedule, logistics):
+
+	Logistics = logistics_model(path, n_regen, n_collection, schedule, logistics)
 	distance_regeneration, distance_collection = Logistics.logistics_distances()
 
 	Total_Energy = pd.DataFrame()
@@ -23,8 +24,7 @@ def Run_LCA_model(path, n_regen, n_collection, schedule):
 	    Total_Energy=Total_Energy.append(ENERGY)
 	    Total_GHG=Total_GHG.append(GHG)
 
-	    Total_Energy_regen = Total_Energy.sum()
-
+	Total_Energy_regen = Total_Energy.sum()
 	Total_Energy_regen=pd.DataFrame(Total_Energy_regen).T
 	Total_GHG_regen = Total_GHG.sum()
 	Total_GHG_regen=pd.DataFrame(Total_GHG_regen).T

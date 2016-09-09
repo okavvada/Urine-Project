@@ -42,7 +42,7 @@ plastic_energy_MJ_kg = plastic_energy*plastic_cost/plastic_density
 plastic_GHG_kg_kg = plastic_GHG*plastic_cost/plastic_density
 
 motor_efficiency = 0.95 
-electricity_EF = 0.083 #kgCO2/m3
+electricity_EF = 0.083 #kgCO2/kWh
 specific_weight = 1 #kN/m3
 pump_lifetime = 25
 

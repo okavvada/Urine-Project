@@ -7,6 +7,7 @@ from math import radians, cos, sin, asin, sqrt
 import doctest
 from itertools import permutations
 from scipy.spatial.distance import cdist
+import random
 import warnings
 
 
@@ -91,7 +92,10 @@ def find_distance_regeneration_scheduled(dataframe, k_means_labels):
         for index, row in size_all[i].iterrows():
             meters = merc(row['lat_lat'], row['lon_lon'])
             cluster_center_meters[i].append(meters)
-        total_distance_schedule = total_distance(optimized_travelling_salesman(cluster_center_meters[i]))/1000
+        if len(cluster_center_meters[i]) == 0:
+            total_distance_schedule = 0
+        else:
+            total_distance_schedule = total_distance(optimized_travelling_salesman(cluster_center_meters[i]))/1000
         total_peop = size_all[i]['num_people_int'].sum()
         totals = (i, total_peop, total_distance_schedule)
         size_all_distance.append(totals)
@@ -107,6 +111,52 @@ def find_distance_collection(k_means_cluster_centers):
 
     collection_distance = total_distance(optimized_travelling_salesman(cluster_center_meters))/1000
     return collection_distance
+
+def make_grid_points(nx, ny):
+    bounding_box = [37.729445, 37.797265, -122.387494, -122.500237]
+    Xgrid = make_grid(bounding_box, nx, ny)
+    grid_coord=[]
+
+    for row in Xgrid:
+        xgrid=row[0]
+        ygrid=row[1]
+        grid_coords = (xgrid, ygrid)
+        grid_coord.append(grid_coords)
+    return grid_coord
+
+
+def make_random_points(n_regen):
+    bounding_box = [37.729445, 37.797265, -122.387494, -122.500237]
+    AB = 37.797265 - 37.729445
+    BC = (-122.387494) - (-122.500237)
+    count = 0
+    random_points = []
+    while count <= n_regen:
+        Px = -122.500237 + BC*random.random()
+        Py = 37.729445 + AB*random.random()
+        random_points.append((Py, Px))
+        count = count + 1
+    return random_points
+
+
+def closest_node(node, nodes):
+    pt = []
+    dist = 9999999
+    for n in nodes:
+        if distance(node, n) <= dist:
+            dist = distance(node, n)
+            pt = n
+    return pt
+
+
+def make_grid(bounding_box, xcell, ycell):
+    xmax, xmin, ymax, ymin = bounding_box
+    xgrid = np.linspace(xmin, xmax, xcell)
+    ygrid = np.linspace(ymin, ymax, ycell)
+    mX, mY = np.meshgrid(xgrid, ygrid)
+    ngridX = mX.reshape(xcell*ycell, 1);
+    ngridY = mY.reshape(xcell*ycell, 1);
+    return np.concatenate((ngridX, ngridY), axis=1)
 
 
 def haversine(lon1, lat1, lon2, lat2):
