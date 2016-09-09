@@ -22,7 +22,7 @@ class logistics_model():
 		self.logistics = logistics
 
 	def return_dataframe_buildings(self):
-		building_virtual_buildings_df = get_virtual_buildings(self.path)
+		building_virtual_buildings_df = pd.read_csv(self.path)
 		building_SF_points=building_virtual_buildings_df[['lat_lat','lon_lon']]
 		return building_SF_points
 
@@ -57,7 +57,7 @@ class logistics_model():
 		return k_means_labels_collection, k_means_cluster_centers_collection
 
 	def logistics_distances(self):
-		building_virtual_buildings_df = get_virtual_buildings(self.path)
+		building_virtual_buildings_df = pd.read_csv(self.path)
 
 		if self.logistics == 'optimal':
 			k_means_labels_regen, k_means_cluster_centers_regen = self.clustering_regen()
