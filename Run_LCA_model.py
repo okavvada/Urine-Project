@@ -41,4 +41,4 @@ def Run_LCA_model(path, n_regen, n_collection, schedule, logistics):
 	Total_GHG_m3 = Total_GHG_total/(urine_total*365*Total_people)
 	Total_GHG_m3['n_facilities'] = n_regen
 
-	return Total_Energy_m3, Total_GHG_m3
+	return Total_Energy_total, Total_GHG_total, Total_Energy_m3, Total_GHG_m3

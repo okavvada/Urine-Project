@@ -8,6 +8,7 @@ from pylab import *
 from scipy.spatial.distance import cdist
 from scipy import spatial
 from mpl_toolkits.mplot3d import Axes3D
+import time
 
 from logistics_functions import *
 from Parameters import time_between_catridge_regeneration, collection_times_per_year
@@ -68,11 +69,19 @@ class logistics_model():
 		elif self.logistics == 'random':
 			k_means_labels_regen, k_means_cluster_centers_regen = self.clustering_regen_random()
 
+		else:
+			print "Error type of logistics was not specified"
+
 		if self.schedule == 'scheduled':
+			time_now = time.time()
+			print "Start calculating distances for scheduled..."
 			distance_regeneration = find_distance_regeneration_scheduled(building_virtual_buildings_df, k_means_labels_regen)
 			distance_regeneration['total_dist_m'] = distance_regeneration['total_dist_m']*365/time_between_catridge_regeneration
+			time_end = time.time() - time_now
+			print "calc distances took time %s" %time_end
 
 		elif self.schedule == 'unscheduled':
+			print "Start calculating distances for unscheduled"
 			distance_regeneration = find_distance_regeneration_scheduled(building_virtual_buildings_df, k_means_labels_regen)
 			distance_regeneration['total_dist_m'] = distance_regeneration['total_dist_m']*365
 
