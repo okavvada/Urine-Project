@@ -173,7 +173,7 @@ class pump_flow():
         return headloss
     
     def pump_power(self):
-        daily_urine_household = (household_size*urine_production_scaled)/(24*3600*1000)*self.number_of_houses_per_facility #m3/s
+        daily_urine_household = (household_size*urine_production_scaled)/(24*3600*1000) #m3/s
         p_hp = specific_weight*daily_urine_household*self.headloss()*self.number_of_houses_per_facility/(0.4*motor_efficiency)*1.34
         if p_hp<3:
             pump_efficiency=0.4
