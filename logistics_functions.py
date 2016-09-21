@@ -89,17 +89,26 @@ def find_distance_regeneration_scheduled(dataframe, k_means_labels):
     size_all_distance=[]
     cluster_center_meters = [[] for i in range(k_means_labels.max())]
     for i in range (k_means_labels.max()):
-        for index, row in size_all[i].iterrows():
+        trucks = 1
+        total_distance_schedule = 0
+        buildings_subset = subset_buildings(size_all[i], 5)
+        for index, row in buildings_subset.iterrows():
             meters = merc(row['lat_lat'], row['lon_lon'])
             cluster_center_meters[i].append(meters)
-        if len(cluster_center_meters[i]) == 0:
-            total_distance_schedule = 0
-        else:
-            total_distance_schedule = total_distance(optimized_travelling_salesman(cluster_center_meters[i]))/1000
+        if len(cluster_center_meters[i]) != 0:
+            trucks = len(cluster_center_meters[i])/100
+            if trucks > 1:
+                for j in range (0, len(cluster_center_meters[i]), 100):
+                    total_distance_truck = total_distance(optimized_travelling_salesman(cluster_center_meters[i][j:j+100]))/1000
+                    total_distance_schedule = total_distance_schedule + total_distance_truck
+            else:
+                total_distance_schedule = total_distance(optimized_travelling_salesman(cluster_center_meters[i]))/1000
+
         total_peop = size_all[i]['num_people_int'].sum()
-        totals = (i, total_peop, total_distance_schedule)
+        trucks_num = trucks
+        totals = (i, total_peop, trucks, total_distance_schedule)
         size_all_distance.append(totals)
-    totals_all_df = pd.DataFrame(size_all_distance, columns=['cluster', 'num_people', 'total_dist_m'])   
+    totals_all_df = pd.DataFrame(size_all_distance, columns=['cluster', 'num_people', 'trucks_num' ,'total_dist_m'])   
     return totals_all_df
 
 
@@ -112,8 +121,20 @@ def find_distance_collection(k_means_cluster_centers):
     collection_distance = total_distance(optimized_travelling_salesman(cluster_center_meters))/1000
     return collection_distance
 
+def subset_buildings(dataframe, value):
+    buildings_subset = []
+    i = 0
+    for index, row in dataframe.iterrows():
+        if i%value == 0:
+            buildings_subset.append(row)
+            i = i + 1
+        else:
+            i = i + 1
+    buildings_subset_df = pd.DataFrame(buildings_subset)
+    return buildings_subset_df
+
 def make_grid_points(nx, ny):
-    bounding_box = [37.729445, 37.797265, -122.387494, -122.500237]
+    bounding_box = [37.731273, 37.783931, -122.39532, -122.500386]
     Xgrid = make_grid(bounding_box, nx, ny)
     grid_coord=[]
 
@@ -126,14 +147,14 @@ def make_grid_points(nx, ny):
 
 
 def make_random_points(n_regen):
-    bounding_box = [37.729445, 37.797265, -122.387494, -122.500237]
-    AB = 37.797265 - 37.729445
-    BC = (-122.387494) - (-122.500237)
+    bounding_box = [37.731273, 37.783931, -122.39532, -122.500386]
+    AB = bounding_box[1] - bounding_box[0]
+    BC = bounding_box[2] - bounding_box[3]
     count = 0
     random_points = []
     while count <= n_regen:
-        Px = -122.500237 + BC*random.random()
-        Py = 37.729445 + AB*random.random()
+        Px = bounding_box[3] + BC*random.random()
+        Py = bounding_box[0] + AB*random.random()
         random_points.append((Py, Px))
         count = count + 1
     return random_points

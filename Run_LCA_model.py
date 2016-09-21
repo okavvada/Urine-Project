@@ -20,7 +20,8 @@ def Run_LCA_model(path, n_regen, n_collection, schedule, logistics):
 	for index, row in distance_regeneration.iterrows():
 	    number_of_people_per_facility= row['num_people']
 	    distance_regen = row['total_dist_m']
-	    ENERGY, GHG = LCA_urine_model(number_of_people_per_facility, distance_regen)
+	    truck_num = int(row['trucks_num'])
+	    ENERGY, GHG = LCA_urine_model(number_of_people_per_facility, distance_regen, truck_num)
 	    Total_Energy=Total_Energy.append(ENERGY)
 	    Total_GHG=Total_GHG.append(GHG)
 

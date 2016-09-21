@@ -46,11 +46,11 @@ class resin():
         return resin_GHG #kg_y
     
     def transportation_energy(self):
-        resin_transport_energy=find_transport_energy(miles, resin_lifetime)
+        resin_transport_energy=find_transport_energy(resin_transport, resin_lifetime)
         return resin_transport_energy #MJ_y
     
     def transportation_GHG(self):
-        resin_transport_GHG=find_transport_GHG(miles, resin_lifetime)
+        resin_transport_GHG=find_transport_GHG(resin_transport, resin_lifetime)
         return resin_transport_GHG #kg_y
     
     def total_energy(self):
@@ -188,7 +188,10 @@ class pump_flow():
         else:
             pump_efficiency=0.7
 
-        power = specific_weight*daily_urine_household*self.headloss()*self.number_of_houses_per_facility/(pump_efficiency*motor_efficiency)
+        if p_hp>0.5:
+            power = specific_weight*daily_urine_household*self.headloss()*self.number_of_houses_per_facility/(pump_efficiency*motor_efficiency)
+        else:
+            power = 0.5 / 1.34
         return power #KW
     
     def pump_size(self):
@@ -204,7 +207,7 @@ class pump_flow():
         return mass_pump
     
     def pump_operating_energy(self):
-        energy = self.pump_power()*24*365*3.6
+        energy = self.pump_power()*24*365*3.6/time_between_catridge_regeneration
         return energy #MJ/y
     
     def pump_operating_GHG(self):
@@ -273,6 +276,18 @@ class regeneration():
     def total_GHG(self):
         total_GHG = self.sulphuric_GHG()+self.transportation_GHG()
         return total_GHG #kg_y
+
+class trucks():
+    def __init__(self, num_trucks):
+        self.num_trucks = num_trucks
+
+    def total_energy(self):
+        total_energy = self.num_trucks*truck_manufacturing_energy
+        return total_energy
+
+    def total_GHG(self):
+        total_GHG = self.num_trucks*truck_manufacturing_GHG
+        return total_GHG
 
 
 class logistics():

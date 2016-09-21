@@ -5,9 +5,9 @@ import matplotlib.pyplot as plt
 import math
 
 from Parameters import *
-from LCA_class import resin, catridge, flow_equalization_plastic,pump_flow, regeneration, logistics
+from LCA_class import resin, catridge, flow_equalization_plastic,pump_flow, regeneration, logistics, trucks
 
-def LCA_urine_model(number_of_people_per_facility, distance_regen):
+def LCA_urine_model(number_of_people_per_facility, distance_regen, truck_num):
 
 	Resin = resin(number_of_people_per_facility)
 	resin_energy = Resin.total_energy()
@@ -33,16 +33,20 @@ def LCA_urine_model(number_of_people_per_facility, distance_regen):
 	logistics_energy = Logistics_regen.total_energy()
 	logistics_GHG = Logistics_regen.total_GHG()
 
+	trucking = trucks(truck_num)
+	trucking_energy = trucking.total_energy()
+	trucking_GHG = trucking.total_GHG()
+
 
 	Total_ENERGY=[Resin.resin_energy(),Resin.transportation_energy(),Catridge.PVC_energy(),Catridge.transportation_energy(),
               Flow_equalization.plastic_energy(),Flow_equalization.transportation_energy(),Pump.pump_operating_energy(),
               Pump.pump_embodied_energy(),Pump.transportation_energy(), Regeneration.sulphuric_energy(), 
-              Regeneration.transportation_energy(), Logistics_regen.transportation_energy()]
+              Regeneration.transportation_energy(), Logistics_regen.transportation_energy(), trucking.total_energy()]
 
 	Total_GHG=[Resin.resin_GHG(),Resin.transportation_GHG(),Catridge.PVC_GHG(),Catridge.transportation_GHG(),
 	           Flow_equalization.plastic_GHG(),Flow_equalization.transportation_GHG(),Pump.pump_operating_GHG(),
 	           Pump.pump_embodied_GHG(),Pump.transportation_GHG(), Regeneration.sulphuric_GHG(), 
-	              Regeneration.transportation_GHG(), Logistics_regen.transportation_GHG()]
+	              Regeneration.transportation_GHG(), Logistics_regen.transportation_GHG(), trucking.total_GHG()]
 
 
 	Total_ENERGY=pd.DataFrame(Total_ENERGY)
@@ -52,10 +56,10 @@ def LCA_urine_model(number_of_people_per_facility, distance_regen):
 
 	Total_ENERGY_plot.columns=['Resin manufacturing','Resin transport', 'Catridge manufacturing', 'Catridge transport', 
 	                           'Tank manufacturing', 'Tank transport', 'Pump operation', 'Pump manufacturing', 'Pump transport', 
-	                          'Acid manufacturing', 'Acid transport', 'Logistics_regen']
+	                          'Acid manufacturing', 'Acid transport', 'Logistics_regen', 'trucks manufacturing']
 	Total_GHG_plot.columns=['Resin manufacturing','Resin transport', 'Catridge manufacturing', 'Catridge transport', 
 	                        'Tank manufacturing', 'Tank transport', 'Pump operation', 'Pump manufacturing', 'Pump transport',
-	                       'Acid manufacturing', 'Acid transport', 'Logistics_regen']
+	                       'Acid manufacturing', 'Acid transport', 'Logistics_regen', 'trucks manufacturing']
 
 	return Total_ENERGY_plot, Total_GHG_plot
 
