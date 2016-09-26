@@ -37,8 +37,8 @@ class logistics_model():
 		ny = int(ceil(self.n_regen/nx))
 		cluster_centers_regen = make_grid_points(nx, ny)
 		cluster_centers_regen_df=pd.DataFrame(cluster_centers_regen, columns=['lat', 'lon'])
-		tree = spatial.KDTree(zip(cluster_centers_regen_df['lat'], cluster_centers_regen_df['lon']))
-		building_SF_points_array = zip(building_SF_points['lat_lat'],building_SF_points['lon_lon'])
+		tree = spatial.KDTree(list(zip(cluster_centers_regen_df['lat'], cluster_centers_regen_df['lon'])))
+		building_SF_points_array = list(zip(building_SF_points['lat_lat'],building_SF_points['lon_lon']))
 		k_means_labels_regen = tree.query(building_SF_points_array)[1]
 
 		return k_means_labels_regen, cluster_centers_regen
@@ -47,8 +47,8 @@ class logistics_model():
 		building_SF_points = self.return_dataframe_buildings()
 		cluster_centers_regen = make_random_points(self.n_regen)
 		cluster_centers_regen_df=pd.DataFrame(cluster_centers_regen, columns=['lat', 'lon'])
-		tree = spatial.KDTree(zip(cluster_centers_regen_df['lat'], cluster_centers_regen_df['lon']))
-		building_SF_points_array = zip(building_SF_points['lat_lat'],building_SF_points['lon_lon'])
+		tree = spatial.KDTree(list(zip(cluster_centers_regen_df['lat'], cluster_centers_regen_df['lon'])))
+		building_SF_points_array = list(zip(building_SF_points['lat_lat'],building_SF_points['lon_lon']))
 		k_means_labels_regen = tree.query(building_SF_points_array)[1]
 
 		return k_means_labels_regen, cluster_centers_regen
@@ -70,23 +70,23 @@ class logistics_model():
 			k_means_labels_regen, k_means_cluster_centers_regen = self.clustering_regen_random()
 
 		else:
-			print "Error type of logistics was not specified"
+			print ("Error type of logistics was not specified")
 
 		if self.schedule == 'scheduled':
 			time_now = time.time()
-			print "Start calculating distances for scheduled..."
+			print ("Start calculating distances for scheduled...")
 			distance_regeneration = find_distance_regeneration_scheduled(building_virtual_buildings_df, k_means_labels_regen)
 			distance_regeneration['total_dist_m'] = distance_regeneration['total_dist_m']*365/time_between_catridge_regeneration
 			time_end = time.time() - time_now
-			print "calc distances took time %s" %time_end
+			print ("calc distances took time %s" %time_end)
 
 		elif self.schedule == 'unscheduled':
-			print "Start calculating distances for unscheduled"
+			print ("Start calculating distances for unscheduled")
 			distance_regeneration = find_distance_regeneration_scheduled(building_virtual_buildings_df, k_means_labels_regen)
 			distance_regeneration['total_dist_m'] = distance_regeneration['total_dist_m']*365
 
 		else:
-			print "Error scheduling was not specified"
+			print ("Error scheduling was not specified")
 			return
 
 		k_means_labels_collection, k_means_cluster_centers_collection = self.clustering_collection(k_means_cluster_centers_regen)
