@@ -12,7 +12,7 @@ hydraulic_conductivity = 0.00253 #m/s
 resin_lifetime = 10 #years
 
 N_urine = 7.5 #gN/L
-adsorption_density = 3.78929 #mmolN/g resin
+adsorption_density = 4.9 #mmolN/g resin
 molar_mass_N = 14 #g/mol
 
 time_between_catridge_regeneration = 7 #days

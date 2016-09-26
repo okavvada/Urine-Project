@@ -73,7 +73,8 @@ class catridge():
         return catridge_volume
     
     def catridge_length(self):
-        catridge_length = self.catridge_volume()*1000/(math.pi*((self.diameter/10)/2)**2)/100 #m
+        catridge_length = self.catridge_volume()/1000/(math.pi*((self.diameter)/2/1000)**2) #m
+        print (catridge_length)
         return catridge_length
     
     def mass_PVC(self):
@@ -169,7 +170,7 @@ class pump_flow():
     def headloss(self):
         daily_urine_household = (household_size*urine_production_scaled)/(24*3600*1000) #m3/s
         surface_area = math.pi*(self.catridge_diameter/1000/2)**2
-        headloss = daily_urine_household*self.catridge_length/(surface_area*hydraulic_conductivity)
+        headloss = daily_urine_household*self.catridge_length/(surface_area*hydraulic_conductivity)*10
         return headloss
     
     def pump_power(self):
