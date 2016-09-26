@@ -9,6 +9,7 @@ from itertools import permutations
 from scipy.spatial.distance import cdist
 import random
 import warnings
+from geopy.distance import vincenty
 
 
 def read_buildings(path):
@@ -93,8 +94,8 @@ def find_distance_regeneration_scheduled(dataframe, k_means_labels):
         total_distance_schedule = 0
         buildings_subset = subset_buildings(size_all[i], 5)
         for index, row in buildings_subset.iterrows():
-            meters = merc(row['lat_lat'], row['lon_lon'])
-            cluster_center_meters[i].append(meters)
+            point = (row['lat_lat'], row['lon_lon'])
+            cluster_center_meters[i].append(point)
         if len(cluster_center_meters[i]) != 0:
             trucks = len(cluster_center_meters[i])/100
             if trucks > 1:
@@ -160,16 +161,6 @@ def make_random_points(n_regen):
     return random_points
 
 
-def closest_node(node, nodes):
-    pt = []
-    dist = 9999999
-    for n in nodes:
-        if distance(node, n) <= dist:
-            dist = distance(node, n)
-            pt = n
-    return pt
-
-
 def make_grid(bounding_box, xcell, ycell):
     xmax, xmin, ymax, ymin = bounding_box
     xgrid = np.linspace(xmin, xmax, xcell)
@@ -202,12 +193,17 @@ def distance(point1, point2):
     return ((point1[0] - point2[0])**2 + (point1[1] - point2[1])**2) ** 0.5
 
 
+def distance_lat_lon(point1, point2):
+    distance = vincenty(point1, point2).meters
+    return distance
+
+
 def total_distance(points):
     """
     Returns the length of the path passing throught
     all the points in the given order.
     """
-    return sum([distance(point, points[index + 1]) for index, point in enumerate(points[:-1])])
+    return sum([distance_lat_lon(point, points[index + 1]) for index, point in enumerate(points[:-1])])
 
 
 def travelling_salesman(points, start=None):
