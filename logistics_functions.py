@@ -57,25 +57,26 @@ def clustering(dataframe, n):
 
 def find_distance_regeneration_scheduled(dataframe, k_means_labels):
     size_all= []
-    for i in range (k_means_labels.max()):
+    for i in range (k_means_labels.max()+1):
         my_members = k_means_labels==i
         unique = find_unique(dataframe[my_members],'gid')
         size_all.append(unique)
 
     size_all_distance=[]
-    cluster_center_meters = [[] for i in range(k_means_labels.max())]
-    for i in range (k_means_labels.max()):
+    cluster_center_meters = [[] for i in range(k_means_labels.max()+1)]
+    for i in range (k_means_labels.max()+1):
         trucks = 1
         total_distance_schedule = 0
         buildings_subset = subset_buildings(size_all[i], 5)
         for index, row in buildings_subset.iterrows():
             point = (row['lat_lat'], row['lon_lon'])
             cluster_center_meters[i].append(point)
-        if len(cluster_center_meters[i]) != 0:
-            trucks = len(cluster_center_meters[i])/100
+        if len(size_all[i]) != 0:
+            truck_scale = int(100/5)
+            trucks = len(cluster_center_meters[i])/truck_scale
             if trucks > 1:
-                for j in range (0, len(cluster_center_meters[i]), 100):
-                    total_distance_truck = total_distance(optimized_travelling_salesman(cluster_center_meters[i][j:j+100]))/1000
+                for j in range (0, len(cluster_center_meters[i]), truck_scale):
+                    total_distance_truck = total_distance(optimized_travelling_salesman(cluster_center_meters[i][j:j+truck_scale]))/1000
                     total_distance_schedule = total_distance_schedule + total_distance_truck
             else:
                 total_distance_schedule = total_distance(optimized_travelling_salesman(cluster_center_meters[i]))/1000
