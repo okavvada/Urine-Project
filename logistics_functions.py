@@ -116,7 +116,7 @@ def find_distance_regeneration_scheduled(dataframe, k_means_labels):
 def find_distance_collection(k_means_cluster_centers):
     cluster_center_meters = []
     for item in k_means_cluster_centers:
-        meters = merc(item[0], item[1])
+        meters = (item[0], item[1])
         cluster_center_meters.append(meters)
 
     collection_distance = total_distance(optimized_travelling_salesman(cluster_center_meters))/1000
