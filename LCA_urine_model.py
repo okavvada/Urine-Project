@@ -10,32 +10,18 @@ from LCA_class import resin, catridge, flow_equalization_plastic,pump_flow, rege
 def LCA_urine_model(number_of_people_per_facility, distance_regen, truck_num):
 
 	Resin = resin(number_of_people_per_facility)
-	resin_energy = Resin.total_energy()
-	resin_GHG = Resin.total_GHG()
 
 	Catridge=catridge(catridge_diameter, Resin.mass_resin_household(), number_of_people_per_facility)
-	catridge_energy = Catridge.total_energy()
-	catridge_GHG = Catridge.total_GHG()
 
 	Flow_equalization=flow_equalization_plastic(number_of_people_per_facility)
-	flow_equalization_energy = Flow_equalization.total_energy()
-	flow_equalization_GHG = Flow_equalization.total_GHG()
 
 	Pump = pump_flow(Catridge.diameter, Catridge.catridge_length(), number_of_people_per_facility)
-	pump_energy = Resin.total_energy()
-	pump_GHG = Resin.total_GHG()
 
 	Regeneration = regeneration(Resin.mass_resin_household(), acid_per_resin, number_of_people_per_facility)
-	regeneration_energy = Regeneration.total_energy()
-	regeneration_GHG = Regeneration.total_GHG()
 
 	Logistics_regen = logistics(distance_regen)
-	logistics_energy = Logistics_regen.total_energy()
-	logistics_GHG = Logistics_regen.total_GHG()
 
 	trucking = trucks(truck_num)
-	trucking_energy = trucking.total_energy()
-	trucking_GHG = trucking.total_GHG()
 
 
 	Total_ENERGY=[Resin.resin_energy(),Resin.transportation_energy(),Catridge.PVC_energy(),Catridge.transportation_energy(),
@@ -48,11 +34,18 @@ def LCA_urine_model(number_of_people_per_facility, distance_regen, truck_num):
 	           Pump.pump_embodied_GHG(),Pump.transportation_GHG(), Regeneration.sulphuric_GHG(), 
 	              Regeneration.transportation_GHG(), Logistics_regen.transportation_GHG(), trucking.total_GHG()]
 
+	Total_COST = [Resin.resin_cost(),Resin.transportation_cost(),Catridge.PVC_cost(),Catridge.transportation_cost(),
+	           Flow_equalization.plastic_cost(),Flow_equalization.transportation_cost(),Pump.pump_operating_cost(),
+	           Pump.pump_embodied_cost(),Pump.transportation_cost(), Regeneration.sulphuric_cost(), 
+	              Regeneration.transportation_cost(), Logistics_regen.transportation_cost(), trucking.total_cost()]
+
 
 	Total_ENERGY=pd.DataFrame(Total_ENERGY)
 	Total_ENERGY_plot=Total_ENERGY.transpose()
 	Total_GHG=pd.DataFrame(Total_GHG)
 	Total_GHG_plot=Total_GHG.transpose()
+	Total_COST=pd.DataFrame(Total_COST)
+	Total_COST_plot=Total_COST.transpose()
 
 	Total_ENERGY_plot.columns=['Resin manufacturing','Resin transport', 'Catridge manufacturing', 'Catridge transport', 
 	                           'Tank manufacturing', 'Tank transport', 'Pump operation', 'Pump manufacturing', 'Pump transport', 
@@ -61,14 +54,20 @@ def LCA_urine_model(number_of_people_per_facility, distance_regen, truck_num):
 	                        'Tank manufacturing', 'Tank transport', 'Pump operation', 'Pump manufacturing', 'Pump transport',
 	                       'Acid manufacturing', 'Acid transport', 'Logistics_regen', 'trucks manufacturing']
 
-	return Total_ENERGY_plot, Total_GHG_plot
+	Total_COST_plot.columns=['Resin manufacturing','Resin transport', 'Catridge manufacturing', 'Catridge transport', 
+	                        'Tank manufacturing', 'Tank transport', 'Pump operation', 'Pump manufacturing', 'Pump transport',
+	                       'Acid manufacturing', 'Acid transport', 'Logistics_regen', 'trucks manufacturing']
+
+	return Total_ENERGY_plot, Total_GHG_plot, Total_COST_plot
 
 
 def LCA_collection(number_of_people_total, distance_collection):
 	Logistics_collect = logistics(distance_collection)
 	logistics_collect_energy = Logistics_collect.total_energy()
 	logistics_collect_GHG = Logistics_collect.total_GHG()
+	logistics_collect_cost = Logistics_collect.total_cost()
 
 	Total_ENERGY = logistics_collect_energy
 	Total_GHG=logistics_collect_GHG
-	return Total_ENERGY, Total_GHG
+	Total_COST=logistics_collect_cost
+	return Total_ENERGY, Total_GHG, Total_COST
