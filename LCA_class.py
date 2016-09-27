@@ -74,7 +74,6 @@ class catridge():
     
     def catridge_length(self):
         catridge_length = self.catridge_volume()/1000/(math.pi*((self.diameter)/2/1000)**2) #m
-        print (catridge_length)
         return catridge_length
     
     def mass_PVC(self):
