@@ -22,7 +22,7 @@ def find_transport_GHG(km,lifetime):
     transport_GHG = transport_GHG_kg_km*km/(lifetime)
     return transport_GHG #kg_y
 
-def find_transport_cost(miles,lifetime):
+def find_transport_cost(km,lifetime):
     transport_cost = transport_cost_km*km/(lifetime)
     return transport_cost #$_y
 
@@ -130,7 +130,7 @@ class catridge():
 
     def transportation_cost(self):
         PVC_transport_cost=find_transport_cost(km, PVC_lifetime)
-        return resin_transport_cost #kg_y
+        return PVC_transport_cost #$_y
     
     def total_energy(self):
         total_energy = self.PVC_energy()+self.transportation_energy()
@@ -180,11 +180,11 @@ class flow_equalization_plastic():
         return plastic_cost # $_y
     
     def transportation_energy(self):
-        plastic_transport_energy=find_transport_energy(miles, plastic_lifetime)
+        plastic_transport_energy=find_transport_energy(km, plastic_lifetime)
         return plastic_transport_energy #MJ_y
     
     def transportation_GHG(self):
-        plastic_transport_GHG=find_transport_GHG(miles, plastic_lifetime)
+        plastic_transport_GHG=find_transport_GHG(km, plastic_lifetime)
         return plastic_transport_GHG #kg_y
 
     def transportation_cost(self):
@@ -291,7 +291,7 @@ class pump_flow():
 
     def transportation_cost(self):
         pump_transport_cost=find_transport_cost(km, pump_lifetime)
-        return plastic_transport_cost #$_y
+        return pump_transport_cost #$_y
     
     def total_energy(self):
         total_energy = self.pump_operating_energy()+pump_embodied_energy+self.transportation_energy()
@@ -329,11 +329,11 @@ class regeneration():
         return sulphuric_cost #kg_y
     
     def transportation_energy(self):
-        sulphuric_transport_energy=find_transport_energy(miles, 1)
+        sulphuric_transport_energy=find_transport_energy(km, 1)
         return sulphuric_transport_energy #MJ_y
     
     def transportation_GHG(self):
-        sulphuric_transport_GHG=find_transport_GHG(miles, 1)
+        sulphuric_transport_GHG=find_transport_GHG(km, 1)
         return sulphuric_transport_GHG #kg_y
 
     def transportation_cost(self):
@@ -368,6 +368,22 @@ class trucks():
         total_cost = self.num_trucks*truck_cost_y
         return total_cost
 
+class regeneration_facility():
+    def __init__(self, number_of_people_per_facility):
+        self.number_of_houses_per_facility = number_of_people_per_facility/household_size
+
+    def total_energy(self):
+        total_energy = facility_manufacturing_energy
+        return total_energy
+
+    def total_GHG(self):
+        total_GHG = facility_manufacturing_GHG
+        return total_GHG
+
+    def total_cost(self):
+        total_cost = facility_manufacturing_cost
+        return total_cost
+
 
 class logistics():
     def __init__(self, distance):
@@ -395,4 +411,4 @@ class logistics():
 
     def total_cost(self):
         total_cost = self.transportation_cost()
-        return total_csot #$_y
+        return total_cost #$_y

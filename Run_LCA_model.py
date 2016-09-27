@@ -41,6 +41,7 @@ def Run_LCA_model(path, n_regen, n_collection, schedule, logistics):
 	Total_Energy_total['Logistics_collect'] = Total_Energy_collect
 	Total_GHG_total['Logistics_collect'] = Total_GHG_collect
 	Total_COST_total['Logistics_collect'] = Total_COST_collect
+	Total_COST_total['Facilities_space_new'] = facility_manufacturing_cost*n_regen
 	urine_total = urine_production_scaled/1000
 	Total_Energy_m3=Total_Energy_total/(urine_total*365*Total_people)
 	Total_Energy_m3['n_facilities'] = n_regen
