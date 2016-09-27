@@ -52,6 +52,7 @@ def LCA_urine_model(number_of_people_per_facility, distance_regen, truck_num):
 	Total_ENERGY_plot.columns=['Resin manufacturing','Resin transport', 'Catridge manufacturing', 'Catridge transport', 
 	                           'Tank manufacturing', 'Tank transport', 'Pump operation', 'Pump manufacturing', 'Pump transport', 
 	                          'Acid manufacturing', 'Acid transport', 'Logistics_regen', 'trucks manufacturing']
+
 	Total_GHG_plot.columns=['Resin manufacturing','Resin transport', 'Catridge manufacturing', 'Catridge transport', 
 	                        'Tank manufacturing', 'Tank transport', 'Pump operation', 'Pump manufacturing', 'Pump transport',
 	                       'Acid manufacturing', 'Acid transport', 'Logistics_regen', 'trucks manufacturing']
