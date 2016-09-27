@@ -34,8 +34,8 @@ transport_energy_MJ_km=13 #MJ/km
 transport_GHG_kg_km= 1 #kgCo2/km
 diesel_cost = 2.2 #$/gal (EIA)
 truck_mpg = 10 
-transport_cost = diesel_cost/(truck_mpg*1.6) # $/km
-miles = 60 #km
+transport_cost_km = diesel_cost/(truck_mpg*1.6) # $/km
+km = 60 #km
 
 truck_manuf_energy = 0.89 #MJ/$
 truck_manuf_GHG = 0.06 #kgCO2/$
@@ -58,7 +58,7 @@ plastic_cost_kg = plastic_cost/plastic_density
 
 motor_efficiency = 0.95 
 electricity_EF = 0.083 #kgCO2/kWh
-electricity_cost - 0.1 # $/kWh
+electricity_cost = 0.1 # $/kWh
 specific_weight = 1 #kN/m3
 pump_lifetime = 10
 
@@ -68,4 +68,8 @@ acid_per_resin = 0.01 #kg/kg
 sulphuric_acid_cost = 5 #$/kg
 
 collection_times_per_year = 12
+
+facility_manufacturing_cost = 0#MJ
+facility_manufacturing_cost = 0#kg
+facility_manufacturing_cost = 10000#$
 
