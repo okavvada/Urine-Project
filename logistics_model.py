@@ -19,7 +19,6 @@ class logistics_model():
 		self.path =path
 		self.n_regen = n_regen
 		self.n_collection = n_collection
-		self.schedule = schedule
 		self.logistics = logistics
 
 	def return_dataframe_buildings(self):
