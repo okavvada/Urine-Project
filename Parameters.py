@@ -69,7 +69,7 @@ sulphuric_acid_cost = 5 #$/kg
 
 collection_times_per_year = 12
 
-facility_manufacturing_cost = 0#MJ
-facility_manufacturing_cost = 0#kg
+facility_manufacturing_energy = 0#MJ
+facility_manufacturing_GHG = 0#kg
 facility_manufacturing_cost = 10000#$
 
