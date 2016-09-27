@@ -29,12 +29,12 @@ def LCA_urine_model(number_of_people_per_facility, distance_regen, truck_num):
 	Total_ENERGY=[Resin.resin_energy(),Resin.transportation_energy(),Catridge.PVC_energy(),Catridge.transportation_energy(),
               Flow_equalization.plastic_energy(),Flow_equalization.transportation_energy(),Pump.pump_operating_energy(),
               Pump.pump_embodied_energy(),Pump.transportation_energy(), Regeneration.sulphuric_energy(), 
-              Regeneration.transportation_energy(), Logistics_regen.transportation_energy(), trucking.total_energy(), Facility_regen.total_energy()]
+              Regeneration.transportation_energy(), Logistics_regen.transportation_energy(), trucking.total_energy()]
 
 	Total_GHG=[Resin.resin_GHG(),Resin.transportation_GHG(),Catridge.PVC_GHG(),Catridge.transportation_GHG(),
 	           Flow_equalization.plastic_GHG(),Flow_equalization.transportation_GHG(),Pump.pump_operating_GHG(),
 	           Pump.pump_embodied_GHG(),Pump.transportation_GHG(), Regeneration.sulphuric_GHG(), 
-	              Regeneration.transportation_GHG(), Logistics_regen.transportation_GHG(), trucking.total_GHG(), Facility_regen.total_GHG()]
+	              Regeneration.transportation_GHG(), Logistics_regen.transportation_GHG(), trucking.total_GHG()]
 
 	Total_COST = [Resin.resin_cost(),Resin.transportation_cost(),Catridge.PVC_cost(),Catridge.transportation_cost(),
 	           Flow_equalization.plastic_cost(),Flow_equalization.transportation_cost(),Pump.pump_operating_cost(),
@@ -51,10 +51,10 @@ def LCA_urine_model(number_of_people_per_facility, distance_regen, truck_num):
 
 	Total_ENERGY_plot.columns=['Resin manufacturing','Resin transport', 'Catridge manufacturing', 'Catridge transport', 
 	                           'Tank manufacturing', 'Tank transport', 'Pump operation', 'Pump manufacturing', 'Pump transport', 
-	                          'Acid manufacturing', 'Acid transport', 'Logistics_regen', 'trucks manufacturing', 'facility space']
+	                          'Acid manufacturing', 'Acid transport', 'Logistics_regen', 'trucks manufacturing']
 	Total_GHG_plot.columns=['Resin manufacturing','Resin transport', 'Catridge manufacturing', 'Catridge transport', 
 	                        'Tank manufacturing', 'Tank transport', 'Pump operation', 'Pump manufacturing', 'Pump transport',
-	                       'Acid manufacturing', 'Acid transport', 'Logistics_regen', 'trucks manufacturing', 'facility space']
+	                       'Acid manufacturing', 'Acid transport', 'Logistics_regen', 'trucks manufacturing']
 
 	Total_COST_plot.columns=['Resin manufacturing','Resin transport', 'Catridge manufacturing', 'Catridge transport', 
 	                        'Tank manufacturing', 'Tank transport', 'Pump operation', 'Pump manufacturing', 'Pump transport',

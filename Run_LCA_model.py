@@ -11,7 +11,7 @@ from logistics_model import logistics_model
 
 def Run_LCA_model(path, n_regen, n_collection, schedule, logistics):
 
-	Logistics = logistics_model(path, n_regen, n_collection, schedule, logistics)
+	Logistics = logistics_model(path, n_regen, n_collection, logistics)
 	distance_regeneration, distance_collection = Logistics.logistics_distances()
 
 	Total_Energy = pd.DataFrame()

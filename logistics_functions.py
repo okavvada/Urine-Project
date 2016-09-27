@@ -55,31 +55,6 @@ def clustering(dataframe, n):
     return k_means_labels, k_means_cluster_centers
     
 
-def find_distance_regeneration(dataframe, k_means_labels, k_means_cluster_centers):
-    size_all= []
-    for i in range (k_means_labels.max()):
-        my_members = k_means_labels==i
-        unique = find_unique(dataframe[my_members],'gid')
-        size_all.append(unique)
-
-    size_all_distance=[[] for i in range(k_means_labels.max())]
-    for i in range (k_means_labels.max()):
-        for index, row in size_all[i].iterrows():
-            harv=haversine(row['lat_lat'],row['lon_lon'], k_means_cluster_centers[i][0], k_means_cluster_centers[i][1])
-            row['eu_dist'] = harv/100
-            size_all_distance[i].append(row)
-
-    total_dist_all=[]
-    for i in range (k_means_labels.max()):
-        df = pd.DataFrame(size_all_distance[i])
-        total_dist = df['eu_dist'].sum()
-        total_peop = df['num_people_int'].sum()
-        all_totals = (i, total_peop, total_dist)
-        total_dist_all.append(all_totals)
-    totals_all_df = pd.DataFrame(total_dist_all, columns=['cluster', 'num_people', 'total_dist_m'])
-    return totals_all_df
-
-
 def find_distance_regeneration_scheduled(dataframe, k_means_labels):
     size_all= []
     for i in range (k_means_labels.max()):

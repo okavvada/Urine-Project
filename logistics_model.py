@@ -15,7 +15,7 @@ from Parameters import time_between_catridge_regeneration, collection_times_per_
 
 
 class logistics_model():
-	def __init__(self, path, n_regen, n_collection, schedule, logistics):
+	def __init__(self, path, n_regen, n_collection, logistics):
 		self.path =path
 		self.n_regen = n_regen
 		self.n_collection = n_collection
@@ -72,22 +72,14 @@ class logistics_model():
 		else:
 			print ("Error type of logistics was not specified")
 
-		if self.schedule == 'scheduled':
-			time_now = time.time()
-			print ("Start calculating distances for scheduled...")
-			distance_regeneration = find_distance_regeneration_scheduled(building_virtual_buildings_df, k_means_labels_regen)
-			distance_regeneration['total_dist_m'] = distance_regeneration['total_dist_m']*365/time_between_catridge_regeneration
-			time_end = time.time() - time_now
-			print ("calc distances took time %s" %time_end)
+		time_now = time.time()
 
-		elif self.schedule == 'unscheduled':
-			print ("Start calculating distances for unscheduled")
-			distance_regeneration = find_distance_regeneration_scheduled(building_virtual_buildings_df, k_means_labels_regen)
-			distance_regeneration['total_dist_m'] = distance_regeneration['total_dist_m']*365
+		print ("Start calculating distances for scheduled...")
+		distance_regeneration = find_distance_regeneration_scheduled(building_virtual_buildings_df, k_means_labels_regen)
+		distance_regeneration['total_dist_m'] = distance_regeneration['total_dist_m']*365/time_between_catridge_regeneration
+		time_end = time.time() - time_now
+		print ("calc distances took time %s" %time_end)
 
-		else:
-			print ("Error scheduling was not specified")
-			return
 
 		k_means_labels_collection, k_means_cluster_centers_collection = self.clustering_collection(k_means_cluster_centers_regen)
 
