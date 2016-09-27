@@ -1,7 +1,7 @@
 from __future__ import division
 
 scaling_factor = 1
-catridge_diameter = 25.4 #mm
+catridge_diameter = 100 #mm
 PVC_lifetime = 50 #years
 resin_density = 750 #g/L
 resin_cost = 32 #$/kg
