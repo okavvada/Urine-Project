@@ -72,17 +72,16 @@ def find_distance_regeneration_scheduled(dataframe, k_means_labels):
             point = (row['lat_lat'], row['lon_lon'])
             cluster_center_meters[i].append(point)
         if len(size_all[i]) != 0:
-            truck_scale = int(100/5)
-            trucks = len(cluster_center_meters[i])/truck_scale
+            trucks = len(cluster_center_meters[i])/100
             if trucks > 1:
-                for j in range (0, len(cluster_center_meters[i]), truck_scale):
-                    total_distance_truck = total_distance(optimized_travelling_salesman(cluster_center_meters[i][j:j+truck_scale]))/1000
+                for j in range (0, len(cluster_center_meters[i]), 100):
+                    total_distance_truck = total_distance(optimized_travelling_salesman(cluster_center_meters[i][j:j+100]))/1000
                     total_distance_schedule = total_distance_schedule + total_distance_truck
             else:
                 total_distance_schedule = total_distance(optimized_travelling_salesman(cluster_center_meters[i]))/1000
 
         total_peop = size_all[i]['num_people_int'].sum()
-        trucks_num = trucks
+        trucks_num = int(trucks)
         totals = (i, total_peop, trucks, total_distance_schedule)
         size_all_distance.append(totals)
     totals_all_df = pd.DataFrame(size_all_distance, columns=['cluster', 'num_people', 'trucks_num' ,'total_dist_m'])   

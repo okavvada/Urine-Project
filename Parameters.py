@@ -4,7 +4,7 @@ scaling_factor = 1
 catridge_diameter = 100 #mm
 PVC_lifetime = 50 #years
 resin_density = 750 #g/L
-resin_cost_kg = 32 #$/kg
+resin_cost_kg = 3.2 #$/kg #### CHECK with Will
 resin_energy_MJ_kg = 31 #MJ/kg ion exchange resin WEST
 resin_GHG_kg_kg= 1 #kg/kg ion exchange resin WEST
 resin_transport = 320 #miles WEST
@@ -19,7 +19,6 @@ time_between_catridge_regeneration = 7 #days
 time_for_regeneration = 5 #h
 urine_production = 1 #L/person-day
 household_size = 4 #people
-urine_production_scaled = urine_production/scaling_factor
 
 flow_equalization_retention_time = 1  #day
 tank_height = 0.5 #m
@@ -40,11 +39,11 @@ km = 60 #km
 truck_manuf_energy = 0.89 #MJ/$
 truck_manuf_GHG = 0.06 #kgCO2/$
 truck_milage = 1500000
-truck_cost = 100000 # $
+truck_cost = 70000 # $
 truck_milage_y = 20000 #miles/y
-truck_manufacturing_energy = truck_manuf_energy*truck_cost/(truck_milage/truck_milage_y)
-truck_manufacturing_GHG = truck_manuf_GHG*truck_cost/(truck_milage/truck_milage_y)
-truck_cost_y = truck_cost/(truck_milage/truck_milage_y)
+truck_manufacturing_energy = truck_manuf_energy*truck_cost/(truck_milage/truck_milage_y) #MJ/y
+truck_manufacturing_GHG = truck_manuf_GHG*truck_cost/(truck_milage/truck_milage_y) #kg/y
+truck_cost_y = truck_cost/(truck_milage/truck_milage_y) #$/y
 
 plastic_energy = 14.8 #MJ/$  EIOLCA plastics manufacturing
 plastic_GHG = 0.904 #kg/$ EIOLCA plastics manufacturing
@@ -65,11 +64,18 @@ pump_lifetime = 10
 sulphuric_acid_energy = 0.67 #MJ/kg Ecoinvent
 sulphuric_acid_GHG = 0.12 #kg/kg Ecoinvent
 acid_per_resin = 0.01 #kg/kg
-sulphuric_acid_cost = 5 #$/kg
+sulphuric_acid_cost = 0.5 #$/kg  #### CHECK with Will
 
 collection_times_per_year = 12
 
-facility_manufacturing_energy = 0#MJ
-facility_manufacturing_GHG = 0#kg
-facility_manufacturing_cost = 10000#$
+facility_manufacturing_energy = 0 #MJ
+facility_manufacturing_GHG = 0 #kg
+facility_lifetime = 50 # y
+
+# Define a function that calculates the cost based on the facility size. Assumes linear increase with size.
+def facility_manufacturing_curve(houses):
+	cost = 1.55*houses+196898
+	return cost
+
+
 

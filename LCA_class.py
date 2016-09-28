@@ -36,7 +36,7 @@ class resin():
         self.number_of_houses_per_facility = number_of_people_per_facility/household_size
 
     def mass_resin_household(self):
-        daily_urine_household = household_size*urine_production_scaled #L/day
+        daily_urine_household = household_size*urine_production #L/day
         volume_urine_treated_before_replacement = time_between_catridge_regeneration*daily_urine_household #L
         mass_resin_household=volume_urine_treated_before_replacement*N_urine/(adsorption_density*molar_mass_N)#kg
         return mass_resin_household #kg
@@ -150,7 +150,7 @@ class flow_equalization_plastic():
     	self.number_of_houses_per_facility = number_of_people_per_facility/household_size
         
     def volume(self):
-        daily_urine_household = household_size*urine_production_scaled #L/day
+        daily_urine_household = household_size*urine_production #L/day
         volume = daily_urine_household*flow_equalization_retention_time/1000*self.number_of_houses_per_facility
         return volume #m3
     
@@ -211,13 +211,13 @@ class pump_flow():
         self.number_of_houses_per_facility =number_of_people_per_facility/household_size
 
     def headloss(self):
-        daily_urine_household = (household_size*urine_production_scaled)/(24*3600*1000) #m3/s
+        daily_urine_household = (household_size*urine_production)/(24*3600*1000) #m3/s
         surface_area = math.pi*(self.catridge_diameter/1000/2)**2
         headloss = daily_urine_household*self.catridge_length/(surface_area*hydraulic_conductivity)*10
         return headloss
     
     def pump_power(self):
-        daily_urine_household = (household_size*urine_production_scaled)/(24*3600*1000) #m3/s
+        daily_urine_household = (household_size*urine_production)/(24*3600*1000) #m3/s
         p_hp = specific_weight*daily_urine_household*self.headloss()*self.number_of_houses_per_facility/(0.4*motor_efficiency)*1.34
         if p_hp<3:
             pump_efficiency=0.4
@@ -373,15 +373,15 @@ class regeneration_facility():
         self.number_of_houses_per_facility = number_of_people_per_facility/household_size
 
     def total_energy(self):
-        total_energy = facility_manufacturing_energy
+        total_energy = facility_manufacturing_energy/facility_lifetime
         return total_energy
 
     def total_GHG(self):
-        total_GHG = facility_manufacturing_GHG
+        total_GHG = facility_manufacturing_GHG/facility_lifetime
         return total_GHG
 
     def total_cost(self):
-        total_cost = facility_manufacturing_cost
+        total_cost = facility_manufacturing_curve(self.number_of_houses_per_facility)/facility_lifetime
         return total_cost
 
 
