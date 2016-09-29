@@ -53,30 +53,6 @@ class resin():
         resin_cost = self.mass_resin_household()*resin_cost_kg/resin_lifetime*self.number_of_houses_per_facility
         return resin_cost #$_y
 
-    def transportation_energy(self):
-        resin_transport_energy=find_transport_energy(resin_transport, resin_lifetime)
-        return resin_transport_energy #MJ_y
-    
-    def transportation_GHG(self):
-        resin_transport_GHG=find_transport_GHG(resin_transport, resin_lifetime)
-        return resin_transport_GHG #kg_y
-
-    def transportation_cost(self):
-        resin_transport_cost=find_transport_cost(resin_transport, resin_lifetime)
-        return resin_transport_cost #kg_y
-    
-    def total_energy(self):
-        total_energy = self.resin_energy()+self.transportation_energy()
-        return total_energy #MJ_y
-    
-    def total_GHG(self):
-        total_GHG = self.resin_GHG()+self.transportation_GHG()
-        return total_GHG #kg_y
-
-    def total_cost(self):
-        total_cost = self.resin_cost()+self.transportation_cost()
-        return total_cost # $_y
-
 
 class catridge():
     def __init__(self, diameter, mass_resin_household, number_of_people_per_facility):
@@ -119,30 +95,6 @@ class catridge():
         diameter=find_nearest(nominal_diameter_list,diameter_mm)
         PVC_cost=pipe_index.cost_2012_m[diameter]*self.catridge_length()*self.number_of_houses_per_facility/PVC_lifetime
         return PVC_cost # $_y
-    
-    def transportation_energy(self):
-        PVC_transport_energy=find_transport_energy(km, PVC_lifetime)
-        return PVC_transport_energy #MJ_y
-    
-    def transportation_GHG(self):
-        PVC_transport_GHG=find_transport_GHG(km, PVC_lifetime)
-        return PVC_transport_GHG #kg_y
-
-    def transportation_cost(self):
-        PVC_transport_cost=find_transport_cost(km, PVC_lifetime)
-        return PVC_transport_cost #$_y
-    
-    def total_energy(self):
-        total_energy = self.PVC_energy()+self.transportation_energy()
-        return total_energy #MJ_y
-    
-    def total_GHG(self):
-        total_GHG = self.PVC_GHG()+self.transportation_GHG()
-        return total_GHG #kg_y
-
-    def total_cost(self):
-        total_cost = self.PVC_cost()+self.transportation_cost()
-        return total_cost # $_y
 
 
 class flow_equalization_plastic():
@@ -178,30 +130,6 @@ class flow_equalization_plastic():
         mass = self.mass_plastic()
         plastic_cost = mass*plastic_cost_kg/plastic_lifetime
         return plastic_cost # $_y
-    
-    def transportation_energy(self):
-        plastic_transport_energy=find_transport_energy(km, plastic_lifetime)
-        return plastic_transport_energy #MJ_y
-    
-    def transportation_GHG(self):
-        plastic_transport_GHG=find_transport_GHG(km, plastic_lifetime)
-        return plastic_transport_GHG #kg_y
-
-    def transportation_cost(self):
-        plastic_transport_cost=find_transport_cost(km, plastic_lifetime)
-        return plastic_transport_cost #kg_y
-    
-    def total_energy(self):
-        total_energy = self.plastic_energy()+self.transportation_energy()
-        return total_energy #MJ_y
-    
-    def total_GHG(self):
-        total_GHG = self.plastic_GHG()+self.transportation_GHG()
-        return total_GHG #kg_y
-
-    def total_cost(self):
-        total_cost = self.plastic_cost()+self.transportation_cost()
-        return total_cost # $_y
 
 
 class pump_flow():
@@ -211,31 +139,31 @@ class pump_flow():
         self.number_of_houses_per_facility =number_of_people_per_facility/household_size
 
     def headloss(self):
-        daily_urine_household = (household_size*urine_production)/(24*3600*1000) #m3/s
+        daily_acid_household = acid_flow_rate_m3_s #m3/s
         surface_area = math.pi*(self.catridge_diameter/1000/2)**2
-        headloss = daily_urine_household*self.catridge_length/(surface_area*hydraulic_conductivity)*10
+        headloss = daily_acid_household*self.catridge_length/(surface_area*hydraulic_conductivity)*1.1
         return headloss
     
     def pump_power(self):
-        daily_urine_household = (household_size*urine_production)/(24*3600*1000) #m3/s
-        p_hp = specific_weight*daily_urine_household*self.headloss()*self.number_of_houses_per_facility/(0.4*motor_efficiency)*1.34
-        if p_hp<3:
-            pump_efficiency=0.4
-        elif 3<=p_hp<7:
-            pump_efficiency=0.45
+        daily_acid_household = acid_flow_rate_m3_s #m3/s
+        p_hp = specific_weight*daily_acid_household*self.number_of_houses_per_facility*self.headloss()/(0.3*motor_efficiency)*1.34
+        if p_hp<7:
+            pump_efficiency=0.3
         elif 7<=p_hp<15:
+            pump_efficiency=0.35
+        elif 15<=p_hp<20:
+            pump_efficiency=0.4
+        elif 20<=p_hp<40:
             pump_efficiency=0.5
-        elif 15<=p_hp<40:
-            pump_efficiency=0.55
         elif 40<=p_hp<60:
             pump_efficiency=0.6
         else:
             pump_efficiency=0.7
 
-        if p_hp>0.5:
-            power = specific_weight*daily_urine_household*self.headloss()*self.number_of_houses_per_facility/(pump_efficiency*motor_efficiency)
+        if p_hp>0.1:
+            power = specific_weight*daily_acid_household*self.number_of_houses_per_facility*self.headloss()/(pump_efficiency*motor_efficiency)
         else:
-            power = 0.5 / 1.34
+            power = 0.1 / 1.34
         return power #KW
     
     def pump_size(self):
@@ -251,7 +179,7 @@ class pump_flow():
         return mass_pump
     
     def pump_operating_energy(self):
-        energy = self.pump_power()*time_for_regeneration*365*3.6/time_between_catridge_regeneration
+        energy = self.pump_power()*time_for_regeneration*365/time_between_catridge_regeneration*3.6
         return energy #MJ/y
     
     def pump_operating_GHG(self):
@@ -280,30 +208,6 @@ class pump_flow():
         pump_size = self.pump_size()
         pump_cost=pump_index.Cost_2012[pump_size]/pump_lifetime
         return pump_cost #$/y
-        
-    def transportation_energy(self):
-        pump_transport_energy=find_transport_energy(km, pump_lifetime)
-        return pump_transport_energy #MJ_y
-    
-    def transportation_GHG(self):
-        pump_transport_GHG=find_transport_GHG(km, pump_lifetime)
-        return pump_transport_GHG #kg_y
-
-    def transportation_cost(self):
-        pump_transport_cost=find_transport_cost(km, pump_lifetime)
-        return pump_transport_cost #$_y
-    
-    def total_energy(self):
-        total_energy = self.pump_operating_energy()+pump_embodied_energy+self.transportation_energy()
-        return total_energy #MJ_y
-    
-    def total_GHG(self):
-        total_GHG = self.pump_operating_GHG()+pump_embodied_GHG+self.transportation_GHG()
-        return total_GHG #kg_y  
-
-    def total_cost(self):
-        total_cost = self.pump_cost()+self.transportation_cost()
-        return total_cost # $_y  
 
 
 class regeneration():
@@ -328,29 +232,6 @@ class regeneration():
         sulphuric_cost = self.mass_sulphuric_facility()*sulphuric_acid_cost
         return sulphuric_cost #kg_y
     
-    def transportation_energy(self):
-        sulphuric_transport_energy=find_transport_energy(km, 1)
-        return sulphuric_transport_energy #MJ_y
-    
-    def transportation_GHG(self):
-        sulphuric_transport_GHG=find_transport_GHG(km, 1)
-        return sulphuric_transport_GHG #kg_y
-
-    def transportation_cost(self):
-        sulphuric_transport_cost=find_transport_cost(km, 1)
-        return sulphuric_transport_cost #$g_y
-    
-    def total_energy(self):
-        total_energy = self.sulphuric_energy()+self.transportation_energy()
-        return total_energy #MJ_y
-    
-    def total_GHG(self):
-        total_GHG = self.sulphuric_GHG()+self.transportation_GHG()
-        return total_GHG #kg_y
-
-    def total_cost(self):
-        total_cost = self.sulphuric_cost()+self.transportation_cost()
-        return total_cost # $_y  
 
 class trucks():
     def __init__(self, num_trucks):
@@ -367,6 +248,7 @@ class trucks():
     def total_cost(self):
         total_cost = self.num_trucks*truck_cost_y
         return total_cost
+        
 
 class regeneration_facility():
     def __init__(self, number_of_people_per_facility):
@@ -401,14 +283,20 @@ class logistics():
         logistics_transport_cost=find_transport_GHG(self.distance,1)
         return logistics_transport_cost #$_y
     
-    def total_energy(self):
-        total_energy = self.transportation_energy()
-        return total_energy #MJ_y
-    
-    def total_GHG(self):
-        total_GHG = self.transportation_GHG()
-        return total_GHG #kg_y
 
-    def total_cost(self):
-        total_cost = self.transportation_cost()
-        return total_cost #$_y
+class material_transport():
+    def __init__(self, transport_distance, lifetime):
+        self.transport_distance=transport_distance
+        self.lifetime=lifetime
+            
+    def transportation_energy(self):
+        transport_energy=find_transport_energy(self.transport_distance, self.lifetime)
+        return transport_energy #MJ_y
+    
+    def transportation_GHG(self):
+        transport_GHG=find_transport_GHG(self.transport_distance, self.lifetime)
+        return transport_GHG #kg_y
+
+    def transportation_cost(self):
+        transport_cost=find_transport_cost(self.transport_distance, self.lifetime)
+        return transport_cost #kg_y

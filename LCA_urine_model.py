@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import math
 
 from Parameters import *
-from LCA_class import resin, catridge, flow_equalization_plastic,pump_flow, regeneration, logistics, trucks, regeneration_facility
+from LCA_class import resin, catridge, flow_equalization_plastic, pump_flow, regeneration, logistics, trucks, regeneration_facility, material_transport
 
 def LCA_urine_model(number_of_people_per_facility, distance_regen, truck_num):
 
@@ -26,20 +26,14 @@ def LCA_urine_model(number_of_people_per_facility, distance_regen, truck_num):
 	Facility_regen = regeneration_facility(number_of_people_per_facility)
 
 
-	Total_ENERGY=[Resin.resin_energy(),Resin.transportation_energy(),Catridge.PVC_energy(),Catridge.transportation_energy(),
-              Flow_equalization.plastic_energy(),Flow_equalization.transportation_energy(),Pump.pump_operating_energy(),
-              Pump.pump_embodied_energy(),Pump.transportation_energy(), Regeneration.sulphuric_energy(), 
-              Regeneration.transportation_energy(), Logistics_regen.transportation_energy(), trucking.total_energy()]
+	Total_ENERGY=[Resin.resin_energy(),Catridge.PVC_energy(), Flow_equalization.plastic_energy(), Pump.pump_operating_energy(),
+              Pump.pump_embodied_energy(), Regeneration.sulphuric_energy(), Logistics_regen.transportation_energy(), trucking.total_energy()]
 
-	Total_GHG=[Resin.resin_GHG(),Resin.transportation_GHG(),Catridge.PVC_GHG(),Catridge.transportation_GHG(),
-	           Flow_equalization.plastic_GHG(),Flow_equalization.transportation_GHG(),Pump.pump_operating_GHG(),
-	           Pump.pump_embodied_GHG(),Pump.transportation_GHG(), Regeneration.sulphuric_GHG(), 
-	              Regeneration.transportation_GHG(), Logistics_regen.transportation_GHG(), trucking.total_GHG()]
+	Total_GHG=[Resin.resin_GHG(), Catridge.PVC_GHG(), Flow_equalization.plastic_GHG(), Pump.pump_operating_GHG(), 
+				Pump.pump_embodied_GHG(), Regeneration.sulphuric_GHG(), Logistics_regen.transportation_GHG(), trucking.total_GHG()]
 
-	Total_COST = [Resin.resin_cost(),Resin.transportation_cost(),Catridge.PVC_cost(),Catridge.transportation_cost(),
-	           Flow_equalization.plastic_cost(),Flow_equalization.transportation_cost(),Pump.pump_operating_cost(),
-	           Pump.pump_embodied_cost(),Pump.transportation_cost(), Regeneration.sulphuric_cost(), 
-	              Regeneration.transportation_cost(), Logistics_regen.transportation_cost(), trucking.total_cost(), Facility_regen.total_cost()]
+	Total_COST = [Resin.resin_cost(), Catridge.PVC_cost(), Flow_equalization.plastic_cost(), Pump.pump_operating_cost(),
+	           Pump.pump_embodied_cost(), Regeneration.sulphuric_cost(), Logistics_regen.transportation_cost(), trucking.total_cost(), Facility_regen.total_cost()]
 
 
 	Total_ENERGY=pd.DataFrame(Total_ENERGY)
@@ -49,28 +43,31 @@ def LCA_urine_model(number_of_people_per_facility, distance_regen, truck_num):
 	Total_COST=pd.DataFrame(Total_COST)
 	Total_COST_plot=Total_COST.transpose()
 
-	Total_ENERGY_plot.columns=['Resin manufacturing','Resin transport', 'Catridge manufacturing', 'Catridge transport', 
-	                           'Tank manufacturing', 'Tank transport', 'Pump operation', 'Pump manufacturing', 'Pump transport', 
-	                          'Acid manufacturing', 'Acid transport', 'Logistics_regen', 'trucks manufacturing']
+	Total_ENERGY_plot.columns=['Resin manufacturing', 'Catridge manufacturing', 'Tank manufacturing', 'Pump operation', 'Pump manufacturing', 
+	                          'Acid manufacturing', 'Logistics_regen', 'trucks manufacturing']
 
-	Total_GHG_plot.columns=['Resin manufacturing','Resin transport', 'Catridge manufacturing', 'Catridge transport', 
-	                        'Tank manufacturing', 'Tank transport', 'Pump operation', 'Pump manufacturing', 'Pump transport',
-	                       'Acid manufacturing', 'Acid transport', 'Logistics_regen', 'trucks manufacturing']
+	Total_GHG_plot.columns=['Resin manufacturing', 'Catridge manufacturing', 'Tank manufacturing', 'Pump operation', 'Pump manufacturing', 
+	                          'Acid manufacturing', 'Logistics_regen', 'trucks manufacturing']
 
-	Total_COST_plot.columns=['Resin manufacturing','Resin transport', 'Catridge manufacturing', 'Catridge transport', 
-	                        'Tank manufacturing', 'Tank transport', 'Pump operation', 'Pump manufacturing', 'Pump transport',
-	                       'Acid manufacturing', 'Acid transport', 'Logistics_regen', 'trucks manufacturing', 'facility space']
+	Total_COST_plot.columns=['Resin manufacturing', 'Catridge manufacturing', 'Tank manufacturing', 'Pump operation', 'Pump manufacturing', 
+	                          'Acid manufacturing', 'Logistics_regen', 'trucks manufacturing', 'facility space']
 
 	return Total_ENERGY_plot, Total_GHG_plot, Total_COST_plot
 
 
 def LCA_collection(number_of_people_total, distance_collection):
 	Logistics_collect = logistics(distance_collection)
-	logistics_collect_energy = Logistics_collect.total_energy()
-	logistics_collect_GHG = Logistics_collect.total_GHG()
-	logistics_collect_cost = Logistics_collect.total_cost()
+	logistics_collect_energy = Logistics_collect.transportation_energy()
+	logistics_collect_GHG = Logistics_collect.transportation_GHG()
+	logistics_collect_cost = Logistics_collect.transportation_cost()
 
-	Total_ENERGY = logistics_collect_energy
-	Total_GHG=logistics_collect_GHG
-	Total_COST=logistics_collect_cost
-	return Total_ENERGY, Total_GHG, Total_COST
+	return logistics_collect_energy, logistics_collect_GHG, logistics_collect_cost
+
+
+def material_transportation(transport_dist, lifetime):
+	transport = material_transport(transport_dist, lifetime)
+	transport_energy = transport.transportation_energy()
+	transport_GHG = transport.transportation_GHG()
+	transport_cost = transport.transportation_cost()
+
+	return transport_energy, transport_GHG, transport_cost
