@@ -7,16 +7,16 @@ resin_density = 750 #g/L
 resin_cost_kg = 3.2 #$/kg #### CHECK with Will
 resin_energy_MJ_kg = 31 #MJ/kg ion exchange resin WEST
 resin_GHG_kg_kg= 1 #kg/kg ion exchange resin WEST
-resin_transport = 320 #miles WEST
+resin_transport = 3862 #km WEST
 hydraulic_conductivity = 0.00253 #m/s
-resin_lifetime = 10 #years
+resin_lifetime = 10 #years ### CHECK with Will
 
 N_urine = 7.5 #gN/L
 adsorption_density = 4.9 #mmolN/g resin
 molar_mass_N = 14 #g/mol
 
 time_between_catridge_regeneration = 7 #days
-time_for_regeneration = 5 #h
+time_for_regeneration = 1.5 #h/day
 urine_production = 1 #L/person-day
 household_size = 4 #people
 
@@ -63,8 +63,15 @@ pump_lifetime = 10
 
 sulphuric_acid_energy = 0.67 #MJ/kg Ecoinvent
 sulphuric_acid_GHG = 0.12 #kg/kg Ecoinvent
-acid_per_resin = 0.01 #kg/kg
+acid_per_resin = 0.01#kg/kg ### CHECK
+# acid_per_resin = acid_per_solution*solution_per_resin*acid_density/(resin_density)
+acid_per_solution = 0.0065  #L/L #### CHECK with Will
+solution_per_resin = 1  #L/L #### CHECK with Will
 sulphuric_acid_cost = 0.5 #$/kg  #### CHECK with Will
+acid_flow_rate = 360 # ml/min
+acid_flow_rate_m3_s = acid_flow_rate/(60*1000*1000) #m3/s
+acid_transport = 193 #km WEST
+acid_density = 1840 #g/L
 
 collection_times_per_year = 12
 
@@ -91,5 +98,4 @@ def pareto_frontier(Xs, Ys, maxX = True, maxY = True):
     p_frontX = [pair[0] for pair in p_front]
     p_frontY = [pair[1] for pair in p_front]
     return p_frontX, p_frontY
-
 
