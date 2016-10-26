@@ -11,8 +11,9 @@ from mpl_toolkits.mplot3d import Axes3D
 import time
 
 from logistics_functions import *
-from Parameters import time_between_catridge_regeneration, collection_times_per_year
+from Parameters_class import Parameters_values
 
+Parameters = Parameters_values()
 
 class logistics_model():
 	def __init__(self, path, n_regen, n_collection, logistics):
@@ -75,12 +76,12 @@ class logistics_model():
 
 		print ("Start calculating distances for scheduled...")
 		distance_regeneration = find_distance_regeneration_scheduled(building_virtual_buildings_df, k_means_labels_regen)
-		distance_regeneration['total_dist_m'] = distance_regeneration['total_dist_m']*365/time_between_catridge_regeneration
+		distance_regeneration['total_dist_m'] = distance_regeneration['total_dist_m']*365/Parameters.time_between_catridge_regeneration
 		time_end = time.time() - time_now
 		print ("calc distances took time %s" %time_end)
 
 
 		k_means_labels_collection, k_means_cluster_centers_collection = self.clustering_collection(k_means_cluster_centers_regen)
 
-		distance_collection = find_distance_collection(k_means_cluster_centers_regen)*collection_times_per_year
+		distance_collection = find_distance_collection(k_means_cluster_centers_regen)*Parameters.collection_times_per_year
 		return distance_regeneration, distance_collection

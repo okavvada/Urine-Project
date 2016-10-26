@@ -220,3 +220,33 @@ def merc(lat, lon):
 	scale = x/lon
 	y = 180.0/math.pi * math.log(math.tan(math.pi/4.0 + lat * (math.pi/180.0)/2.0)) * scale
 	return (x, y)
+
+# Define a function that calculates the cost based on the facility size. Assumes linear increase with size.
+def facility_manufacturing_curve_linear(houses):
+    cost = 1.55*houses+196898
+    return cost
+
+def facility_manufacturing_curve_power(houses):
+    required_area = 10+houses*0.004/1
+    cost = min_facility_cost*(required_area/10)**0.6
+    return cost
+
+def facility_manufacturing_curve(houses):
+    required_area = 10+houses*0.004/1
+    cost = (232.8*required_area)*12
+    return cost #$/y
+
+def pareto_frontier(Xs, Ys, maxX = True, maxY = True):
+# Sort the list in either ascending or descending order of X
+    myList = sorted([[Xs[i], Ys[i]] for i in range(len(Xs))], reverse=maxX)
+# Start the Pareto frontier with the first value in the sorted list
+    p_front = [myList[0]]    
+# Loop through the sorted list
+    for pair in myList[1:]:
+        if maxY: 
+            if pair[1] <= p_front[-1][1]: # Look for higher values of Y…
+                p_front.append(pair) # … and add them to the Pareto frontier
+# Turn resulting pairs back into a list of Xs and Ys
+    p_frontX = [pair[0] for pair in p_front]
+    p_frontY = [pair[1] for pair in p_front]
+    return p_frontX, p_frontY

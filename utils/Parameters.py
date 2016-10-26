@@ -4,12 +4,12 @@ scaling_factor = 1
 catridge_diameter = 100 #mm
 PVC_lifetime = 50 #years
 resin_density = 750 #g/L
-resin_cost_kg = 3.2 #$/kg #### CHECK with Will
-resin_energy_MJ_kg = 31 #MJ/kg ion exchange resin WEST
+resin_cost_kg = 32 #$/kg #### CHECK with Will
+resin_energy_MJ_kg = 30 #MJ/kg ion exchange resin WEST
 resin_GHG_kg_kg= 1 #kg/kg ion exchange resin WEST
 resin_transport = 3862 #km WEST
 hydraulic_conductivity = 0.00253 #m/s
-resin_lifetime = 10 #years ### CHECK with Will
+resin_lifetime = 5 #years ### CHECK with Will
 
 N_urine = 7.5 #gN/L
 adsorption_density = 4.9 #mmolN/g resin
@@ -61,41 +61,28 @@ electricity_cost = 0.1 # $/kWh
 specific_weight = 1 #kN/m3
 pump_lifetime = 10
 
-sulphuric_acid_energy = 0.67 #MJ/kg Ecoinvent
+sulphuric_acid_energy = 1.7 #MJ/kg Ecoinvent
 sulphuric_acid_GHG = 0.12 #kg/kg Ecoinvent
-acid_per_resin = 0.01#kg/kg ### CHECK
-# acid_per_resin = acid_per_solution*solution_per_resin*acid_density/(resin_density)
-acid_per_solution = 0.0065  #L/L #### CHECK with Will
-solution_per_resin = 1  #L/L #### CHECK with Will
-sulphuric_acid_cost = 0.5 #$/kg  #### CHECK with Will
+acid_density = 1840 #g/L
+#acid_per_resin = 0.01#kg/kg ### CHECK
+acid_per_resin_L = 0.017  #L/L 
+acid_per_resin = acid_per_resin_L*acid_density/(resin_density)
+sulphuric_acid_cost = 0.138 #$/kg ### CHECK
+#sulphuric_acid_cost = 0.013 #$/kg 
+
 acid_flow_rate = 360 # ml/min
 acid_flow_rate_m3_s = acid_flow_rate/(60*1000*1000) #m3/s
 acid_transport = 193 #km WEST
-acid_density = 1840 #g/L
+
+volume_fertilizer_per_acid = 0.5 #L/L #CHECK
+volume_bottle = 1 #L
+bottle_height = 0.3
+bottle_thickness = 0.01 #m
+bottle_lifetime = 2 #y
 
 collection_times_per_year = 12
 
 facility_manufacturing_energy = 0 #MJ
 facility_manufacturing_GHG = 0 #kg
-facility_lifetime = 50 # y
-
-# Define a function that calculates the cost based on the facility size. Assumes linear increase with size.
-def facility_manufacturing_curve(houses):
-	cost = 1.55*houses+196898
-	return cost
-
-def pareto_frontier(Xs, Ys, maxX = True, maxY = True):
-# Sort the list in either ascending or descending order of X
-    myList = sorted([[Xs[i], Ys[i]] for i in range(len(Xs))], reverse=maxX)
-# Start the Pareto frontier with the first value in the sorted list
-    p_front = [myList[0]]    
-# Loop through the sorted list
-    for pair in myList[1:]:
-        if maxY: 
-            if pair[1] <= p_front[-1][1]: # Look for higher values of Y…
-                p_front.append(pair) # … and add them to the Pareto frontier
-# Turn resulting pairs back into a list of Xs and Ys
-    p_frontX = [pair[0] for pair in p_front]
-    p_frontY = [pair[1] for pair in p_front]
-    return p_frontX, p_frontY
-
+facility_lifetime = 10 # y
+min_facility_cost = 100000
