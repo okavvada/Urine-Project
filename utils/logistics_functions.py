@@ -231,9 +231,9 @@ def facility_manufacturing_curve_power(houses):
     cost = min_facility_cost*(required_area/10)**0.6
     return cost
 
-def facility_manufacturing_curve(houses):
+def facility_manufacturing_curve(houses,a):
     required_area = 10+houses*0.004/1
-    cost = (232.8*required_area)*12
+    cost = (a*required_area)*12
     return cost #$/y
 
 def pareto_frontier(Xs, Ys, maxX = True, maxY = True):

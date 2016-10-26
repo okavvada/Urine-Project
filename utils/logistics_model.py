@@ -10,8 +10,8 @@ from scipy import spatial
 from mpl_toolkits.mplot3d import Axes3D
 import time
 
-from logistics_functions import *
-from Parameters_class import Parameters_values
+from utils.logistics_functions import *
+from utils.Parameters_class import Parameters_values
 
 Parameters = Parameters_values()
 

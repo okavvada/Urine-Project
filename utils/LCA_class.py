@@ -4,7 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import math
 
-from logistics_functions import *
+from utils.logistics_functions import *
 
 pipe_construction_data = pd.read_csv('pipe_construction_data.csv')
 pump_construction_data = pd.read_csv('pump_construction_data.csv')
@@ -303,7 +303,7 @@ class regeneration_facility():
         return total_GHG
 
     def total_cost(self):
-        total_cost = facility_manufacturing_curve(self.number_of_houses_per_facility)
+        total_cost = facility_manufacturing_curve(self.number_of_houses_per_facility, self.Parameters.facility_cost_regression)
         return total_cost
 
 

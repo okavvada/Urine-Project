@@ -4,22 +4,28 @@ import numpy as np
 import matplotlib.pyplot as plt
 import math
 
-from Parameters_class import Parameters_values
-from logistics_functions import *
-from LCA_urine_model import LCA_urine_model, LCA_collection, material_transportation
-from logistics_model import logistics_model
+from utils.Parameters_class import Parameters_values
+from utils.logistics_functions import *
+from utils.LCA_urine_model import LCA_urine_model, LCA_collection, material_transportation
+from utils.logistics_model import logistics_model
 
-def Run_LCA_model(path, n_regen, n_collection, schedule, logistics, analysis):
+def Run_LCA_model(path, n_regen, n_collection, logistics, analysis, parameter = None, direction = None):
 	Parameters = Parameters_values()
 
 	if analysis == 'Normal':
 		Logistics = logistics_model(path, n_regen, n_collection, logistics)
 		distance_regeneration, distance_collection = Logistics.logistics_distances()
 
-	if analysis == 'Sensitivity':
-		distance_regeneration = pd.read_csv('..//results//distance_regeneration_20.csv')
+	if analysis == 'Uncertainty':
+		distance_regeneration = pd.read_csv('results//distance_regeneration_20.csv')
 		distance_collection = 502
 		perturb = Parameters.uncertainty()
+		Parameters = perturb
+	if analysis == 'Sensitivity':
+		distance_regeneration = pd.read_csv('results//distance_regeneration_20.csv')
+		distance_collection = 502
+		perturb = Parameters.sensitivity(parameter, direction)
+		Parameters = perturb
 
 	Total_Energy = pd.DataFrame()
 	Total_GHG = pd.DataFrame()

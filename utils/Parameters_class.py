@@ -1,6 +1,7 @@
 from __future__ import division
 import numpy as np
 
+
 class Parameters_values():
     def __init__(self):
         self.catridge_diameter = 100 #mm
@@ -75,71 +76,518 @@ class Parameters_values():
         self.facility_manufacturing_GHG = 0 #kg
         self.facility_lifetime = 10 # y
         self.min_facility_cost = 100000
+        self.facility_cost_regression = 220.2
+
+    def max_min(self):
+        maxmin = {
+        'PVC_lifetime_max': 1.2*self.PVC_lifetime,
+        'PVC_lifetime_min': 0.8*self.PVC_lifetime ,
+        'resin_density_max': 1.2*self.resin_density,
+        'resin_density_min': 0.8*self.resin_density ,
+        'resin_cost_kg_max': 1.2*self.resin_cost_kg,
+        'resin_cost_kg_min': 0.8*self.resin_cost_kg ,
+        'resin_energy_MJ_kg_max': 1.2*self.resin_energy_MJ_kg,
+        'resin_energy_MJ_kg_min': 0.8*self.resin_energy_MJ_kg ,
+        'resin_GHG_kg_kg_max': 1.2*self.resin_GHG_kg_kg,
+        'resin_GHG_kg_kg_min': 0.8*self.resin_GHG_kg_kg,
+        'resin_transport_max':1.2*self.resin_transport,
+        'resin_transport_min': 0.8*self.resin_transport,  
+        'hydraulic_conductivity_max': 1.2*self.hydraulic_conductivity,
+        'hydraulic_conductivity_min': 0.8*self.hydraulic_conductivity,
+        'resin_lifetime_max': 1.2*self.resin_lifetime,
+        'resin_lifetime_min': 0.8*self.resin_lifetime,
+        'adsorption_density_max':1.2*self.adsorption_density,
+        'adsorption_density_min': 0.8*self.adsorption_density,
+        'time_between_catridge_regeneration_max':1.2*self.time_between_catridge_regeneration,
+        'time_between_catridge_regeneration_min': 0.8*self.time_between_catridge_regeneration,
+        'time_for_regeneration_max': 1.2*self.time_for_regeneration,
+        'time_for_regeneration_min': 0.8*self.time_for_regeneration ,
+        'urine_production_max': 1.2*self.urine_production,
+        'urine_production_min': 0.8*self.urine_production ,
+        'household_size_max': 1.2*self.household_size,
+        'household_size_min': 0.8*self.household_size,
+        'flow_equalization_retention_time_max': 1.2*self.flow_equalization_retention_time,
+        'flow_equalization_retention_time_min': 0.8*self.flow_equalization_retention_time ,
+        'tank_height_max': 1.2*self.tank_height,
+        'tank_height_min': 0.8*self.tank_height,
+        'tank_thickness_max': 1.2*self.tank_thickness,
+        'tank_thickness_min': 0.8*self.tank_thickness ,
+        'steel_GHG_max': 1.2*self.steel_GHG,
+        'steel_GHG_min': 0.8*self.steel_GHG ,
+        'steel_energy_max': 1.2*self.steel_energy,
+        'steel_energy_min': 0.8*self.steel_energy ,
+        'steel_sheet_mass_max':1.2*self.steel_sheet_mass,
+        'steel_sheet_mass_min': 0.8*self.steel_sheet_mass, 
+        'steel_sheet_area_max': 1.2*self.steel_sheet_area,
+        'steel_sheet_area_min': 0.8*self.steel_sheet_area,
+        'steel_lifetime_max':1.2*self.steel_lifetime,
+        'steel_lifetime_min': 0.8*self.steel_lifetime  ,
+        'transport_energy_MJ_km_max':1.2*self.transport_energy_MJ_km,
+        'transport_energy_MJ_km_min': 0.8*self.transport_energy_MJ_km,
+        'transport_GHG_kg_km_max':1.2*self.transport_GHG_kg_km,
+        'transport_GHG_kg_km_min': 0.8*self.transport_GHG_kg_km,
+        'diesel_cost_max': 1.2*self.diesel_cost,
+        'diesel_cost_min': 0.8*self.diesel_cost ,
+        'truck_mpg_max': 1.2*self.truck_mpg,
+        'truck_mpg_min': 0.8*self.truck_mpg ,
+        'transport_cost_km_max':1.2*self.transport_cost_km,
+        'transport_cost_km_min': 0.8*self.transport_cost_km  ,
+        'km_max':1.2*self.km , 
+        'km_min': 0.8*self.km  ,
+        'truck_manuf_energy_max': 1.2*self.truck_manuf_energy,
+        'truck_manuf_energy_min': 0.8*self.truck_manuf_energy ,
+        'truck_manuf_GHG_max':1.2*self.truck_manuf_GHG,
+        'truck_manuf_GHG_min': 0.8*self.truck_manuf_GHG , 
+        'truck_milage_max': 1.2*self.truck_milage,
+        'truck_milage_min': 0.8*self.truck_milage ,
+        'truck_cost_max':1.2*self.truck_cost  ,
+        'truck_cost_min': 0.8*self.truck_cost  ,
+        'truck_milage_y_max':1.2*self.truck_milage_y  ,
+        'truck_milage_y_min': 0.8*self.truck_milage_y, 
+        'truck_manufacturing_energy_max':1.2*self.truck_manufacturing_energy  ,
+        'truck_manufacturing_energy_min': 0.8*self.truck_manufacturing_energy , 
+        'truck_manufacturing_GHG_max':1.2*self.truck_manufacturing_GHG  ,
+        'truck_manufacturing_GHG_min': 0.8*self.truck_manufacturing_GHG  ,
+        'truck_cost_y_max':1.2*self.truck_cost_y  ,
+        'truck_cost_y_min': 0.8*self.truck_cost_y  ,
+        'plastic_energy_max': 1.2*self.plastic_energy, 
+        'plastic_energy_min': 0.8*self.plastic_energy ,
+        'plastic_GHG_max': 1.2*self.plastic_GHG,
+        'plastic_GHG_min': 0.8*self.plastic_GHG,
+        'plastic_cost_max': 1.2*self.plastic_cost, 
+        'plastic_cost_min': 0.8*self.plastic_cost ,
+        'plastic_density_max': 1.2*self.plastic_density , 
+        'plastic_density_min': 0.8*self.plastic_density ,
+        'plastic_lifetime_max': 1.2*self.plastic_lifetime,  
+        'plastic_lifetime_min': 0.8*self.plastic_lifetime ,
+        'plastic_energy_MJ_kg_max': 1.2*self.plastic_energy_MJ_kg , 
+        'plastic_energy_MJ_kg_min': 0.8*self.plastic_energy_MJ_kg ,
+        'plastic_GHG_kg_kg_max': 1.2*self.plastic_GHG_kg_kg  ,
+        'plastic_GHG_kg_kg_min': 0.8*self.plastic_GHG_kg_kg ,
+        'plastic_cost_kg_max': 1.2*self.plastic_cost_kg  ,
+        'plastic_cost_kg_min': 0.8*self.plastic_cost_kg ,
+        'motor_efficiency_max': 1.2*self.motor_efficiency,  
+        'motor_efficiency_min': 0.8*self.motor_efficiency ,
+        'electricity_EF_max': 1.2*self.electricity_EF  ,
+        'electricity_EF_min': 0.8*self.electricity_EF  ,
+        'electricity_cost_max': 1.2*self.electricity_cost,  
+        'electricity_cost_min': 0.8*self.electricity_cost ,
+        'specific_weight_max': 1.2*self.specific_weight  ,
+        'specific_weight_min': 0.8*self.specific_weight  ,
+        'pump_lifetime_max': 1.2*self.pump_lifetime  ,
+        'pump_lifetime_min': 0.8*self.pump_lifetime ,
+        'sulphuric_acid_energy_max': 1.2*self.sulphuric_acid_energy,  
+        'sulphuric_acid_energy_min': 0.8*self.sulphuric_acid_energy , 
+        'sulphuric_acid_GHG_max': 1.2*self.sulphuric_acid_GHG  ,
+        'sulphuric_acid_GHG_min': 0.8*self.sulphuric_acid_GHG  ,
+        'acid_density_max': 1.2*self.acid_density ,
+        'acid_density_min': 0.8*self.acid_density ,
+        'acid_per_resin_L_max': 1.2*self.acid_per_resin_L  ,
+        'acid_per_resin_L_min': 0.8*self.acid_per_resin_L ,
+        'acid_per_resin_max': 1.2*self.acid_per_resin,
+        'acid_per_resin_min': 0.8*self.acid_per_resin  , 
+        'sulphuric_acid_cost_max': 1.2*self.sulphuric_acid_cost ,
+        'sulphuric_acid_cost_min': 0.8*self.sulphuric_acid_cost,   
+        'acid_flow_rate_max': 1.2*self.acid_flow_rate ,
+        'acid_flow_rate_min': 0.8*self.acid_flow_rate ,
+        'acid_flow_rate_m3_s_max': 1.2*self.acid_flow_rate_m3_s ,
+        'acid_flow_rate_m3_s_min': 0.8*self.acid_flow_rate_m3_s, 
+        'acid_transport_max': 1.2*self.acid_transport , 
+        'acid_transport_min': 0.8*self.acid_transport , 
+        'volume_fertilizer_per_acid_max': 1.2*self.volume_fertilizer_per_acid  ,
+        'volume_fertilizer_per_acid_min': 0.8*self.volume_fertilizer_per_acid ,
+        'volume_bottle_max': 1.2*self.volume_bottle  ,
+        'volume_bottle_min': 0.8*self.volume_bottle  ,
+        'bottle_height_max': 1.2*self.bottle_height  ,
+        'bottle_height_min': 0.8*self.bottle_height  ,
+        'bottle_thickness_max': 1.2*self.bottle_thickness,  
+        'bottle_thickness_min': 0.8*self.bottle_thickness ,
+        'bottle_lifetime_max': 1.2*self.bottle_lifetime  ,
+        'bottle_lifetime_min': 0.8*self.bottle_lifetime  ,
+        'collection_times_per_year_max': 1.2*self.collection_times_per_year , 
+        'collection_times_per_year_min': 0.8*self.collection_times_per_year , 
+        'facility_manufacturing_energy_max': 1.2*self.facility_manufacturing_energy,  
+        'facility_manufacturing_energy_min': 0.8*self.facility_manufacturing_energy,  
+        'facility_manufacturing_GHG_max': 1.2*self.facility_manufacturing_GHG , 
+        'facility_manufacturing_GHG_min': 0.8*self.facility_manufacturing_GHG ,
+        'facility_lifetime_max': 1.2*self.facility_lifetime  ,
+        'facility_lifetime_min': 0.8*self.facility_lifetime,  
+        'min_facility_cost_max': 1.2*self.min_facility_cost,  
+        'min_facility_cost_min': 0.8*self.min_facility_cost,
+        'facility_cost_regression_min': 0.8*self.facility_cost_regression,
+        'facility_cost_regression_max': 1.2*self.facility_cost_regression}
+        return maxmin
 
     def uncertainty(self):
-        self.catridge_diameter = np.random.uniform(0.8*self.catridge_diameter,1.2*self.catridge_diameter)
-        self.PVC_lifetime = np.random.uniform(0.8*self.PVC_lifetime,1.2*self.PVC_lifetime)
-        self.resin_density = np.random.uniform(0.8*self.resin_density,1.2*self.resin_density)
-        self.resin_cost_kg = np.random.uniform(0.8*self.resin_cost_kg,1.2*self.resin_cost_kg)
-        self.resin_energy_MJ_kg = np.random.uniform(0.8*self.resin_energy_MJ_kg,1.2*self.resin_energy_MJ_kg)
-        self.resin_GHG_kg_kg = np.random.uniform(0.8*self.resin_GHG_kg_kg,1.2*self.resin_GHG_kg_kg)
-        self.resin_transport = np.random.uniform(0.8*self.resin_transport,1.2*self.resin_transport)
-        self.hydraulic_conductivity = np.random.uniform(0.8*self.hydraulic_conductivity,1.2*self.hydraulic_conductivity)
-        self.resin_lifetime = np.random.uniform(0.8*self.resin_lifetime,1.2*self.resin_lifetime)
-        self.N_urine = np.random.uniform(0.8*self.N_urine,1.2*self.N_urine)
-        self.adsorption_density = np.random.uniform(0.8*self.adsorption_density,1.2*self.adsorption_density)
-        self.molar_mass_N = np.random.uniform(0.8*self.molar_mass_N,1.2*self.molar_mass_N)
-        self.time_between_catridge_regeneration = np.random.uniform(0.8*self.time_between_catridge_regeneration,1.2*self.time_between_catridge_regeneration)
-        self.time_for_regeneration = np.random.uniform(0.8*self.time_for_regeneration,1.2*self.time_for_regeneration)
-        self.urine_production = np.random.uniform(0.8*self.urine_production,1.2*self.urine_production)
-        self.household_size = np.random.uniform(0.8*self.household_size,1.2*self.household_size)
-        self.flow_equalization_retention_time = np.random.uniform(0.8*self.flow_equalization_retention_time,1.2*self.flow_equalization_retention_time)
-        self.tank_height = np.random.uniform(0.8*self.tank_height,1.2*self.tank_height)
-        self.tank_thickness = np.random.uniform(0.8*self.tank_thickness,1.2*self.tank_thickness)
-        self.steel_GHG = np.random.uniform(0.8*self.steel_GHG,1.2*self.steel_GHG)
-        self.steel_energy = np.random.uniform(0.8*self.steel_energy,1.2*self.steel_energy)
-        self.steel_sheet_mass = np.random.uniform(0.8*self.steel_sheet_mass,1.2*self.steel_sheet_mass)
-        self.steel_sheet_area = np.random.uniform(0.8*self.steel_sheet_area,1.2*self.steel_sheet_area)
-        self.steel_lifetime = np.random.uniform(0.8*self.steel_lifetime,1.2*self.steel_lifetime)
-        self.transport_energy_MJ_km = np.random.uniform(0.8*self.transport_energy_MJ_km,1.2*self.transport_energy_MJ_km)
-        self.transport_GHG_kg_km = np.random.uniform(0.8*self.transport_GHG_kg_km,1.2*self.transport_GHG_kg_km)
-        self.diesel_cost = np.random.uniform(0.8*self.diesel_cost,1.2*self.diesel_cost)
-        self.truck_mpg = np.random.uniform(0.8*self.truck_mpg,1.2*self.truck_mpg)
-        self.km = np.random.uniform(0.8*self.km,1.2*self.km)
-        self.truck_manuf_energy = np.random.uniform(0.8*self.truck_manuf_energy,1.2*self.truck_manuf_energy)
-        self.truck_manuf_GHG = np.random.uniform(0.8*self.truck_manuf_GHG,1.2*self.truck_manuf_GHG)
-        self.truck_milage = np.random.uniform(0.8*self.truck_milage,1.2*self.truck_milage)
-        self.truck_cost = np.random.uniform(0.8*self.truck_cost,1.2*self.truck_cost)
-        self.truck_milage_y = np.random.uniform(0.8*self.truck_milage_y,1.2*self.truck_milage_y)
-        self.plastic_energy = np.random.uniform(0.8*self.plastic_energy,1.2*self.plastic_energy)
-        self.plastic_GHG = np.random.uniform(0.8*self.plastic_GHG,1.2*self.plastic_GHG)
-        self.plastic_cost = np.random.uniform(0.8*self.plastic_cost,1.2*self.plastic_cost)
-        self.plastic_density = np.random.uniform(0.8*self.plastic_density,1.2*self.plastic_density)
-        self.plastic_lifetime = np.random.uniform(0.8*self.plastic_lifetime,1.2*self.plastic_lifetime)
-        self.motor_efficiency = np.random.uniform(0.8*self.motor_efficiency,1.2*self.motor_efficiency) 
-        self.electricity_EF = np.random.uniform(0.8*self.electricity_EF,1.2*self.electricity_EF)
-        self.electricity_cost = np.random.uniform(0.8*self.electricity_cost,1.2*self.electricity_cost)
-        self.specific_weight = np.random.uniform(0.8*self.specific_weight,1.2*self.specific_weight)
-        self.pump_lifetime = np.random.uniform(0.8*self.pump_lifetime,1.2*self.pump_lifetime)
-        self.sulphuric_acid_energy = np.random.uniform(0.8*self.sulphuric_acid_energy,1.2*self.sulphuric_acid_energy)
-        self.sulphuric_acid_GHG = np.random.uniform(0.8*self.sulphuric_acid_GHG,1.2*self.sulphuric_acid_GHG)
-        self.acid_density = np.random.uniform(0.8*self.acid_density,1.2*self.acid_density)
+        new_params = Parameters_values()
+        maxmin = self.max_min()
+        new_params.PVC_lifetime = np.random.uniform(0.8*self.PVC_lifetime,1.2*self.PVC_lifetime)
+        new_params.resin_density = np.random.uniform(0.8*self.resin_density,1.2*self.resin_density)
+        new_params.resin_cost_kg = np.random.uniform(0.8*self.resin_cost_kg,1.2*self.resin_cost_kg)
+        new_params.resin_energy_MJ_kg = np.random.uniform(0.8*self.resin_energy_MJ_kg,1.2*self.resin_energy_MJ_kg)
+        new_params.resin_GHG_kg_kg = np.random.uniform(0.8*self.resin_GHG_kg_kg,1.2*self.resin_GHG_kg_kg)
+        new_params.resin_transport = np.random.uniform(0.8*self.resin_transport,1.2*self.resin_transport)
+        new_params.hydraulic_conductivity = np.random.uniform(0.8*self.hydraulic_conductivity,1.2*self.hydraulic_conductivity)
+        new_params.resin_lifetime = np.random.uniform(0.8*self.resin_lifetime,1.2*self.resin_lifetime)
+        new_params.N_urine = np.random.uniform(0.8*self.N_urine,1.2*self.N_urine)
+        new_params.adsorption_density = np.random.uniform(0.8*self.adsorption_density,1.2*self.adsorption_density)
+        new_params.time_between_catridge_regeneration = np.random.uniform(0.8*self.time_between_catridge_regeneration,1.2*self.time_between_catridge_regeneration)
+        new_params.time_for_regeneration = np.random.uniform(0.8*self.time_for_regeneration,1.2*self.time_for_regeneration)
+        new_params.urine_production = np.random.uniform(0.8*self.urine_production,1.2*self.urine_production)
+        new_params.household_size = np.random.uniform(0.8*self.household_size,1.2*self.household_size)
+        new_params.flow_equalization_retention_time = np.random.uniform(0.8*self.flow_equalization_retention_time,1.2*self.flow_equalization_retention_time)
+        new_params.tank_height = np.random.uniform(0.8*self.tank_height,1.2*self.tank_height)
+        new_params.tank_thickness = np.random.uniform(0.8*self.tank_thickness,1.2*self.tank_thickness)
+        new_params.steel_GHG = np.random.uniform(0.8*self.steel_GHG,1.2*self.steel_GHG)
+        new_params.steel_energy = np.random.uniform(0.8*self.steel_energy,1.2*self.steel_energy)
+        new_params.steel_sheet_mass = np.random.uniform(0.8*self.steel_sheet_mass,1.2*self.steel_sheet_mass)
+        new_params.steel_sheet_area = np.random.uniform(0.8*self.steel_sheet_area,1.2*self.steel_sheet_area)
+        new_params.steel_lifetime = np.random.uniform(0.8*self.steel_lifetime,1.2*self.steel_lifetime)
+        new_params.transport_energy_MJ_km = np.random.uniform(0.8*self.transport_energy_MJ_km,1.2*self.transport_energy_MJ_km)
+        new_params.transport_GHG_kg_km = np.random.uniform(0.8*self.transport_GHG_kg_km,1.2*self.transport_GHG_kg_km)
+        new_params.diesel_cost = np.random.uniform(0.8*self.diesel_cost,1.2*self.diesel_cost)
+        new_params.truck_mpg = np.random.uniform(0.8*self.truck_mpg,1.2*self.truck_mpg)
+        new_params.km = np.random.uniform(0.8*self.km,1.2*self.km)
+        new_params.truck_manuf_energy = np.random.uniform(0.8*self.truck_manuf_energy,1.2*self.truck_manuf_energy)
+        new_params.truck_manuf_GHG = np.random.uniform(0.8*self.truck_manuf_GHG,1.2*self.truck_manuf_GHG)
+        new_params.truck_milage = np.random.uniform(0.8*self.truck_milage,1.2*self.truck_milage)
+        new_params.truck_cost = np.random.uniform(0.8*self.truck_cost,1.2*self.truck_cost)
+        new_params.truck_milage_y = np.random.uniform(0.8*self.truck_milage_y,1.2*self.truck_milage_y)
+        new_params.plastic_energy = np.random.uniform(0.8*self.plastic_energy,1.2*self.plastic_energy)
+        new_params.plastic_GHG = np.random.uniform(0.8*self.plastic_GHG,1.2*self.plastic_GHG)
+        new_params.plastic_cost = np.random.uniform(0.8*self.plastic_cost,1.2*self.plastic_cost)
+        new_params.plastic_density = np.random.uniform(0.8*self.plastic_density,1.2*self.plastic_density)
+        new_params.plastic_lifetime = np.random.uniform(0.8*self.plastic_lifetime,1.2*self.plastic_lifetime)
+        new_params.motor_efficiency = np.random.uniform(0.8*self.motor_efficiency,1.2*self.motor_efficiency) 
+        new_params.electricity_EF = np.random.uniform(0.8*self.electricity_EF,1.2*self.electricity_EF)
+        new_params.electricity_cost = np.random.uniform(0.8*self.electricity_cost,1.2*self.electricity_cost)
+        new_params.specific_weight = np.random.uniform(0.8*self.specific_weight,1.2*self.specific_weight)
+        new_params.pump_lifetime = np.random.uniform(0.8*self.pump_lifetime,1.2*self.pump_lifetime)
+        new_params.sulphuric_acid_energy = np.random.uniform(0.8*self.sulphuric_acid_energy,1.2*self.sulphuric_acid_energy)
+        new_params.sulphuric_acid_GHG = np.random.uniform(0.8*self.sulphuric_acid_GHG,1.2*self.sulphuric_acid_GHG)
+        new_params.acid_density = np.random.uniform(0.8*self.acid_density,1.2*self.acid_density)
         #acid_per_resin = 0.01#kg/kg ### CHECK
-        self.acid_per_resin_L = np.random.uniform(0.8*self.acid_per_resin_L,1.2*self.acid_per_resin_L)
-        self.sulphuric_acid_cost = np.random.uniform(0.8*self.sulphuric_acid_cost,1.2*self.sulphuric_acid_cost)
+        new_params.acid_per_resin_L = np.random.uniform(0.8*self.acid_per_resin_L,1.2*self.acid_per_resin_L)
+        new_params.sulphuric_acid_cost = np.random.uniform(0.8*self.sulphuric_acid_cost,1.2*self.sulphuric_acid_cost)
         #sulphuric_acid_cost = 0.013 #$/kg 
-        self.acid_flow_rate = np.random.uniform(0.8*self.acid_flow_rate,1.2*self.acid_flow_rate)
-        self.acid_transport = np.random.uniform(0.8*self.acid_transport,1.2*self.acid_transport)
-        self.volume_fertilizer_per_acid = np.random.uniform(0.8*self.volume_fertilizer_per_acid,1.2*self.volume_fertilizer_per_acid)
-        self.volume_bottle = np.random.uniform(0.8*self.volume_bottle,1.2*self.volume_bottle)
-        self.bottle_height = np.random.uniform(0.8*self.bottle_height,1.2*self.bottle_height)
-        self.bottle_thickness = np.random.uniform(0.8*self.bottle_thickness,1.2*self.bottle_thickness)
-        self.bottle_lifetime = np.random.uniform(0.8*self.bottle_lifetime,1.2*self.bottle_lifetime)
-        self.collection_times_per_year = np.random.uniform(0.8*self.collection_times_per_year,1.2*self.collection_times_per_year)
-        self.facility_manufacturing_energy = np.random.uniform(0.8*self.facility_manufacturing_energy,1.2*self.facility_manufacturing_energy)
-        self.facility_manufacturing_GHG = np.random.uniform(0.8*self.facility_manufacturing_GHG,1.2*self.facility_manufacturing_GHG)
-        self.facility_lifetime = np.random.uniform(0.8*self.facility_lifetime,1.2*self.facility_lifetime)
-        self.min_facility_cost = np.random.uniform(0.8*self.min_facility_cost,1.2*self.min_facility_cost)
-        return Parameters_values()
+        new_params.acid_flow_rate = np.random.uniform(0.8*self.acid_flow_rate,1.2*self.acid_flow_rate)
+        new_params.acid_transport = np.random.uniform(0.8*self.acid_transport,1.2*self.acid_transport)
+        new_params.volume_fertilizer_per_acid = np.random.uniform(0.8*self.volume_fertilizer_per_acid,1.2*self.volume_fertilizer_per_acid)
+        new_params.volume_bottle = np.random.uniform(0.8*self.volume_bottle,1.2*self.volume_bottle)
+        new_params.bottle_height = np.random.uniform(0.8*self.bottle_height,1.2*self.bottle_height)
+        new_params.bottle_thickness = np.random.uniform(0.8*self.bottle_thickness,1.2*self.bottle_thickness)
+        new_params.bottle_lifetime = np.random.uniform(0.8*self.bottle_lifetime,1.2*self.bottle_lifetime)
+        new_params.collection_times_per_year = np.random.uniform(0.8*self.collection_times_per_year,1.2*self.collection_times_per_year)
+        new_params.facility_manufacturing_energy = np.random.uniform(0.8*self.facility_manufacturing_energy,1.2*self.facility_manufacturing_energy)
+        new_params.facility_manufacturing_GHG = np.random.uniform(0.8*self.facility_manufacturing_GHG,1.2*self.facility_manufacturing_GHG)
+        new_params.facility_lifetime = np.random.uniform(0.8*self.facility_lifetime,1.2*self.facility_lifetime)
+        new_params.min_facility_cost = np.random.uniform(0.8*self.min_facility_cost,1.2*self.min_facility_cost)
+        new_params.facility_cost_regression = np.random.uniform(0.8*self.facility_cost_regression,1.2*self.facility_cost_regression)
+        return new_params
+
+    def sensitivity(self, parameter, direction):
+        new_params = Parameters_values()
+        maxmin = self.max_min()
+        if parameter == 'PVC_lifetime':  
+            if direction == 'minus':  
+                new_params.PVC_lifetime = self.PVC_lifetime - (maxmin['PVC_lifetime_max'] - maxmin['PVC_lifetime_min'])/10 
+            if direction == 'plus':
+                new_params.PVC_lifetime = self.PVC_lifetime + (maxmin['PVC_lifetime_max'] - maxmin['PVC_lifetime_min'])/10 
+        if parameter == 'resin_density': 
+            if direction == 'minus':   
+                new_params.resin_density = self.resin_density - (maxmin['resin_density_max'] - maxmin['resin_density_min'])/10 
+            if direction == 'plus':
+                new_params.resin_density = self.resin_density + (maxmin['resin_density_max'] - maxmin['resin_density_min'])/10 
+        if parameter == 'resin_cost_kg': 
+            if direction == 'minus':   
+                new_params.resin_cost_kg = self.resin_cost_kg - (maxmin['resin_cost_kg_max'] - maxmin['resin_cost_kg_min'])/10 
+            if direction == 'plus':
+                new_params.resin_cost_kg = self.resin_cost_kg + (maxmin['resin_cost_kg_max'] - maxmin['resin_cost_kg_min'])/10 
+        if parameter == 'resin_energy_MJ_kg':
+            if direction == 'minus':
+                new_params.resin_energy_MJ_kg = self.resin_energy_MJ_kg - (maxmin['resin_energy_MJ_kg_max'] -  maxmin['resin_energy_MJ_kg_min'])/10
+            if direction == 'plus': 
+                new_params.resin_energy_MJ_kg = self.resin_energy_MJ_kg + (maxmin['resin_energy_MJ_kg_max'] -  maxmin['resin_energy_MJ_kg_min'])/10
+        if parameter == 'resin_GHG_kg_kg':
+            if direction == 'minus':
+                new_params.resin_GHG_kg_kg = self.resin_GHG_kg_kg - (maxmin['resin_GHG_kg_kg_max'] -  maxmin['resin_GHG_kg_kg_min'])/10 
+            if direction == 'plus':
+                new_params.resin_GHG_kg_kg = self.resin_GHG_kg_kg + (maxmin['resin_GHG_kg_kg_max'] -  maxmin['resin_GHG_kg_kg_min'])/10 
+        if parameter == 'resin_transport':
+            if direction == 'minus':
+                new_params.resin_transport = self.resin_transport - (maxmin['resin_transport_max'] -  maxmin['resin_transport_min'])/10 
+            if direction == 'plus':
+                 new_params.resin_transport = self.resin_transport + (maxmin['resin_transport_max'] -  maxmin['resin_transport_min'])/10 
+        if parameter == 'hydraulic_conductivity':
+            if direction == 'minus':
+                new_params.hydraulic_conductivity = self.hydraulic_conductivity - (maxmin['hydraulic_conductivity_max'] -  maxmin['hydraulic_conductivity_min'])/10
+            if direction == 'plus': 
+                new_params.hydraulic_conductivity = self.hydraulic_conductivity + (maxmin['hydraulic_conductivity_max'] -  maxmin['hydraulic_conductivity_min'])/10
+        if parameter == 'resin_lifetime':
+            if direction == 'minus':
+                new_params.resin_lifetime = self.resin_lifetime - (maxmin['resin_lifetime_max'] -  maxmin['resin_lifetime_min'])/10 
+            if direction == 'plus':
+                new_params.resin_lifetime = self.resin_lifetime + (maxmin['resin_lifetime_max'] -  maxmin['resin_lifetime_min'])/10 
+        if parameter == 'N_urine':
+            if direction == 'minus':
+                new_params.N_urine = self.N_urine - (maxmin['N_urine_max'] -  maxmin['N_urine_min'])/10
+            if direction == 'plus': 
+                new_params.N_urine = self.N_urine + (maxmin['N_urine_max'] -  maxmin['N_urine_min'])/10
+        if parameter == 'adsorption_density':
+            if direction == 'minus':
+                new_params.adsorption_density = self.adsorption_density - (maxmin['adsorption_density_max'] -  maxmin['adsorption_density_min'])/10
+            if direction == 'plus': 
+                new_params.adsorption_density = self.adsorption_density + (maxmin['adsorption_density_max'] -  maxmin['adsorption_density_min'])/10
+        if parameter == 'time_between_catridge_regeneration':
+            if direction == 'minus':
+                new_params.time_between_catridge_regeneration = self.time_between_catridge_regeneration - (maxmin['time_between_catridge_regeneration_max'] -  maxmin['time_between_catridge_regeneration_min'])/10 
+            if direction == 'plus':
+                new_params.time_between_catridge_regeneration = self.time_between_catridge_regeneration + (maxmin['time_between_catridge_regeneration_max'] -  maxmin['time_between_catridge_regeneration_min'])/10
+        if parameter == 'time_for_regeneration':
+            if direction == 'minus':
+                new_params.time_for_regeneration = self.time_for_regeneration - (maxmin['time_for_regeneration_max'] -  maxmin['time_for_regeneration_min'])/10 
+            if direction == 'plus':
+                new_params.time_for_regeneration = self.time_for_regeneration + (maxmin['time_for_regeneration_max'] -  maxmin['time_for_regeneration_min'])/10 
+        if parameter == 'urine_production':
+            if direction == 'minus':
+                new_params.urine_production = self.urine_production - (maxmin['urine_production_max'] -  maxmin['urine_production_min'])/10 
+            if direction == 'plus':
+                new_params.urine_production = self.urine_production + (maxmin['urine_production_max'] -  maxmin['urine_production_min'])/10 
+        if parameter == 'household_size':
+            if direction == 'minus':
+                new_params.household_size = self.household_size - (maxmin['household_size_max'] -  maxmin['household_size_min'])/10 
+            if direction == 'plus':
+                new_params.household_size = self.household_size + (maxmin['household_size_max'] -  maxmin['household_size_min'])/10 
+        if parameter == 'flow_equalization_retention_time':
+            if direction == 'minus':
+                new_params.flow_equalization_retention_time = self.flow_equalization_retention_time - (maxmin['flow_equalization_retention_time_max'] -  maxmin['flow_equalization_retention_time_min'])/10 
+            if direction == 'plus':
+                new_params.flow_equalization_retention_time = self.flow_equalization_retention_time + (maxmin['flow_equalization_retention_time_max'] -  maxmin['flow_equalization_retention_time_min'])/10 
+        if parameter == 'tank_height':
+            if direction == 'minus':
+                new_params.tank_height = self.tank_height - (maxmin['tank_height_max'] -  maxmin['tank_height_min'])/10 
+            if direction == 'plus':
+                new_params.tank_height = self.tank_height + (maxmin['tank_height_max'] -  maxmin['tank_height_min'])/10 
+        if parameter == 'tank_thickness':
+            if direction == 'minus':
+                new_params.tank_thickness = self.tank_thickness - (maxmin['tank_thickness_max'] -  maxmin['tank_thickness_min'])/10 
+            if direction == 'plus':
+                new_params.tank_thickness = self.tank_thickness + (maxmin['tank_thickness_max'] -  maxmin['tank_thickness_min'])/10 
+        if parameter == 'steel_GHG':
+            if direction == 'minus':
+                new_params.steel_GHG = self.steel_GHG - (maxmin['steel_GHG_max'] -  maxmin['steel_GHG_min'])/10 
+            if direction == 'plus':
+                new_params.steel_GHG = self.steel_GHG + (maxmin['steel_GHG_max'] -  maxmin['steel_GHG_min'])/10 
+        if parameter == 'steel_energy':
+            if direction == 'minus':
+                new_params.steel_energy = self.steel_energy - (maxmin['steel_energy_max'] -  maxmin['steel_energy_min'])/10 
+            if direction == 'plus':
+                new_params.steel_energy = self.steel_energy + (maxmin['steel_energy_max'] -  maxmin['steel_energy_min'])/10 
+        if parameter == 'steel_sheet_mass':
+            if direction == 'minus':
+                new_params.steel_sheet_mass = self.steel_sheet_mass - (maxmin['steel_sheet_mass_max'] -  maxmin['steel_sheet_mass_min'])/10 
+            if direction == 'plus':
+                new_params.steel_sheet_mass = self.steel_sheet_mass + (maxmin['steel_sheet_mass_max'] -  maxmin['steel_sheet_mass_min'])/10 
+        if parameter == 'steel_sheet_area':
+            if direction == 'minus':
+                new_params.steel_sheet_area = self.steel_sheet_area - (maxmin['steel_sheet_area_max'] -  maxmin['steel_sheet_area_min'])/10 
+            if direction == 'plus':
+                new_params.steel_sheet_area = self.steel_sheet_area + (maxmin['steel_sheet_area_max'] -  maxmin['steel_sheet_area_min'])/10 
+        if parameter == 'steel_lifetime':
+            if direction == 'minus':
+                new_params.steel_lifetime = self.steel_lifetime - (maxmin['steel_lifetime_max'] -  maxmin['steel_lifetime_min'])/10 
+            if direction == 'plus':
+                new_params.steel_lifetime = self.steel_lifetime + (maxmin['steel_lifetime_max'] -  maxmin['steel_lifetime_min'])/10 
+        if parameter == 'transport_energy_MJ_km':
+            if direction == 'minus':
+                new_params.transport_energy_MJ_km = self.transport_energy_MJ_km - (maxmin['transport_energy_MJ_km_max'] -  maxmin['transport_energy_MJ_km_min'])/10 
+            if direction == 'plus':
+                new_params.transport_energy_MJ_km = self.transport_energy_MJ_km + (maxmin['transport_energy_MJ_km_max'] -  maxmin['transport_energy_MJ_km_min'])/10 
+        if parameter == 'transport_GHG_kg_km':
+            if direction == 'minus':
+                new_params.transport_GHG_kg_km = self.transport_GHG_kg_km - (maxmin['transport_GHG_kg_km_max'] -  maxmin['transport_GHG_kg_km_min'])/10 
+            if direction == 'plus':
+                new_params.transport_GHG_kg_km = self.transport_GHG_kg_km + (maxmin['transport_GHG_kg_km_max'] -  maxmin['transport_GHG_kg_km_min'])/10 
+        if parameter == 'diesel_cost':
+            if direction == 'minus':
+                new_params.diesel_cost = self.diesel_cost - (maxmin['diesel_cost_max'] -  maxmin['diesel_cost_min'])/10 
+            if direction == 'plus':
+                new_params.diesel_cost = self.diesel_cost + (maxmin['diesel_cost_max'] -  maxmin['diesel_cost_min'])/10 
+        if parameter == 'truck_mpg':
+            if direction == 'minus':
+                new_params.truck_mpg = self.truck_mpg - (maxmin['truck_mpg_max'] -  maxmin['truck_mpg_min'])/10 
+            if direction == 'plus':
+                new_params.truck_mpg = self.truck_mpg + (maxmin['truck_mpg_max'] -  maxmin['truck_mpg_min'])/10 
+        if parameter == 'km':
+            if direction == 'minus':
+                new_params.km = self.km - (maxmin['km_max'] -  maxmin['km_min'])/10 
+            if direction == 'plus':
+                new_params.km = self.km + (maxmin['km_max'] -  maxmin['km_min'])/10 
+        if parameter == 'truck_manuf_energy':
+            if direction == 'minus':
+                new_params.truck_manuf_energy = self.truck_manuf_energy - (maxmin['truck_manuf_energy_max'] -  maxmin['truck_manuf_energy_min'])/10 
+            if direction == 'plus':
+                new_params.truck_manuf_energy = self.truck_manuf_energy + (maxmin['truck_manuf_energy_max'] -  maxmin['truck_manuf_energy_min'])/10 
+        if parameter == 'truck_manuf_GHG':
+            if direction == 'minus':
+                new_params.truck_manuf_GHG = self.truck_manuf_GHG - (maxmin['truck_manuf_GHG_max'] -  maxmin['truck_manuf_GHG_min'])/10 
+            if direction == 'plus':
+                new_params.truck_manuf_GHG = self.truck_manuf_GHG +(maxmin['truck_manuf_GHG_max'] -  maxmin['truck_manuf_GHG_min'])/10 
+        if parameter == 'truck_milage':
+            if direction == 'minus':
+                new_params.truck_milage = self.truck_milage - (maxmin['truck_milage_max'] -  maxmin['truck_milage_min'])/10 
+            if direction == 'plus':
+                new_params.truck_milage = self.truck_milage + (maxmin['truck_milage_max'] -  maxmin['truck_milage_min'])/10
+        if parameter == 'truck_cost':
+            if direction == 'minus':
+                new_params.truck_cost = self.truck_cost - (maxmin['truck_cost_max'] -  maxmin['truck_cost_min'])/10 
+            if direction == 'plus':
+                new_params.truck_cost = self.truck_cost + (maxmin['truck_cost_max'] -  maxmin['truck_cost_min'])/10 
+        if parameter == 'truck_milage_y':
+            if direction == 'minus':
+                new_params.truck_milage_y = self.truck_milage_y - (maxmin['truck_milage_y_max'] -  maxmin['truck_milage_y_min'])/10 
+            if direction == 'plus':
+                new_params.truck_milage_y = self.truck_milage_y + (maxmin['truck_milage_y_max'] -  maxmin['truck_milage_y_min'])/10 
+        if parameter == 'plastic_energy':
+            if direction == 'minus':
+                new_params.plastic_energy = self.plastic_energy - (maxmin['plastic_energy_max'] -  maxmin['plastic_energy_min'])/10 
+            if direction == 'plus':
+                new_params.plastic_energy = self.plastic_energy + (maxmin['plastic_energy_max'] -  maxmin['plastic_energy_min'])/10 
+        if parameter == 'plastic_GHG':
+            if direction == 'minus':
+                new_params.plastic_GHG = self.plastic_GHG - (maxmin['plastic_GHG_max'] -  maxmin['plastic_GHG_min'])/10 
+            if direction == 'plus':
+                new_params.plastic_GHG = self.plastic_GHG + (maxmin['plastic_GHG_max'] -  maxmin['plastic_GHG_min'])/10 
+        if parameter == 'plastic_cost':  
+            if direction == 'minus':  
+                new_params.plastic_cost = self.plastic_cost - (maxmin['plastic_cost_max'] -  maxmin['plastic_cost_min'])/10 
+            if direction == 'plus':
+                new_params.plastic_cost = self.plastic_cost + (maxmin['plastic_cost_max'] -  maxmin['plastic_cost_min'])/10 
+        if parameter == 'plastic_density':
+            if direction == 'minus':
+                new_params.plastic_density = self.plastic_density - (maxmin['plastic_density_max'] -  maxmin['plastic_density_min'])/10 
+            if direction == 'plus':
+                new_params.plastic_density = self.plastic_density + (maxmin['plastic_density_max'] -  maxmin['plastic_density_min'])/10 
+        if parameter == 'plastic_lifetime':
+            if direction == 'minus':
+                new_params.plastic_lifetime = self.plastic_lifetime - (maxmin['plastic_lifetime_max'] -  maxmin['plastic_lifetime_min'])/10 
+            if direction == 'plus':
+                new_params.plastic_lifetime = self.plastic_lifetime + (maxmin['plastic_lifetime_max'] -  maxmin['plastic_lifetime_min'])/10
+        if parameter == 'motor_efficiency': 
+            if direction == 'minus':   
+                new_params.motor_efficiency = self.motor_efficiency - (maxmin['motor_efficiency_max'] -  maxmin['motor_efficiency_min'])/10 
+            if direction == 'plus':
+                new_params.motor_efficiency = self.motor_efficiency + (maxmin['motor_efficiency_max'] -  maxmin['motor_efficiency_min'])/10 
+        if parameter == 'electricity_EF':
+            if direction == 'minus':
+                new_params.electricity_EF = self.electricity_EF - (maxmin['electricity_EF_max'] -  maxmin['electricity_EF_min'])/10 
+            if direction == 'plus':
+                new_params.electricity_EF = self.electricity_EF + (maxmin['electricity_EF_max'] -  maxmin['electricity_EF_min'])/10 
+        if parameter == 'electricity_cost':
+            if direction == 'minus':
+                new_params.electricity_cost = self.electricity_cost - (maxmin['electricity_cost_max'] -  maxmin['electricity_cost_min'])/10 
+            if direction == 'plus':
+                new_params.electricity_cost = self.electricity_cost + (maxmin['electricity_cost_max'] -  maxmin['electricity_cost_min'])/10 
+        if parameter == 'specific_weight':
+            if direction == 'minus':
+                new_params.specific_weight = self.specific_weight - (maxmin['specific_weight_max'] -  maxmin['specific_weight_min'])/10 
+            if direction == 'plus':
+                new_params.specific_weight = self.specific_weight + (maxmin['specific_weight_max'] -  maxmin['specific_weight_min'])/10 
+        if parameter == 'pump_lifetime':
+            if direction == 'minus':
+                new_params.pump_lifetime = self.pump_lifetime - (maxmin['pump_lifetime_max'] -  maxmin['pump_lifetime_min'])/10 
+            if direction == 'plus':
+                new_params.pump_lifetime = self.pump_lifetime + (maxmin['pump_lifetime_max'] -  maxmin['pump_lifetime_min'])/10 
+        if parameter == 'sulphuric_acid_energy':
+            if direction == 'minus':
+                new_params.sulphuric_acid_energy = self.sulphuric_acid_energy - (maxmin['sulphuric_acid_energy_max'] -  maxmin['sulphuric_acid_energy_min'])/10 
+            if direction == 'plus':
+                new_params.sulphuric_acid_energy = self.sulphuric_acid_energy + (maxmin['sulphuric_acid_energy_max'] -  maxmin['sulphuric_acid_energy_min'])/10
+        if parameter == 'sulphuric_acid_GHG':
+            if direction == 'minus':
+                new_params.sulphuric_acid_GHG = self.sulphuric_acid_GHG - (maxmin['sulphuric_acid_GHG_max'] -  maxmin['sulphuric_acid_GHG_min'])/10 
+            if direction == 'plus':
+                new_params.sulphuric_acid_GHG = self.sulphuric_acid_GHG + (maxmin['sulphuric_acid_GHG_max'] -  maxmin['sulphuric_acid_GHG_min'])/10 
+        if parameter == 'acid_density':
+            if direction == 'minus':
+                new_params.acid_density = self.acid_density - (maxmin['acid_density_max'] -  maxmin['acid_density_min'])/10 
+            if direction == 'plus':
+                new_params.acid_density = self.acid_density + (maxmin['acid_density_max'] -  maxmin['acid_density_min'])/10 
+        if parameter == 'acid_per_resin_L':
+            if direction == 'minus':
+                new_params.acid_per_resin_L = self.acid_per_resin_L - (maxmin['acid_per_resin_L_max'] -  maxmin['acid_per_resin_L_min'])/10 
+            if direction == 'plus':
+                new_params.acid_per_resin_L = self.acid_per_resin_L + (maxmin['acid_per_resin_L_max'] -  maxmin['acid_per_resin_L_min'])/10 
+        if parameter == 'sulphuric_acid_cost':
+            if direction == 'minus':
+                new_params.sulphuric_acid_cost = self.sulphuric_acid_cost - (maxmin['sulphuric_acid_cost_max'] -  maxmin['sulphuric_acid_cost_min'])/10 
+            if direction == 'plus':
+                new_params.sulphuric_acid_cost = self.sulphuric_acid_cost + (maxmin['sulphuric_acid_cost_max'] -  maxmin['sulphuric_acid_cost_min'])/10 
+        if parameter == 'acid_flow_rate':
+            if direction == 'minus':
+                new_params.acid_flow_rate = self.acid_flow_rate - (maxmin['acid_flow_rate_max'] -  maxmin['acid_flow_rate_min'])/10 
+            if direction == 'plus':
+                new_params.acid_flow_rate = self.acid_flow_rate + (maxmin['acid_flow_rate_max'] -  maxmin['acid_flow_rate_min'])/10 
+        if parameter == 'acid_transport':
+            if direction == 'minus':
+                new_params.acid_transport = self.acid_transport - (maxmin['acid_transport_max'] -  maxmin['acid_transport_min'])/10 
+            if direction == 'plus':
+                new_params.acid_transport = self.acid_transport + (maxmin['acid_transport_max'] -  maxmin['acid_transport_min'])/10 
+        if parameter == 'volume_fertilizer_per_acid':
+            if direction == 'minus':
+                new_params.volume_fertilizer_per_acid = self.volume_fertilizer_per_acid - (maxmin['volume_fertilizer_per_acid_max'] -  maxmin['volume_fertilizer_per_acid_min'])/10 
+            if direction == 'plus':
+                new_params.volume_fertilizer_per_acid = self.volume_fertilizer_per_acid + (maxmin['volume_fertilizer_per_acid_max'] -  maxmin['volume_fertilizer_per_acid_min'])/10 
+        if parameter == 'volume_bottle':
+            if direction == 'minus':
+                new_params.volume_bottle = self.volume_bottle - (maxmin['volume_bottle_max'] -  maxmin['volume_bottle_min'])/10 
+            if direction == 'plus':
+                new_params.volume_bottle = self.volume_bottle + (maxmin['volume_bottle_max'] -  maxmin['volume_bottle_min'])/10 
+        if parameter == 'bottle_height':
+            if direction == 'minus':
+                new_params.bottle_height = self.bottle_height - (maxmin['bottle_height_max'] -  maxmin['bottle_height_min'])/10 
+            if direction == 'plus':
+                new_params.bottle_height = self.bottle_height + (maxmin['bottle_height_max'] -  maxmin['bottle_height_min'])/10 
+        if parameter == 'bottle_thickness':
+            if direction == 'minus':
+                new_params.bottle_thickness = self.bottle_thickness - (maxmin['bottle_thickness_max'] -  maxmin['bottle_thickness_min'])/10
+            if direction == 'plus':
+                new_params.bottle_thickness = self.bottle_thickness + (maxmin['bottle_thickness_max'] -  maxmin['bottle_thickness_min'])/10
+        if parameter == 'bottle_lifetime':
+            if direction == 'minus':
+                new_params.bottle_lifetime = self.bottle_lifetime - (maxmin['bottle_lifetime_max'] -  maxmin['bottle_lifetime_min'])/10
+            if direction == 'plus':
+                new_params.bottle_lifetime = self.bottle_lifetime + (maxmin['bottle_lifetime_max'] -  maxmin['bottle_lifetime_min'])/10
+        if parameter == 'collection_times_per_year':
+            if direction == 'minus':
+                new_params.collection_times_per_year = self.collection_times_per_year - (maxmin['collection_times_per_year_max'] -  maxmin['collection_times_per_year_min'])/10
+            if direction == 'plus':
+                new_params.collection_times_per_year = self.collection_times_per_year + (maxmin['collection_times_per_year_max'] -  maxmin['collection_times_per_year_min'])/10
+        if parameter == 'facility_manufacturing_energy':
+            if direction == 'minus':
+                new_params.facility_manufacturing_energy = self.facility_manufacturing_energy - (maxmin['facility_manufacturing_energy_max'] -  maxmin['facility_manufacturing_energy_min'])/10
+            if direction == 'plus':
+                new_params.facility_manufacturing_energy = self.facility_manufacturing_energy + (maxmin['facility_manufacturing_energy_max'] -  maxmin['facility_manufacturing_energy_min'])/10
+        if parameter == 'facility_manufacturing_GHG':
+            if direction == 'minus':
+                new_params.facility_manufacturing_GHG = self.facility_manufacturing_GHG - (maxmin['facility_manufacturing_GHG_max'] -  maxmin['facility_manufacturing_GHG_min'])/10
+            if direction == 'plus':
+                new_params.facility_manufacturing_GHG = self.facility_manufacturing_GHG + (maxmin['facility_manufacturing_GHG_max'] -  maxmin['facility_manufacturing_GHG_min'])/10
+        if parameter == 'facility_lifetime':
+            if direction == 'minus':
+                new_params.facility_lifetime = self.facility_lifetime - (maxmin['facility_lifetime_max'] -  maxmin['facility_lifetime_min'])/10
+            if direction == 'plus':
+                new_params.facility_lifetime = self.facility_lifetime + (maxmin['facility_lifetime_max'] -  maxmin['facility_lifetime_min'])/10
+        if parameter == 'min_facility_cost':
+            if direction == 'minus':
+                new_params.min_facility_cost = self.min_facility_cost - (maxmin['min_facility_cost_max'] -  maxmin['min_facility_cost_min'])/10
+            if direction == 'plus':
+                new_params.min_facility_cost = self.min_facility_cost + (maxmin['min_facility_cost_max'] -  maxmin['min_facility_cost_min'])/10
+        if parameter == 'facility_cost_regression':
+            if direction == 'minus':
+                new_params.facility_cost_regression = self.facility_cost_regression - (maxmin['facility_cost_regression_max'] -  maxmin['facility_cost_regression_min'])/10
+            if direction == 'plus':
+                new_params.facility_cost_regression = self.facility_cost_regression + (maxmin['facility_cost_regression_max'] -  maxmin['facility_cost_regression_min'])/10
+        return new_params
 
 

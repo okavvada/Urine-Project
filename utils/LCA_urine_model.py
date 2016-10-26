@@ -4,7 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import math
 
-from LCA_class import resin, catridge, flow_equalization_plastic, pump_flow, regeneration, logistics, trucks, regeneration_facility, material_transport, bottling
+from utils.LCA_class import resin, catridge, flow_equalization_plastic, pump_flow, regeneration, logistics, trucks, regeneration_facility, material_transport, bottling
 
 
 def LCA_urine_model(number_of_people_per_facility, distance_regen, truck_num, Parameters):
