@@ -80,8 +80,8 @@ class Parameters_values():
 
     def max_min(self):
         maxmin = {
-        'PVC_lifetime_max': 1.2*self.PVC_lifetime,
-        'PVC_lifetime_min': 0.8*self.PVC_lifetime ,
+        'PVC_lifetime_max': 100,
+        'PVC_lifetime_min': 20,
         'resin_density_max': 1.2*self.resin_density,
         'resin_density_min': 0.8*self.resin_density ,
         'resin_cost_kg_max': 1.2*self.resin_cost_kg,
@@ -91,7 +91,9 @@ class Parameters_values():
         'resin_GHG_kg_kg_max': 1.2*self.resin_GHG_kg_kg,
         'resin_GHG_kg_kg_min': 0.8*self.resin_GHG_kg_kg,
         'resin_transport_max':1.2*self.resin_transport,
-        'resin_transport_min': 0.8*self.resin_transport,  
+        'resin_transport_min': 0.8*self.resin_transport,
+        'N_urine_max':1.2*self.N_urine,  
+        'N_urine_min':o.8*self.N_urine, 
         'hydraulic_conductivity_max': 1.2*self.hydraulic_conductivity,
         'hydraulic_conductivity_min': 0.8*self.hydraulic_conductivity,
         'resin_lifetime_max': 1.2*self.resin_lifetime,
@@ -104,12 +106,10 @@ class Parameters_values():
         'time_for_regeneration_min': 0.8*self.time_for_regeneration ,
         'urine_production_max': 1.2*self.urine_production,
         'urine_production_min': 0.8*self.urine_production ,
-        'household_size_max': 1.2*self.household_size,
-        'household_size_min': 0.8*self.household_size,
+        'household_size_max': 5,
+        'household_size_min': 2,
         'flow_equalization_retention_time_max': 1.2*self.flow_equalization_retention_time,
         'flow_equalization_retention_time_min': 0.8*self.flow_equalization_retention_time ,
-        'tank_height_max': 1.2*self.tank_height,
-        'tank_height_min': 0.8*self.tank_height,
         'tank_thickness_max': 1.2*self.tank_thickness,
         'tank_thickness_min': 0.8*self.tank_thickness ,
         'steel_GHG_max': 1.2*self.steel_GHG,
@@ -118,8 +118,6 @@ class Parameters_values():
         'steel_energy_min': 0.8*self.steel_energy ,
         'steel_sheet_mass_max':1.2*self.steel_sheet_mass,
         'steel_sheet_mass_min': 0.8*self.steel_sheet_mass, 
-        'steel_sheet_area_max': 1.2*self.steel_sheet_area,
-        'steel_sheet_area_min': 0.8*self.steel_sheet_area,
         'steel_lifetime_max':1.2*self.steel_lifetime,
         'steel_lifetime_min': 0.8*self.steel_lifetime  ,
         'transport_energy_MJ_km_max':1.2*self.transport_energy_MJ_km,
@@ -198,8 +196,6 @@ class Parameters_values():
         'volume_fertilizer_per_acid_min': 0.8*self.volume_fertilizer_per_acid ,
         'volume_bottle_max': 1.2*self.volume_bottle  ,
         'volume_bottle_min': 0.8*self.volume_bottle  ,
-        'bottle_height_max': 1.2*self.bottle_height  ,
-        'bottle_height_min': 0.8*self.bottle_height  ,
         'bottle_thickness_max': 1.2*self.bottle_thickness,  
         'bottle_thickness_min': 0.8*self.bottle_thickness ,
         'bottle_lifetime_max': 1.2*self.bottle_lifetime  ,
@@ -221,68 +217,66 @@ class Parameters_values():
     def uncertainty(self):
         new_params = Parameters_values()
         maxmin = self.max_min()
-        new_params.PVC_lifetime = np.random.uniform(0.8*self.PVC_lifetime,1.2*self.PVC_lifetime)
-        new_params.resin_density = np.random.uniform(0.8*self.resin_density,1.2*self.resin_density)
-        new_params.resin_cost_kg = np.random.uniform(0.8*self.resin_cost_kg,1.2*self.resin_cost_kg)
-        new_params.resin_energy_MJ_kg = np.random.uniform(0.8*self.resin_energy_MJ_kg,1.2*self.resin_energy_MJ_kg)
-        new_params.resin_GHG_kg_kg = np.random.uniform(0.8*self.resin_GHG_kg_kg,1.2*self.resin_GHG_kg_kg)
-        new_params.resin_transport = np.random.uniform(0.8*self.resin_transport,1.2*self.resin_transport)
-        new_params.hydraulic_conductivity = np.random.uniform(0.8*self.hydraulic_conductivity,1.2*self.hydraulic_conductivity)
-        new_params.resin_lifetime = np.random.uniform(0.8*self.resin_lifetime,1.2*self.resin_lifetime)
-        new_params.N_urine = np.random.uniform(0.8*self.N_urine,1.2*self.N_urine)
-        new_params.adsorption_density = np.random.uniform(0.8*self.adsorption_density,1.2*self.adsorption_density)
-        new_params.time_between_catridge_regeneration = np.random.uniform(0.8*self.time_between_catridge_regeneration,1.2*self.time_between_catridge_regeneration)
-        new_params.time_for_regeneration = np.random.uniform(0.8*self.time_for_regeneration,1.2*self.time_for_regeneration)
-        new_params.urine_production = np.random.uniform(0.8*self.urine_production,1.2*self.urine_production)
-        new_params.household_size = np.random.uniform(0.8*self.household_size,1.2*self.household_size)
-        new_params.flow_equalization_retention_time = np.random.uniform(0.8*self.flow_equalization_retention_time,1.2*self.flow_equalization_retention_time)
-        new_params.tank_height = np.random.uniform(0.8*self.tank_height,1.2*self.tank_height)
-        new_params.tank_thickness = np.random.uniform(0.8*self.tank_thickness,1.2*self.tank_thickness)
-        new_params.steel_GHG = np.random.uniform(0.8*self.steel_GHG,1.2*self.steel_GHG)
-        new_params.steel_energy = np.random.uniform(0.8*self.steel_energy,1.2*self.steel_energy)
-        new_params.steel_sheet_mass = np.random.uniform(0.8*self.steel_sheet_mass,1.2*self.steel_sheet_mass)
-        new_params.steel_sheet_area = np.random.uniform(0.8*self.steel_sheet_area,1.2*self.steel_sheet_area)
-        new_params.steel_lifetime = np.random.uniform(0.8*self.steel_lifetime,1.2*self.steel_lifetime)
-        new_params.transport_energy_MJ_km = np.random.uniform(0.8*self.transport_energy_MJ_km,1.2*self.transport_energy_MJ_km)
-        new_params.transport_GHG_kg_km = np.random.uniform(0.8*self.transport_GHG_kg_km,1.2*self.transport_GHG_kg_km)
-        new_params.diesel_cost = np.random.uniform(0.8*self.diesel_cost,1.2*self.diesel_cost)
-        new_params.truck_mpg = np.random.uniform(0.8*self.truck_mpg,1.2*self.truck_mpg)
-        new_params.km = np.random.uniform(0.8*self.km,1.2*self.km)
-        new_params.truck_manuf_energy = np.random.uniform(0.8*self.truck_manuf_energy,1.2*self.truck_manuf_energy)
-        new_params.truck_manuf_GHG = np.random.uniform(0.8*self.truck_manuf_GHG,1.2*self.truck_manuf_GHG)
-        new_params.truck_milage = np.random.uniform(0.8*self.truck_milage,1.2*self.truck_milage)
-        new_params.truck_cost = np.random.uniform(0.8*self.truck_cost,1.2*self.truck_cost)
-        new_params.truck_milage_y = np.random.uniform(0.8*self.truck_milage_y,1.2*self.truck_milage_y)
-        new_params.plastic_energy = np.random.uniform(0.8*self.plastic_energy,1.2*self.plastic_energy)
-        new_params.plastic_GHG = np.random.uniform(0.8*self.plastic_GHG,1.2*self.plastic_GHG)
-        new_params.plastic_cost = np.random.uniform(0.8*self.plastic_cost,1.2*self.plastic_cost)
-        new_params.plastic_density = np.random.uniform(0.8*self.plastic_density,1.2*self.plastic_density)
-        new_params.plastic_lifetime = np.random.uniform(0.8*self.plastic_lifetime,1.2*self.plastic_lifetime)
-        new_params.motor_efficiency = np.random.uniform(0.8*self.motor_efficiency,1.2*self.motor_efficiency) 
-        new_params.electricity_EF = np.random.uniform(0.8*self.electricity_EF,1.2*self.electricity_EF)
-        new_params.electricity_cost = np.random.uniform(0.8*self.electricity_cost,1.2*self.electricity_cost)
-        new_params.specific_weight = np.random.uniform(0.8*self.specific_weight,1.2*self.specific_weight)
-        new_params.pump_lifetime = np.random.uniform(0.8*self.pump_lifetime,1.2*self.pump_lifetime)
-        new_params.sulphuric_acid_energy = np.random.uniform(0.8*self.sulphuric_acid_energy,1.2*self.sulphuric_acid_energy)
-        new_params.sulphuric_acid_GHG = np.random.uniform(0.8*self.sulphuric_acid_GHG,1.2*self.sulphuric_acid_GHG)
-        new_params.acid_density = np.random.uniform(0.8*self.acid_density,1.2*self.acid_density)
+        new_params.PVC_lifetime = np.random.uniform(maxmin['PVC_lifetime_min'],maxmin['PVC_lifetime_max'])
+        new_params.resin_density = np.random.uniform(maxmin['resin_density_min'],maxmin['resin_density_max'])
+        new_params.resin_cost_kg = np.random.uniform(maxmin['resin_cost_kg_min'],maxmin['resin_cost_kg_max'])
+        new_params.resin_energy_MJ_kg = np.random.uniform(maxmin['resin_energy_MJ_kg_min'],maxmin['resin_energy_MJ_kg_max'])
+        new_params.resin_GHG_kg_kg = np.random.uniform(maxmin['resin_GHG_kg_kg_min'],maxmin['resin_GHG_kg_kg_max'])
+        new_params.resin_transport = np.random.uniform(maxmin['resin_transport_min'],maxmin['resin_transport_max'])
+        new_params.hydraulic_conductivity = np.random.uniform(maxmin['hydraulic_conductivity_min'],maxmin['hydraulic_conductivity_max'])
+        new_params.resin_lifetime = np.random.uniform(maxmin['resin_lifetime_min'],maxmin['resin_lifetime_max'])
+        new_params.N_urine = np.random.uniform(maxmin['N_urine_min'],maxmin['N_urine_max'])
+        new_params.adsorption_density = np.random.uniform(maxmin['adsorption_density_min'],maxmin['adsorption_density_max'])
+        new_params.time_between_catridge_regeneration = np.random.uniform(maxmin['time_between_catridge_regeneration_min'],maxmin['time_between_catridge_regeneration_max'])
+        new_params.time_for_regeneration = np.random.uniform(maxmin['time_for_regeneration_min'],maxmin['time_for_regeneration_max'])
+        new_params.urine_production = np.random.uniform(maxmin['urine_production_min'],maxmin['urine_production_max'])
+        new_params.household_size = np.random.uniform(maxmin['household_size_min'],maxmin['household_size_max'])
+        new_params.flow_equalization_retention_time = np.random.uniform(maxmin['flow_equalization_retention_time_min'],maxmin['flow_equalization_retention_time_max'])
+        new_params.tank_thickness = np.random.uniform(maxmin['tank_thickness_min'],maxmin['tank_thickness_max'])
+        new_params.steel_GHG = np.random.uniform(maxmin['steel_GHG_min'],maxmin['steel_GHG_max'])
+        new_params.steel_energy = np.random.uniform(maxmin['steel_energy_min'],maxmin['steel_energy_max'])
+        new_params.steel_sheet_mass = np.random.uniform(maxmin['steel_sheet_mass_min'],maxmin['steel_sheet_mass_max'])
+        new_params.steel_sheet_area = np.random.uniform(maxmin['steel_sheet_area_min'],maxmin['steel_sheet_area_max'])
+        new_params.steel_lifetime = np.random.uniform(maxmin['steel_lifetime_min'],maxmin['steel_lifetime_max'])
+        new_params.transport_energy_MJ_km = np.random.uniform(maxmin['transport_energy_MJ_km_min'],maxmin['transport_energy_MJ_km_max'])
+        new_params.transport_GHG_kg_km = np.random.uniform(maxmin['transport_GHG_kg_km_min'],maxmin['transport_GHG_kg_km_max'])
+        new_params.diesel_cost = np.random.uniform(maxmin['diesel_cost_min'],maxmin['diesel_cost_max'])
+        new_params.truck_mpg = np.random.uniform(maxmin['truck_mpg_min'],maxmin['truck_mpg_max'])
+        new_params.km = np.random.uniform(maxmin['km_min'],maxmin['km_max'])
+        new_params.truck_manuf_energy = np.random.uniform(maxmin['truck_manuf_energy_min'],maxmin['truck_manuf_energy_max'])
+        new_params.truck_manuf_GHG = np.random.uniform(maxmin['truck_manuf_GHG_min'],maxmin['truck_manuf_GHG_max'])
+        new_params.truck_milage = np.random.uniform(maxmin['truck_milage_min'],maxmin['truck_milage_max'])
+        new_params.truck_cost = np.random.uniform(maxmin['truck_cost_min'],maxmin['truck_cost_max'])
+        new_params.truck_milage_y = np.random.uniform(maxmin['truck_milage_y_min'],maxmin['truck_milage_y_max'])
+        new_params.plastic_energy = np.random.uniform(maxmin['plastic_energy_min'],maxmin['plastic_energy_max'])
+        new_params.plastic_GHG = np.random.uniform(maxmin['plastic_GHG_min'],maxmin['plastic_GHG_max'])
+        new_params.plastic_cost = np.random.uniform(maxmin['plastic_cost_min'],maxmin['plastic_cost_max'])
+        new_params.plastic_density = np.random.uniform(maxmin['plastic_density_min'],maxmin['plastic_density_max'])
+        new_params.plastic_lifetime = np.random.uniform(maxmin['plastic_lifetime_min'],maxmin['plastic_lifetime_max'])
+        new_params.motor_efficiency = np.random.uniform(maxmin['motor_efficiency_min'],maxmin['motor_efficiency_max']) 
+        new_params.electricity_EF = np.random.uniform(maxmin['electricity_EF_min'],maxmin['electricity_EF_max'])
+        new_params.electricity_cost = np.random.uniform(maxmin['electricity_cost_min'],maxmin['electricity_cost_max'])
+        new_params.specific_weight = np.random.uniform(maxmin['specific_weight_min'],maxmin['specific_weight_max'])
+        new_params.pump_lifetime = np.random.uniform(maxmin['pump_lifetime_min'],maxmin['pump_lifetime_max'])
+        new_params.sulphuric_acid_energy = np.random.uniform(maxmin['sulphuric_acid_energy_min'],maxmin['sulphuric_acid_energy_max'])
+        new_params.sulphuric_acid_GHG = np.random.uniform(maxmin['sulphuric_acid_GHG_min'],maxmin['sulphuric_acid_GHG_max'])
+        new_params.acid_density = np.random.uniform(maxmin['acid_density_min'],maxmin['acid_density_max'])
         #acid_per_resin = 0.01#kg/kg ### CHECK
-        new_params.acid_per_resin_L = np.random.uniform(0.8*self.acid_per_resin_L,1.2*self.acid_per_resin_L)
-        new_params.sulphuric_acid_cost = np.random.uniform(0.8*self.sulphuric_acid_cost,1.2*self.sulphuric_acid_cost)
+        new_params.acid_per_resin_L = np.random.uniform(maxmin['acid_per_resin_L_min'],maxmin['acid_per_resin_L_max'])
+        new_params.sulphuric_acid_cost = np.random.uniform(maxmin['sulphuric_acid_cost_min'],maxmin['sulphuric_acid_cost_max'])
         #sulphuric_acid_cost = 0.013 #$/kg 
-        new_params.acid_flow_rate = np.random.uniform(0.8*self.acid_flow_rate,1.2*self.acid_flow_rate)
-        new_params.acid_transport = np.random.uniform(0.8*self.acid_transport,1.2*self.acid_transport)
-        new_params.volume_fertilizer_per_acid = np.random.uniform(0.8*self.volume_fertilizer_per_acid,1.2*self.volume_fertilizer_per_acid)
-        new_params.volume_bottle = np.random.uniform(0.8*self.volume_bottle,1.2*self.volume_bottle)
-        new_params.bottle_height = np.random.uniform(0.8*self.bottle_height,1.2*self.bottle_height)
-        new_params.bottle_thickness = np.random.uniform(0.8*self.bottle_thickness,1.2*self.bottle_thickness)
-        new_params.bottle_lifetime = np.random.uniform(0.8*self.bottle_lifetime,1.2*self.bottle_lifetime)
-        new_params.collection_times_per_year = np.random.uniform(0.8*self.collection_times_per_year,1.2*self.collection_times_per_year)
-        new_params.facility_manufacturing_energy = np.random.uniform(0.8*self.facility_manufacturing_energy,1.2*self.facility_manufacturing_energy)
-        new_params.facility_manufacturing_GHG = np.random.uniform(0.8*self.facility_manufacturing_GHG,1.2*self.facility_manufacturing_GHG)
-        new_params.facility_lifetime = np.random.uniform(0.8*self.facility_lifetime,1.2*self.facility_lifetime)
-        new_params.min_facility_cost = np.random.uniform(0.8*self.min_facility_cost,1.2*self.min_facility_cost)
-        new_params.facility_cost_regression = np.random.uniform(0.8*self.facility_cost_regression,1.2*self.facility_cost_regression)
+        new_params.acid_flow_rate = np.random.uniform(maxmin['acid_flow_rate_min'],maxmin['acid_flow_rate_max'])
+        new_params.acid_transport = np.random.uniform(maxmin['acid_transport_min'],maxmin['acid_transport_max'])
+        new_params.volume_fertilizer_per_acid = np.random.uniform(maxmin['volume_fertilizer_per_acid_min'],maxmin['volume_fertilizer_per_acid_max'])
+        new_params.volume_bottle = np.random.uniform(maxmin['volume_bottle_min'],maxmin['volume_bottle_max'])
+        new_params.bottle_thickness = np.random.uniform(maxmin['bottle_thickness_min'],maxmin['bottle_thickness_max'])
+        new_params.bottle_lifetime = np.random.uniform(maxmin['bottle_lifetime_min'],maxmin['bottle_lifetime_max'])
+        new_params.collection_times_per_year = np.random.uniform(maxmin['collection_times_per_year_min'],maxmin['collection_times_per_year_max'])
+        new_params.facility_manufacturing_energy = np.random.uniform(maxmin['facility_manufacturing_energy_min'],maxmin['facility_manufacturing_energy_max'])
+        new_params.facility_manufacturing_GHG = np.random.uniform(maxmin['facility_manufacturing_GHG_min'],maxmin['facility_manufacturing_GHG_max'])
+        new_params.facility_lifetime = np.random.uniform(maxmin['facility_lifetime_min'],maxmin['facility_lifetime_max'])
+        new_params.min_facility_cost = np.random.uniform(maxmin['min_facility_cost_min'],maxmin['min_facility_cost_max'])
+        new_params.facility_cost_regression = np.random.uniform(maxmin['facility_cost_regression_min'],maxmin['facility_cost_regression_max'])
         return new_params
 
     def sensitivity(self, parameter, direction):
