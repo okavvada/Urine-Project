@@ -75,10 +75,10 @@ def find_distance_regeneration_scheduled(dataframe, k_means_labels):
             trucks = len(cluster_center_meters[i])/100
             if trucks > 1:
                 for j in range (0, len(cluster_center_meters[i]), 100):
-                    total_distance_truck = total_distance(optimized_travelling_salesman(cluster_center_meters[i][j:j+100]))/1000
+                    total_distance_truck = total_distance(optimized_travelling_salesman(cluster_center_meters[i][j:j+100]))/(1000)
                     total_distance_schedule = total_distance_schedule + total_distance_truck
             else:
-                total_distance_schedule = total_distance(optimized_travelling_salesman(cluster_center_meters[i]))/1000
+                total_distance_schedule = total_distance(optimized_travelling_salesman(cluster_center_meters[i]))/(1000)
 
         total_peop = size_all[i]['num_people_int'].sum()
         trucks_num = int(trucks)

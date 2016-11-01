@@ -34,7 +34,7 @@ def Run_LCA_model(path, n_regen, n_collection, logistics, analysis, parameter = 
 	for index, row in distance_regeneration.iterrows():
 	    number_of_people_per_facility= row['num_people']
 	    distance_regen = row['total_dist_m']
-	    truck_num = int(row['trucks_num'])
+	    truck_num = np.ceil(row['trucks_num'])
 	    ENERGY, GHG, COST = LCA_urine_model(number_of_people_per_facility, distance_regen, truck_num, Parameters)
 	    Total_Energy = Total_Energy.append(ENERGY)
 	    Total_GHG = Total_GHG.append(GHG)
@@ -55,9 +55,7 @@ def Run_LCA_model(path, n_regen, n_collection, logistics, analysis, parameter = 
 	Total_COST_total = Total_COST_regen
 
 	Total_Energy_total['Logistics_collect'] = Total_Energy_collect
-
 	Total_GHG_total['Logistics_collect'] = Total_GHG_collect
-
 	Total_COST_total['Logistics_collect'] = Total_COST_collect
 
 	Total_Energy_m3=Total_Energy_total/(3.6*Parameters.urine_production*365*Total_people/1000)

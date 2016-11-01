@@ -63,9 +63,9 @@ class resin():
         return resin_cost #$_y
 
     def resin_transport(self):
-        Transport_energy = find_transport_energy(self.mass_resin_household()*self.number_of_houses_per_facility, self.Parameters.resin_transport, self.Parameters.resin_lifetime, self.Parameters, mode='train')
-        Transport_GHG = find_transport_GHG(self.mass_resin_household()*self.number_of_houses_per_facility, self.Parameters.resin_transport, self.Parameters.resin_lifetime, self.Parameters, mode='train')
-        Transport_cost = find_transport_cost(self.mass_resin_household()*self.number_of_houses_per_facility, self.Parameters.resin_transport, self.Parameters.resin_lifetime, self.Parameters, mode='train')
+        Transport_energy = find_transport_energy(self.mass_resin_household()*self.number_of_houses_per_facility/1000, self.Parameters.resin_transport, self.Parameters.resin_lifetime, self.Parameters, mode='train')
+        Transport_GHG = find_transport_GHG(self.mass_resin_household()*self.number_of_houses_per_facility/1000, self.Parameters.resin_transport, self.Parameters.resin_lifetime, self.Parameters, mode='train')
+        Transport_cost = find_transport_cost(self.mass_resin_household()*self.number_of_houses_per_facility/1000, self.Parameters.resin_transport, self.Parameters.resin_lifetime, self.Parameters, mode='train')
         return Transport_energy,Transport_GHG,Transport_cost
 
 
@@ -114,9 +114,9 @@ class catridge():
         return PVC_cost # $_y
 
     def cartridge_transport(self):
-        Transport_energy = find_transport_energy(self.mass_PVC(), self.Parameters.km, self.Parameters.PVC_lifetime, self.Parameters, mode='truck')
-        Transport_GHG = find_transport_GHG(self.mass_PVC(), self.Parameters.km, self.Parameters.PVC_lifetime, self.Parameters, mode='truck')
-        Transport_cost = find_transport_cost(self.mass_PVC(), self.Parameters.km, self.Parameters.PVC_lifetime, self.Parameters, mode='truck')
+        Transport_energy = find_transport_energy(self.mass_PVC()/1000, self.Parameters.km, self.Parameters.PVC_lifetime, self.Parameters, mode='truck')
+        Transport_GHG = find_transport_GHG(self.mass_PVC()/1000, self.Parameters.km, self.Parameters.PVC_lifetime, self.Parameters, mode='truck')
+        Transport_cost = find_transport_cost(self.mass_PVC()/1000, self.Parameters.km, self.Parameters.PVC_lifetime, self.Parameters, mode='truck')
         return Transport_energy,Transport_GHG,Transport_cost
 
 
@@ -156,9 +156,9 @@ class flow_equalization_plastic():
         return plastic_cost # $_y
 
     def tank_transport(self):
-        Transport_energy = find_transport_energy(self.mass_plastic(), self.Parameters.km, self.Parameters.plastic_lifetime, self.Parameters, mode='truck')
-        Transport_GHG = find_transport_GHG(self.mass_plastic(), self.Parameters.km, self.Parameters.plastic_lifetime, self.Parameters, mode='truck')
-        Transport_cost = find_transport_cost(self.mass_plastic(), self.Parameters.km, self.Parameters.plastic_lifetime, self.Parameters, mode='truck')
+        Transport_energy = find_transport_energy(self.mass_plastic()/1000, self.Parameters.km, self.Parameters.plastic_lifetime, self.Parameters, mode='truck')
+        Transport_GHG = find_transport_GHG(self.mass_plastic()/1000, self.Parameters.km, self.Parameters.plastic_lifetime, self.Parameters, mode='truck')
+        Transport_cost = find_transport_cost(self.mass_plastic()/1000, self.Parameters.km, self.Parameters.plastic_lifetime, self.Parameters, mode='truck')
         return Transport_energy,Transport_GHG,Transport_cost
 
 
@@ -241,9 +241,9 @@ class pump_flow():
         return pump_cost #$/y
 
     def pump_transport(self):
-        Transport_energy = find_transport_energy(self.mass_pump(), self.Parameters.km, self.Parameters.pump_lifetime, self.Parameters, mode='truck')
-        Transport_GHG = find_transport_GHG(self.mass_pump(), self.Parameters.km, self.Parameters.pump_lifetime, self.Parameters, mode='truck')
-        Transport_cost = find_transport_cost(self.mass_pump(), self.Parameters.km, self.Parameters.pump_lifetime, self.Parameters, mode='truck')
+        Transport_energy = find_transport_energy(self.mass_pump()/1000, self.Parameters.km, self.Parameters.pump_lifetime, self.Parameters, mode='truck')
+        Transport_GHG = find_transport_GHG(self.mass_pump()/1000, self.Parameters.km, self.Parameters.pump_lifetime, self.Parameters, mode='truck')
+        Transport_cost = find_transport_cost(self.mass_pump()/1000, self.Parameters.km, self.Parameters.pump_lifetime, self.Parameters, mode='truck')
         return Transport_energy,Transport_GHG,Transport_cost
 
 
@@ -270,9 +270,9 @@ class regeneration():
         return sulphuric_cost #kg_y
 
     def acid_transport(self):
-        Transport_energy = find_transport_energy(self.mass_sulphuric_facility(), self.Parameters.acid_transport, 1, self.Parameters, mode='truck')
-        Transport_GHG = find_transport_GHG(self.mass_sulphuric_facility(), self.Parameters.acid_transport, 1, self.Parameters, mode='truck')
-        Transport_cost = find_transport_cost(self.mass_sulphuric_facility(), self.Parameters.acid_transport, 1, self.Parameters, mode='truck')
+        Transport_energy = find_transport_energy(self.mass_sulphuric_facility()/1000, self.Parameters.acid_transport, 1, self.Parameters, mode='truck')
+        Transport_GHG = find_transport_GHG(self.mass_sulphuric_facility()/1000, self.Parameters.acid_transport, 1, self.Parameters, mode='truck')
+        Transport_cost = find_transport_cost(self.mass_sulphuric_facility()/1000, self.Parameters.acid_transport, 1, self.Parameters, mode='truck')
         return Transport_energy,Transport_GHG,Transport_cost
 
 class bottling():
@@ -312,9 +312,9 @@ class bottling():
         return plastic_cost # $_y
 
     def bottle_transport(self):
-        Transport_energy = find_transport_energy(self.mass_plastic(), self.Parameters.km, self.Parameters.plastic_lifetime, self.Parameters, mode='truck')
-        Transport_GHG = find_transport_GHG(self.mass_plastic(), self.Parameters.km, self.Parameters.plastic_lifetime, self.Parameters, mode='truck')
-        Transport_cost = find_transport_cost(self.mass_plastic(), self.Parameters.km, self.Parameters.plastic_lifetime, self.Parameters, mode='truck')
+        Transport_energy = find_transport_energy(self.mass_plastic()/1000, self.Parameters.km, self.Parameters.plastic_lifetime, self.Parameters, mode='truck')
+        Transport_GHG = find_transport_GHG(self.mass_plastic()/1000, self.Parameters.km, self.Parameters.plastic_lifetime, self.Parameters, mode='truck')
+        Transport_cost = find_transport_cost(self.mass_plastic()/1000, self.Parameters.km, self.Parameters.plastic_lifetime, self.Parameters, mode='truck')
         return Transport_energy,Transport_GHG,Transport_cost
 
 
