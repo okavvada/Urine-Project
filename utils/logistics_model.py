@@ -85,3 +85,4 @@ class logistics_model():
 
 		distance_collection = find_distance_collection(k_means_cluster_centers_regen)*Parameters.collection_times_per_year
 		return distance_regeneration, distance_collection
+

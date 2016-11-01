@@ -8,12 +8,13 @@ class Parameters_values():
         self.PVC_lifetime = 50 #years
         self.resin_density = 750 #g/L
         self.resin_cost_kg = 32 #$/kg #### CHECK with Will
-        self.resin_energy_MJ_kg = 30 #MJ/kg ion exchange resin WEST
-        self.resin_GHG_kg_kg= 1 #kg/kg ion exchange resin WEST
+        self.resin_energy_MJ_kg = 30 #MJ/kg ion exchange resin EcoInvent
+        self.resin_GHG_kg_kg= 1 #kg/kg ion exchange resin Econinvent
         self.resin_transport = 3862 #km WEST
         self.hydraulic_conductivity = 0.00253 #m/s
         self.resin_lifetime = 5 #years ### CHECK with Will
         self.N_urine = 7.5 #gN/L
+        self.urine_density = 1 #kg/L
         self.adsorption_density = 4.9 #mmolN/g resin
         self.molar_mass_N = 14 #g/mol
         self.time_between_catridge_regeneration = 7 #days
@@ -28,11 +29,11 @@ class Parameters_values():
         self.steel_sheet_mass = 186.9 #kg
         self.steel_sheet_area = 3.72 #m2
         self.steel_lifetime = 50 #years
-        self.transport_energy_MJ_km=13 #MJ/km
-        self.transport_GHG_kg_km= 1 #kgCo2/km
+        self.transport_energy_MJ_km = 3.2 #MJ/ton-km
+        self.transport_GHG_kg_km= 0.410 #kgCo2/ton-km Taptich
         self.diesel_cost = 2.2 #$/gal (EIA)
         self.truck_mpg = 10 
-        self.transport_cost_km = self.diesel_cost/(self.truck_mpg*1.6) # $/km
+        self.transport_cost_km = 0.08 # $/ton-km
         self.km = 60 #km
         self.truck_manuf_energy = 0.89 #MJ/$
         self.truck_manuf_GHG = 0.06 #kgCO2/$
@@ -42,6 +43,9 @@ class Parameters_values():
         self.truck_manufacturing_energy = self.truck_manuf_energy*self.truck_cost/(self.truck_milage/self.truck_milage_y) #MJ/y
         self.truck_manufacturing_GHG = self.truck_manuf_GHG*self.truck_cost/(self.truck_milage/self.truck_milage_y) #kg/y
         self.truck_cost_y = self.truck_cost/(self.truck_milage/self.truck_milage_y) #$/y
+        self.train_energy_MJ_km = 0.36 #MJ/ton-km
+        self.train_GHG_kg_km = 25 #kgCo2/ton-km
+        self.train_cost_km = 0.01 # $/ton-km
         self.plastic_energy = 14.8 #MJ/$  EIOLCA plastics manufacturing
         self.plastic_GHG = 0.904 #kg/$ EIOLCA plastics manufacturing
         self.plastic_cost = 300  #$/m3 alibaba
@@ -58,15 +62,15 @@ class Parameters_values():
         self.sulphuric_acid_energy = 1.7 #MJ/kg Ecoinvent
         self.sulphuric_acid_GHG = 0.12 #kg/kg Ecoinvent
         self.acid_density = 1840 #g/L
-        #acid_per_resin = 0.01#kg/kg ### CHECK
-        self.acid_per_resin_L = 0.017  #L/L 
+        self.acid_per_resin_L = 0.17  #L/L 
         self.acid_per_resin = self.acid_per_resin_L*self.acid_density/(self.resin_density)
-        self.sulphuric_acid_cost = 0.138 #$/kg ### CHECK
+        self.sulphuric_acid_cost = 1.38 #$/kg ### CHECK
         #sulphuric_acid_cost = 0.013 #$/kg 
-        self.acid_flow_rate = 360 # ml/min
+        self.acid_flow_rate = 14.6 # mL/min
         self.acid_flow_rate_m3_s = self.acid_flow_rate/(60*1000*1000) #m3/s
         self.acid_transport = 193 #km WEST
-        self.volume_fertilizer_per_acid = 0.5 #L/L #CHECK
+        self.volume_fertilizer_per_person = 0.5 #L/L #CHECK
+        self.fertilizer_density = 1.8 #kg/L 
         self.volume_bottle = 1 #L
         self.bottle_height = 0.3
         self.bottle_thickness = 0.01 #m
@@ -93,7 +97,7 @@ class Parameters_values():
         'resin_transport_max':1.2*self.resin_transport,
         'resin_transport_min': 0.8*self.resin_transport,
         'N_urine_max':1.2*self.N_urine,  
-        'N_urine_min':o.8*self.N_urine, 
+        'N_urine_min':0.8*self.N_urine, 
         'hydraulic_conductivity_max': 1.2*self.hydraulic_conductivity,
         'hydraulic_conductivity_min': 0.8*self.hydraulic_conductivity,
         'resin_lifetime_max': 1.2*self.resin_lifetime,
@@ -236,7 +240,6 @@ class Parameters_values():
         new_params.steel_GHG = np.random.uniform(maxmin['steel_GHG_min'],maxmin['steel_GHG_max'])
         new_params.steel_energy = np.random.uniform(maxmin['steel_energy_min'],maxmin['steel_energy_max'])
         new_params.steel_sheet_mass = np.random.uniform(maxmin['steel_sheet_mass_min'],maxmin['steel_sheet_mass_max'])
-        new_params.steel_sheet_area = np.random.uniform(maxmin['steel_sheet_area_min'],maxmin['steel_sheet_area_max'])
         new_params.steel_lifetime = np.random.uniform(maxmin['steel_lifetime_min'],maxmin['steel_lifetime_max'])
         new_params.transport_energy_MJ_km = np.random.uniform(maxmin['transport_energy_MJ_km_min'],maxmin['transport_energy_MJ_km_max'])
         new_params.transport_GHG_kg_km = np.random.uniform(maxmin['transport_GHG_kg_km_min'],maxmin['transport_GHG_kg_km_max'])
@@ -357,11 +360,6 @@ class Parameters_values():
                 new_params.flow_equalization_retention_time = self.flow_equalization_retention_time - (maxmin['flow_equalization_retention_time_max'] -  maxmin['flow_equalization_retention_time_min'])/10 
             if direction == 'plus':
                 new_params.flow_equalization_retention_time = self.flow_equalization_retention_time + (maxmin['flow_equalization_retention_time_max'] -  maxmin['flow_equalization_retention_time_min'])/10 
-        if parameter == 'tank_height':
-            if direction == 'minus':
-                new_params.tank_height = self.tank_height - (maxmin['tank_height_max'] -  maxmin['tank_height_min'])/10 
-            if direction == 'plus':
-                new_params.tank_height = self.tank_height + (maxmin['tank_height_max'] -  maxmin['tank_height_min'])/10 
         if parameter == 'tank_thickness':
             if direction == 'minus':
                 new_params.tank_thickness = self.tank_thickness - (maxmin['tank_thickness_max'] -  maxmin['tank_thickness_min'])/10 
@@ -382,11 +380,6 @@ class Parameters_values():
                 new_params.steel_sheet_mass = self.steel_sheet_mass - (maxmin['steel_sheet_mass_max'] -  maxmin['steel_sheet_mass_min'])/10 
             if direction == 'plus':
                 new_params.steel_sheet_mass = self.steel_sheet_mass + (maxmin['steel_sheet_mass_max'] -  maxmin['steel_sheet_mass_min'])/10 
-        if parameter == 'steel_sheet_area':
-            if direction == 'minus':
-                new_params.steel_sheet_area = self.steel_sheet_area - (maxmin['steel_sheet_area_max'] -  maxmin['steel_sheet_area_min'])/10 
-            if direction == 'plus':
-                new_params.steel_sheet_area = self.steel_sheet_area + (maxmin['steel_sheet_area_max'] -  maxmin['steel_sheet_area_min'])/10 
         if parameter == 'steel_lifetime':
             if direction == 'minus':
                 new_params.steel_lifetime = self.steel_lifetime - (maxmin['steel_lifetime_max'] -  maxmin['steel_lifetime_min'])/10 
@@ -537,11 +530,6 @@ class Parameters_values():
                 new_params.volume_bottle = self.volume_bottle - (maxmin['volume_bottle_max'] -  maxmin['volume_bottle_min'])/10 
             if direction == 'plus':
                 new_params.volume_bottle = self.volume_bottle + (maxmin['volume_bottle_max'] -  maxmin['volume_bottle_min'])/10 
-        if parameter == 'bottle_height':
-            if direction == 'minus':
-                new_params.bottle_height = self.bottle_height - (maxmin['bottle_height_max'] -  maxmin['bottle_height_min'])/10 
-            if direction == 'plus':
-                new_params.bottle_height = self.bottle_height + (maxmin['bottle_height_max'] -  maxmin['bottle_height_min'])/10 
         if parameter == 'bottle_thickness':
             if direction == 'minus':
                 new_params.bottle_thickness = self.bottle_thickness - (maxmin['bottle_thickness_max'] -  maxmin['bottle_thickness_min'])/10

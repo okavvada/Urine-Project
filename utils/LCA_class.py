@@ -13,16 +13,25 @@ nominal_diameter_list=np.array(pipe_construction_data['size_mm'])
 pump_size_list=np.array(pump_construction_data['Rating_hp'])
 
 
-def find_transport_energy(km,lifetime, Parameters):
-    transport_energy = Parameters.transport_energy_MJ_km*km/(lifetime)
+def find_transport_energy(tons, km, lifetime, Parameters, mode = 'truck'):
+    if mode == 'truck':
+        transport_energy = tons*Parameters.transport_energy_MJ_km*km/(lifetime)
+    if mode == 'train':
+        transport_energy = tons*Parameters.train_energy_MJ_km*km/(lifetime)
     return transport_energy #MJ_y
     
-def find_transport_GHG(km,lifetime, Parameters):
-    transport_GHG = Parameters.transport_GHG_kg_km*km/(lifetime)
+def find_transport_GHG(tons,km, lifetime, Parameters, mode = 'truck'):
+    if mode == 'truck':
+        transport_GHG = tons*Parameters.transport_GHG_kg_km*km/(lifetime)
+    if mode == 'train':
+        transport_GHG = tons*Parameters.train_GHG_kg_km*km/(lifetime)
     return transport_GHG #kg_y
 
-def find_transport_cost(km,lifetime, Parameters):
-    transport_cost = Parameters.transport_cost_km*km/(lifetime)
+def find_transport_cost(tons, km, lifetime, Parameters, mode = 'truck'):
+    if mode == 'truck':
+        transport_cost = tons*Parameters.transport_cost_km*km/(lifetime)
+    if mode == 'train':
+        transport_cost = tons*Parameters.train_cost_km*km/(lifetime)
     return transport_cost #$_y
 
 def find_nearest(array,value):
@@ -52,6 +61,13 @@ class resin():
     def resin_cost(self):
         resin_cost = self.mass_resin_household()*self.Parameters.resin_cost_kg/self.Parameters.resin_lifetime*self.number_of_houses_per_facility
         return resin_cost #$_y
+
+    def resin_transport(self):
+        Transport_energy = find_transport_energy(self.mass_resin_household()*self.number_of_houses_per_facility, self.Parameters.resin_transport, self.Parameters.resin_lifetime, self.Parameters, mode='train')
+        Transport_GHG = find_transport_GHG(self.mass_resin_household()*self.number_of_houses_per_facility, self.Parameters.resin_transport, self.Parameters.resin_lifetime, self.Parameters, mode='train')
+        Transport_cost = find_transport_cost(self.mass_resin_household()*self.number_of_houses_per_facility, self.Parameters.resin_transport, self.Parameters.resin_lifetime, self.Parameters, mode='train')
+        return Transport_energy,Transport_GHG,Transport_cost
+
 
 
 class catridge():
@@ -97,6 +113,12 @@ class catridge():
         PVC_cost=pipe_index.cost_2012_m[diameter]*self.catridge_length()*self.number_of_houses_per_facility/self.Parameters.PVC_lifetime
         return PVC_cost # $_y
 
+    def cartridge_transport(self):
+        Transport_energy = find_transport_energy(self.mass_PVC(), self.Parameters.km, self.Parameters.PVC_lifetime, self.Parameters, mode='truck')
+        Transport_GHG = find_transport_GHG(self.mass_PVC(), self.Parameters.km, self.Parameters.PVC_lifetime, self.Parameters, mode='truck')
+        Transport_cost = find_transport_cost(self.mass_PVC(), self.Parameters.km, self.Parameters.PVC_lifetime, self.Parameters, mode='truck')
+        return Transport_energy,Transport_GHG,Transport_cost
+
 
 class flow_equalization_plastic():
     def __init__(self, number_of_people_per_facility, Parameters):
@@ -132,6 +154,12 @@ class flow_equalization_plastic():
         mass = self.mass_plastic()
         plastic_cost = mass*self.Parameters.plastic_cost_kg/self.Parameters.plastic_lifetime
         return plastic_cost # $_y
+
+    def tank_transport(self):
+        Transport_energy = find_transport_energy(self.mass_plastic(), self.Parameters.km, self.Parameters.plastic_lifetime, self.Parameters, mode='truck')
+        Transport_GHG = find_transport_GHG(self.mass_plastic(), self.Parameters.km, self.Parameters.plastic_lifetime, self.Parameters, mode='truck')
+        Transport_cost = find_transport_cost(self.mass_plastic(), self.Parameters.km, self.Parameters.plastic_lifetime, self.Parameters, mode='truck')
+        return Transport_energy,Transport_GHG,Transport_cost
 
 
 class pump_flow():
@@ -212,6 +240,12 @@ class pump_flow():
         pump_cost=pump_index.Cost_2012[pump_size]/self.Parameters.pump_lifetime
         return pump_cost #$/y
 
+    def pump_transport(self):
+        Transport_energy = find_transport_energy(self.mass_pump(), self.Parameters.km, self.Parameters.pump_lifetime, self.Parameters, mode='truck')
+        Transport_GHG = find_transport_GHG(self.mass_pump(), self.Parameters.km, self.Parameters.pump_lifetime, self.Parameters, mode='truck')
+        Transport_cost = find_transport_cost(self.mass_pump(), self.Parameters.km, self.Parameters.pump_lifetime, self.Parameters, mode='truck')
+        return Transport_energy,Transport_GHG,Transport_cost
+
 
 class regeneration():
     def __init__(self, mass_resin, number_of_people_per_facility, Parameters):
@@ -235,13 +269,20 @@ class regeneration():
         sulphuric_cost = self.mass_sulphuric_facility()*self.Parameters.sulphuric_acid_cost
         return sulphuric_cost #kg_y
 
+    def acid_transport(self):
+        Transport_energy = find_transport_energy(self.mass_sulphuric_facility(), self.Parameters.acid_transport, 1, self.Parameters, mode='truck')
+        Transport_GHG = find_transport_GHG(self.mass_sulphuric_facility(), self.Parameters.acid_transport, 1, self.Parameters, mode='truck')
+        Transport_cost = find_transport_cost(self.mass_sulphuric_facility(), self.Parameters.acid_transport, 1, self.Parameters, mode='truck')
+        return Transport_energy,Transport_GHG,Transport_cost
+
 class bottling():
-    def __init__(self, mass_acid, Parameters):
+    def __init__(self, number_of_people_per_facility, mass_acid, Parameters):
         self.Parameters = Parameters
         self.mass_acid=mass_acid
+        self.number_of_people_per_facility = number_of_people_per_facility
         
     def volume_ferilizer(self):
-        volume_ferilizer_facility=self.mass_acid/self.Parameters.acid_density*1000*self.Parameters.volume_fertilizer_per_acid
+        volume_ferilizer_facility=self.Parameters.volume_fertilizer_per_person*self.number_of_people_per_facility*365/self.Parameters.time_between_catridge_regeneration
         return volume_ferilizer_facility #L/y
 
     def area_cylinder(self):
@@ -269,6 +310,12 @@ class bottling():
         mass = self.mass_plastic()
         plastic_cost = mass*self.Parameters.plastic_cost_kg/self.Parameters.bottle_lifetime
         return plastic_cost # $_y
+
+    def bottle_transport(self):
+        Transport_energy = find_transport_energy(self.mass_plastic(), self.Parameters.km, self.Parameters.plastic_lifetime, self.Parameters, mode='truck')
+        Transport_GHG = find_transport_GHG(self.mass_plastic(), self.Parameters.km, self.Parameters.plastic_lifetime, self.Parameters, mode='truck')
+        Transport_cost = find_transport_cost(self.mass_plastic(), self.Parameters.km, self.Parameters.plastic_lifetime, self.Parameters, mode='truck')
+        return Transport_energy,Transport_GHG,Transport_cost
 
 
 class trucks():
@@ -308,37 +355,20 @@ class regeneration_facility():
 
 
 class logistics():
-    def __init__(self, distance, Parameters):
+    def __init__(self, tons, distance, Parameters):
+        self.tons = tons
         self.distance=distance
         self.Parameters = Parameters
             
     def transportation_energy(self):
-        logistics_transport_energy=find_transport_energy(self.distance,1, self.Parameters)
+        logistics_transport_energy=find_transport_energy(self.tons, self.distance, 1, self.Parameters)
         return logistics_transport_energy #MJ_y
     
     def transportation_GHG(self):
-        logistics_transport_GHG=find_transport_GHG(self.distance,1, self.Parameters)
+        logistics_transport_GHG=find_transport_GHG(self.tons, self.distance, 1, self.Parameters)
         return logistics_transport_GHG #kg_y
 
     def transportation_cost(self):
-        logistics_transport_cost=find_transport_GHG(self.distance,1, self.Parameters)
+        logistics_transport_cost=find_transport_cost(self.tons, self.distance, 1, self.Parameters)
         return logistics_transport_cost #$_y
     
-
-class material_transport():
-    def __init__(self, transport_distance, lifetime, Parameters):
-        self.transport_distance=transport_distance
-        self.lifetime=lifetime
-        self.Parameters = Parameters
-            
-    def transportation_energy(self):
-        transport_energy=find_transport_energy(self.transport_distance, self.lifetime, self.Parameters)
-        return transport_energy #MJ_y
-    
-    def transportation_GHG(self):
-        transport_GHG=find_transport_GHG(self.transport_distance, self.lifetime, self.Parameters)
-        return transport_GHG #kg_y
-
-    def transportation_cost(self):
-        transport_cost=find_transport_cost(self.transport_distance, self.lifetime, self.Parameters)
-        return transport_cost #kg_y
