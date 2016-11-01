@@ -1,1 +1,5 @@
 # Urine-Project
+
+This work aims to assess, from a lifecycle perspective, ion exchange from source-separated urine as an innovative approach to decentralized nutrient management. The specific objectives of this study are: (1) to evaluate the life-cycle impacts of ion exchange compared to centralized nitrogen removal with respect to energy, greenhouse gas emissions and cost; (2) to develop a logistics model to identify the optimal scale for nitrogen recovery from source separated urine, and; (3) to apply the lifecycle assessment and logistics models to a real case study for feasibility assessment.
+
+The logistics model takes as an input all the buildings in San Francisco and based on the logistics scenario (iso-distant, grid or random) estimates the location of the regeneration facilities for fertilizer production. Given the scale and location of the facilities the LCA model assesses all the life-cycle stages of all input components of the system to calculate the overall energy, GHG emissions and cost of the proposed system.
