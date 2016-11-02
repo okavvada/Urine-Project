@@ -244,7 +244,7 @@ def pareto_frontier(Xs, Ys, maxX = True, maxY = True):
 # Loop through the sorted list
     for pair in myList[1:]:
         if maxY: 
-            if pair[1] <= p_front[-1][1]: # Look for higher values of Y…
+            if pair[1] < p_front[-1][1]: # Look for higher values of Y…
                 p_front.append(pair) # … and add them to the Pareto frontier
 # Turn resulting pairs back into a list of Xs and Ys
     p_frontX = [pair[0] for pair in p_front]
