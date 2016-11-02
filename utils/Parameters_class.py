@@ -10,7 +10,7 @@ class Parameters_values():
         self.resin_cost_kg = 32 #$/kg #### CHECK with Will
         self.resin_energy_MJ_kg = 30 #MJ/kg ion exchange resin EcoInvent
         self.resin_GHG_kg_kg= 1 #kg/kg ion exchange resin Econinvent
-        self.resin_transport = 3000 #km WEST
+        self.resin_transport = 3800 #km WEST
         self.hydraulic_conductivity = 0.00253 #m/s
         self.resin_lifetime = 5 #years ### CHECK with Will
         self.N_urine = 7.5 #gN/L
