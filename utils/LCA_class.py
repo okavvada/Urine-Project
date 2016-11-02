@@ -270,9 +270,9 @@ class regeneration():
         return sulphuric_cost #kg_y
 
     def acid_transport(self):
-        Transport_energy = find_transport_energy(self.mass_sulphuric_facility()/1000, self.Parameters.acid_transport, 1, self.Parameters, mode='truck')
-        Transport_GHG = find_transport_GHG(self.mass_sulphuric_facility()/1000, self.Parameters.acid_transport, 1, self.Parameters, mode='truck')
-        Transport_cost = find_transport_cost(self.mass_sulphuric_facility()/1000, self.Parameters.acid_transport, 1, self.Parameters, mode='truck')
+        Transport_energy = find_transport_energy(self.mass_sulphuric_facility()/1000, self.Parameters.acid_transport, 1, self.Parameters, mode='train')
+        Transport_GHG = find_transport_GHG(self.mass_sulphuric_facility()/1000, self.Parameters.acid_transport, 1, self.Parameters, mode='train')
+        Transport_cost = find_transport_cost(self.mass_sulphuric_facility()/1000, self.Parameters.acid_transport, 1, self.Parameters, mode='train')
         return Transport_energy,Transport_GHG,Transport_cost
 
 class bottling():
