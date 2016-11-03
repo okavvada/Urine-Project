@@ -10,7 +10,7 @@ class Parameters_values():
         self.resin_cost_kg = 32 #$/kg #### CHECK with Will
         self.resin_energy_MJ_kg = 30 #MJ/kg ion exchange resin EcoInvent
         self.resin_GHG_kg_kg= 1 #kg/kg ion exchange resin Econinvent
-        self.resin_transport = 3800 #km WEST
+        self.resin_transport = 300 #km 
         self.hydraulic_conductivity = 0.00253 #m/s
         self.resin_lifetime = 5 #years ### CHECK with Will
         self.N_urine = 7.5 #gN/L
@@ -63,11 +63,10 @@ class Parameters_values():
         self.sulphuric_acid_energy = 1.7 #MJ/kg Ecoinvent
         self.sulphuric_acid_GHG = 0.12 #kg/kg Ecoinvent
         self.acid_density = 1840 #g/L
-        self.acid_per_resin_L = 0.017  #L/L 
+        self.acid_per_resin_L = 0.17  #L/L 
         self.acid_per_resin = self.acid_per_resin_L*self.acid_density/(self.resin_density)
-        self.sulphuric_acid_cost = 1.38 #$/kg ### CHECK
-        #sulphuric_acid_cost = 0.013 #$/kg 
-        self.acid_flow_rate = 14.6 # mL/min
+        self.sulphuric_acid_cost = 2.5 #$/kg ### CHECK
+        self.acid_flow_rate = 22.5 # mL/min
         self.acid_flow_rate_m3_s = self.acid_flow_rate/(60*1000*1000) #m3/s
         self.acid_transport = 193 #km WEST
         self.volume_fertilizer_per_person = 0.05 #L/L #CHECK
@@ -135,6 +134,12 @@ class Parameters_values():
         'truck_mpg_min': 0.8*self.truck_mpg ,
         'transport_cost_km_max':1.2*self.transport_cost_km,
         'transport_cost_km_min': 0.8*self.transport_cost_km  ,
+        'train_energy_MJ_km_max' : 1.2*self.train_energy_MJ_km,
+        'train_GHG_kg_km_max': 1.2*self.train_GHG_kg_km ,
+        'train_cost_km_max' : 1.2*self.train_cost_km ,
+        'train_energy_MJ_km_min' : 0.8*self.train_energy_MJ_km,
+        'train_GHG_kg_km_min': 0.8*self.train_GHG_kg_km ,
+        'train_cost_km_min' : 0.8*self.train_cost_km ,
         'km_max':1.2*self.km , 
         'km_min': 0.8*self.km  ,
         'truck_manuf_energy_max': 1.2*self.truck_manuf_energy,
@@ -197,8 +202,8 @@ class Parameters_values():
         'acid_flow_rate_m3_s_min': 0.8*self.acid_flow_rate_m3_s, 
         'acid_transport_max': 1.2*self.acid_transport , 
         'acid_transport_min': 0.8*self.acid_transport , 
-        'volume_fertilizer_per_acid_max': 1.2*self.volume_fertilizer_per_acid  ,
-        'volume_fertilizer_per_acid_min': 0.8*self.volume_fertilizer_per_acid ,
+        'volume_fertilizer_per_person_max': 1.2*self.volume_fertilizer_per_person  ,
+        'volume_fertilizer_per_person_min': 0.8*self.volume_fertilizer_per_person ,
         'volume_bottle_max': 1.2*self.volume_bottle  ,
         'volume_bottle_min': 0.8*self.volume_bottle  ,
         'bottle_thickness_max': 1.2*self.bottle_thickness,  
@@ -252,6 +257,9 @@ class Parameters_values():
         new_params.truck_milage = np.random.uniform(maxmin['truck_milage_min'],maxmin['truck_milage_max'])
         new_params.truck_cost = np.random.uniform(maxmin['truck_cost_min'],maxmin['truck_cost_max'])
         new_params.truck_milage_y = np.random.uniform(maxmin['truck_milage_y_min'],maxmin['truck_milage_y_max'])
+        new_params.train_energy_MJ_km = np.random.uniform(maxmin['train_energy_MJ_km_min'],maxmin['train_energy_MJ_km_max'])
+        new_params.train_GHG_kg_km = np.random.uniform(maxmin['train_GHG_kg_km_min'],maxmin['train_GHG_kg_km_max'])
+        new_params.train_cost_km = np.random.uniform(maxmin['train_cost_km_min'],maxmin['train_cost_km_max'])
         new_params.plastic_energy = np.random.uniform(maxmin['plastic_energy_min'],maxmin['plastic_energy_max'])
         new_params.plastic_GHG = np.random.uniform(maxmin['plastic_GHG_min'],maxmin['plastic_GHG_max'])
         new_params.plastic_cost = np.random.uniform(maxmin['plastic_cost_min'],maxmin['plastic_cost_max'])

@@ -109,16 +109,18 @@ def subset_buildings(dataframe, value):
     buildings_subset_df = pd.DataFrame(buildings_subset)
     return buildings_subset_df
 
-def make_grid_points(nx, ny):
+def make_grid_points(n_regen, nx, ny):
     bounding_box = [37.731273, 37.783931, -122.39532, -122.500386]
     Xgrid = make_grid(bounding_box, nx, ny)
     grid_coord=[]
-
+    count = 0
     for row in Xgrid:
-        xgrid=row[0]
-        ygrid=row[1]
-        grid_coords = (xgrid, ygrid)
-        grid_coord.append(grid_coords)
+        while count<n_regen:
+            xgrid=row[0]
+            ygrid=row[1]
+            count = count + 1
+            grid_coords = (xgrid, ygrid)
+            grid_coord.append(grid_coords)
     return grid_coord
 
 
@@ -128,7 +130,7 @@ def make_random_points(n_regen):
     BC = bounding_box[2] - bounding_box[3]
     count = 0
     random_points = []
-    while count <= n_regen:
+    while count < n_regen:
         Px = bounding_box[3] + BC*random.random()
         Py = bounding_box[0] + AB*random.random()
         random_points.append((Py, Px))

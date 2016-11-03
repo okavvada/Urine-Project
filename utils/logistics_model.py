@@ -35,7 +35,7 @@ class logistics_model():
 		building_SF_points = self.return_dataframe_buildings()
 		nx = int(sqrt(self.n_regen))
 		ny = int(ceil(self.n_regen/nx))
-		cluster_centers_regen = make_grid_points(nx, ny)
+		cluster_centers_regen = make_grid_points(self.n_regen, nx, ny)
 		cluster_centers_regen_df=pd.DataFrame(cluster_centers_regen, columns=['lat', 'lon'])
 		tree = spatial.KDTree(list(zip(cluster_centers_regen_df['lat'], cluster_centers_regen_df['lon'])))
 		building_SF_points_array = list(zip(building_SF_points['lat_lat'],building_SF_points['lon_lon']))
@@ -74,7 +74,7 @@ class logistics_model():
 
 		time_now = time.time()
 
-		print ("Start calculating distances for scheduled...")
+		print ("Start calculating distances...")
 		distance_regeneration = find_distance_regeneration_scheduled(building_virtual_buildings_df, k_means_labels_regen)
 		distance_regeneration['total_dist_m'] = distance_regeneration['total_dist_m']*365/Parameters.time_between_catridge_regeneration
 		time_end = time.time() - time_now
@@ -84,5 +84,6 @@ class logistics_model():
 		k_means_labels_collection, k_means_cluster_centers_collection = self.clustering_collection(k_means_cluster_centers_regen)
 
 		distance_collection = find_distance_collection(k_means_cluster_centers_regen)*Parameters.collection_times_per_year
+		print ('dist collec = {}'.format(distance_collection))
 		return distance_regeneration, distance_collection
 
