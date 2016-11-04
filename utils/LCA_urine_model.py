@@ -70,7 +70,7 @@ def LCA_urine_model(number_of_people_per_facility, distance_regen, truck_num, Pa
 
 
 def LCA_collection(number_of_people_total, distance_collection, Parameters):
-	tons = (Parameters.volume_fertilizer_per_person*number_of_people_total*Parameters.fertilizer_density)/(1000)
+	tons = (Parameters.volume_fertilizer_per_person*number_of_people_total*Parameters.fertilizer_density)/(Parameters.collection_times_per_year*1000)
 	Logistics_collect = logistics(tons, distance_collection, Parameters)
 	logistics_collect_energy = Logistics_collect.transportation_energy()
 	logistics_collect_GHG = Logistics_collect.transportation_GHG()
