@@ -11,6 +11,7 @@ class Parameters_values():
         self.resin_energy_MJ_kg = 30 #MJ/kg ion exchange resin EcoInvent
         self.resin_GHG_kg_kg= 1 #kg/kg ion exchange resin Econinvent
         self.resin_transport = 300 #km 
+        self.porosity = 0.61
         self.hydraulic_conductivity = 0.00253 #m/s
         self.resin_lifetime = 5 #years ### CHECK with Will
         self.N_urine = 7.5 #gN/L
@@ -65,7 +66,7 @@ class Parameters_values():
         self.acid_density = 1840 #g/L
         self.acid_per_resin_L = 0.17  #L/L 
         self.acid_per_resin = self.acid_per_resin_L*self.acid_density/(self.resin_density)
-        self.sulphuric_acid_cost = 2.5 #$/kg ### CHECK
+        self.sulphuric_acid_cost = 25 #$/kg ### CHECK
         self.acid_flow_rate = 22.5 # mL/min
         self.acid_flow_rate_m3_s = self.acid_flow_rate/(60*1000*1000) #m3/s
         self.acid_transport = 193 #km WEST

@@ -51,7 +51,6 @@ def clustering(dataframe, n):
     k_means_labels = k_means.labels_
     k_means_cluster_centers = k_means.cluster_centers_
     k_means_labels_unique = np.unique(k_means_labels)
-    ft = (k_means_labels, k_means_cluster_centers)
     return k_means_labels, k_means_cluster_centers
     
 
@@ -110,12 +109,12 @@ def subset_buildings(dataframe, value):
     return buildings_subset_df
 
 def make_grid_points(n_regen, nx, ny):
-    bounding_box = [37.731273, 37.783931, -122.39532, -122.500386]
+    bounding_box = [37.72101, 37.800936, -122.385897, -122.503576]
     Xgrid = make_grid(bounding_box, nx, ny)
     grid_coord=[]
     count = 0
     for row in Xgrid:
-        while count<n_regen:
+        if count<n_regen:
             xgrid=row[0]
             ygrid=row[1]
             count = count + 1
@@ -125,7 +124,7 @@ def make_grid_points(n_regen, nx, ny):
 
 
 def make_random_points(n_regen):
-    bounding_box = [37.731273, 37.783931, -122.39532, -122.500386]
+    bounding_box = [37.732538, 37.80329, -122.378344, -122.510803]
     AB = bounding_box[1] - bounding_box[0]
     BC = bounding_box[2] - bounding_box[3]
     count = 0

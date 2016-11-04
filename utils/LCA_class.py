@@ -254,7 +254,7 @@ class regeneration():
         self.number_of_houses_per_facility = number_of_people_per_facility/self.Parameters.household_size
         
     def mass_sulphuric_facility(self):
-        mass_sulphuric_facility=self.mass_resin*self.number_of_houses_per_facility*self.Parameters.acid_per_resin*365/self.Parameters.time_between_catridge_regeneration
+        mass_sulphuric_facility=self.mass_resin*self.number_of_houses_per_facility*self.Parameters.acid_per_resin*self.Parameters.porosity*365/self.Parameters.time_between_catridge_regeneration
         return mass_sulphuric_facility #kg_y
     
     def sulphuric_energy(self):
