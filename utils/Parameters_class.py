@@ -4,6 +4,7 @@ import numpy as np
 
 class Parameters_values():
     def __init__(self):
+        self.percent_served = 0.5 #percent of pop served
         self.catridge_diameter = 100 #mm
         self.PVC_lifetime = 50 #years
         self.resin_density = 750 #g/L
@@ -30,8 +31,10 @@ class Parameters_values():
         self.steel_sheet_mass = 186.9 #kg
         self.steel_sheet_area = 3.72 #m2
         self.steel_lifetime = 50 #years
-        self.transport_energy_MJ_km = 3.2 #MJ/ton-km
         self.transport_GHG_kg_km= 0.410 #kgCo2/ton-km Taptich
+        self.carbon_content = 0.3 #kgdiesel/kgco2 (EIA)
+        self.energy_content = 44 #MJ/kgd (EIA)
+        self.transport_energy_MJ_km = self.carbon_content*self.energy_content*self.transport_GHG_kg_km #MJ/ton-km
         self.diesel_cost = 2.2 #$/gal (EIA)
         self.truck_mpg = 10 
         self.transport_cost_km = 0.08 # $/ton-km

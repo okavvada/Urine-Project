@@ -81,6 +81,5 @@ class logistics_model():
 		print ("calc distances took time %s" %time_end)
 
 		distance_collection = find_distance_collection(k_means_cluster_centers_regen)*Parameters.collection_times_per_year
-		print ('dist collec = {}'.format(distance_collection))
 		return distance_regeneration, distance_collection
 

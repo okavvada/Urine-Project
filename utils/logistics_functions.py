@@ -79,7 +79,7 @@ def find_distance_regeneration_scheduled(dataframe, k_means_labels):
             else:
                 total_distance_schedule = total_distance(optimized_travelling_salesman(cluster_center_meters[i]))/(1000)
 
-        total_peop = size_all[i]['num_people_int'].sum()
+        total_peop = size_all[i]['nu_peo_emp'].sum()
         trucks_num = int(trucks)
         totals = (i, total_peop, trucks, total_distance_schedule)
         size_all_distance.append(totals)
@@ -109,7 +109,7 @@ def subset_buildings(dataframe, value):
     return buildings_subset_df
 
 def make_grid_points(n_regen, nx, ny):
-    bounding_box = [37.72101, 37.800936, -122.385897, -122.503576]
+    bounding_box = [37.725210, 37.788478, -122.381811, -122.510828]
     Xgrid = make_grid(bounding_box, nx, ny)
     grid_coord=[]
     count = 0
@@ -124,7 +124,7 @@ def make_grid_points(n_regen, nx, ny):
 
 
 def make_random_points(n_regen):
-    bounding_box = [37.732538, 37.80329, -122.378344, -122.510803]
+    bounding_box = [37.725210, 37.788478, -122.381811, -122.510828]
     AB = bounding_box[1] - bounding_box[0]
     BC = bounding_box[2] - bounding_box[3]
     count = 0
