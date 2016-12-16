@@ -2,6 +2,7 @@
 *.csv
 *.json
 *.log
+*.docx
 *.html
 *.sublime-project
 *.sublime-workspace
