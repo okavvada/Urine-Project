@@ -5,10 +5,10 @@ import numpy as np
 class Parameters_values():
     def __init__(self):
         self.percent_served = 0.5 #percent of pop served
-        self.catridge_diameter = 100 #mm
+        self.catridge_diameter = 25.4 #mm
         self.PVC_lifetime = 50 #years
         self.resin_density = 750 #g/L
-        self.resin_cost_kg = 32 #$/kg #### CHECK with Will
+        self.resin_cost_kg = 2 #$/kg #### CHECK with Will
         self.resin_energy_MJ_kg = 30 #MJ/kg ion exchange resin EcoInvent
         self.resin_GHG_kg_kg= 1 #kg/kg ion exchange resin Econinvent
         self.resin_transport = 300 #km 
@@ -18,11 +18,11 @@ class Parameters_values():
         self.N_urine = 7.5 #gN/L
         self.urine_density = 1 #kg/L
         self.adsorption_density = 4.9 #mmolN/g resin
-        self.molar_mass_N = 14 #g/mol
+        self.molar_mass_N = 14.0067 #g/mol
         self.time_between_catridge_regeneration = 7 #days
         self.time_for_regeneration = 1.5 #h/day
-        self.urine_production = 1 #L/person-day
-        self.household_size = 4 #people
+        self.urine_production = 1.42 #L/person-day
+        self.household_size = 2.54 #people
         self.flow_equalization_retention_time = 1  #day
         self.tank_height = 0.5 #m
         self.tank_thickness = 0.002 #m
@@ -34,9 +34,10 @@ class Parameters_values():
         self.transport_GHG_kg_km= 0.410 #kgCo2/ton-km Taptich
         self.carbon_content = 0.3 #kgdiesel/kgco2 (EIA)
         self.energy_content = 44 #MJ/kgd (EIA)
-        self.transport_energy_MJ_km = self.carbon_content*self.energy_content*self.transport_GHG_kg_km #MJ/ton-km
+        self.transport_energy_MJ_km = 2.7 #MJ/ton-km #Mathews
         self.diesel_cost = 2.2 #$/gal (EIA)
         self.truck_mpg = 10 
+        self.truck_payload = 4.7 #tons
         self.transport_cost_km = 0.08 # $/ton-km
         self.km = 60 #km
         self.truck_manuf_energy = 0.89 #MJ/$
@@ -48,7 +49,7 @@ class Parameters_values():
         self.truck_manufacturing_GHG = self.truck_manuf_GHG*self.truck_cost/(self.truck_milage/self.truck_milage_y) #kg/y
         self.truck_cost_y = self.truck_cost/(self.truck_milage/self.truck_milage_y) #$/y
         self.truck_payload = 5 #tons
-        self.train_energy_MJ_km = 0.36 #MJ/ton-km
+        self.train_energy_MJ_km = 0.3 #MJ/ton-km #Mathews
         self.train_GHG_kg_km = 0.025 #kgCo2/ton-km
         self.train_cost_km = 0.01 # $/ton-km
         self.plastic_energy = 14.8 #MJ/$  EIOLCA plastics manufacturing
@@ -67,13 +68,13 @@ class Parameters_values():
         self.sulphuric_acid_energy = 1.7 #MJ/kg Ecoinvent
         self.sulphuric_acid_GHG = 0.12 #kg/kg Ecoinvent
         self.acid_density = 1840 #g/L
-        self.acid_per_resin_L = 0.17  #L/L 
-        self.acid_per_resin = self.acid_per_resin_L*self.acid_density/(self.resin_density)
-        self.sulphuric_acid_cost = 25 #$/kg ### CHECK
-        self.acid_flow_rate = 22.5 # mL/min
+        self.acid_per_resin_L_kg = 0.000135  #L/g 
+        self.acid_per_resin = self.acid_per_resin_L_kg*self.acid_density #g/g
+        self.sulphuric_acid_cost = 0.273 #$/kg ### CHECK
+        self.acid_flow_rate = 14.6 # mL/min
         self.acid_flow_rate_m3_s = self.acid_flow_rate/(60*1000*1000) #m3/s
         self.acid_transport = 193 #km WEST
-        self.volume_fertilizer_per_person = 0.05 #L/L #CHECK
+        self.volume_fertilizer_per_acid = 149 #L/L #CHECK
         self.fertilizer_density = 1.8 #kg/L 
         self.volume_bottle = 1 #L
         self.bottle_height = 0.3
@@ -82,16 +83,16 @@ class Parameters_values():
         self.collection_times_per_year = 12
         self.facility_manufacturing_energy = 0 #MJ
         self.facility_manufacturing_GHG = 0 #kg
-        self.facility_lifetime = 10 # y
+        self.facility_lifetime = 50 # y
         self.min_facility_cost = 100000
         self.facility_cost_regression = 220.2
 
     def max_min(self):
         maxmin = {
-        'PVC_lifetime_max': 100,
+        'percent_served_max': 80,
+        'percent_served_min':30,
+        'PVC_lifetime_max': 80,
         'PVC_lifetime_min': 20,
-        'resin_density_max': 1.2*self.resin_density,
-        'resin_density_min': 0.8*self.resin_density ,
         'resin_cost_kg_max': 1.2*self.resin_cost_kg,
         'resin_cost_kg_min': 0.8*self.resin_cost_kg ,
         'resin_energy_MJ_kg_max': 1.2*self.resin_energy_MJ_kg,
@@ -100,24 +101,24 @@ class Parameters_values():
         'resin_GHG_kg_kg_min': 0.8*self.resin_GHG_kg_kg,
         'resin_transport_max':1.2*self.resin_transport,
         'resin_transport_min': 0.8*self.resin_transport,
-        'N_urine_max':1.2*self.N_urine,  
-        'N_urine_min':0.8*self.N_urine, 
-        'hydraulic_conductivity_max': 1.2*self.hydraulic_conductivity,
-        'hydraulic_conductivity_min': 0.8*self.hydraulic_conductivity,
+        'N_urine_max':9,  
+        'N_urine_min':4, 
+        'hydraulic_conductivity_max': 0.00289,
+        'hydraulic_conductivity_min': 0.00172,
         'resin_lifetime_max': 1.2*self.resin_lifetime,
         'resin_lifetime_min': 0.8*self.resin_lifetime,
-        'adsorption_density_max':1.2*self.adsorption_density,
-        'adsorption_density_min': 0.8*self.adsorption_density,
-        'time_between_catridge_regeneration_max':1.2*self.time_between_catridge_regeneration,
-        'time_between_catridge_regeneration_min': 0.8*self.time_between_catridge_regeneration,
-        'time_for_regeneration_max': 1.2*self.time_for_regeneration,
-        'time_for_regeneration_min': 0.8*self.time_for_regeneration ,
-        'urine_production_max': 1.2*self.urine_production,
-        'urine_production_min': 0.8*self.urine_production ,
-        'household_size_max': 5,
-        'household_size_min': 2,
-        'flow_equalization_retention_time_max': 1.2*self.flow_equalization_retention_time,
-        'flow_equalization_retention_time_min': 0.8*self.flow_equalization_retention_time ,
+        'adsorption_density_max':5.2,
+        'adsorption_density_min': 3.5,
+        'time_between_catridge_regeneration_max':8,
+        'time_between_catridge_regeneration_min': 6,
+        'time_for_regeneration_max': 1.83,
+        'time_for_regeneration_min': 1.16,
+        'urine_production_max': 2.6,
+        'urine_production_min': 0.6,
+        'household_size_max': 4,
+        'household_size_min': 2.53,
+        'flow_equalization_retention_time_max': 1.2,
+        'flow_equalization_retention_time_min': 0.8,
         'tank_thickness_max': 1.2*self.tank_thickness,
         'tank_thickness_min': 0.8*self.tank_thickness ,
         'steel_GHG_max': 1.2*self.steel_GHG,
@@ -142,8 +143,8 @@ class Parameters_values():
         'train_GHG_kg_km_max': 1.2*self.train_GHG_kg_km ,
         'train_cost_km_max' : 1.2*self.train_cost_km ,
         'train_energy_MJ_km_min' : 0.8*self.train_energy_MJ_km,
-        'train_GHG_kg_km_min': 0.8*self.train_GHG_kg_km ,
-        'train_cost_km_min' : 0.8*self.train_cost_km ,
+        'train_GHG_kg_km_min': 0.8*self.train_GHG_kg_km,
+        'train_cost_km_min' : 0.8*self.train_cost_km,
         'km_max':1.2*self.km , 
         'km_min': 0.8*self.km  ,
         'truck_manuf_energy_max': 1.2*self.truck_manuf_energy,
@@ -192,22 +193,22 @@ class Parameters_values():
         'sulphuric_acid_energy_min': 0.8*self.sulphuric_acid_energy , 
         'sulphuric_acid_GHG_max': 1.2*self.sulphuric_acid_GHG  ,
         'sulphuric_acid_GHG_min': 0.8*self.sulphuric_acid_GHG  ,
-        'acid_density_max': 1.2*self.acid_density ,
-        'acid_density_min': 0.8*self.acid_density ,
-        'acid_per_resin_L_max': 1.2*self.acid_per_resin_L  ,
-        'acid_per_resin_L_min': 0.8*self.acid_per_resin_L ,
+        'acid_density_max': 1840,
+        'acid_density_min': 1831,
+        'acid_per_resin_L_kg_max': 0.0001426,
+        'acid_per_resin_L_kg_min': 0.00009613,
         'acid_per_resin_max': 1.2*self.acid_per_resin,
         'acid_per_resin_min': 0.8*self.acid_per_resin  , 
-        'sulphuric_acid_cost_max': 1.2*self.sulphuric_acid_cost ,
-        'sulphuric_acid_cost_min': 0.8*self.sulphuric_acid_cost,   
-        'acid_flow_rate_max': 1.2*self.acid_flow_rate ,
-        'acid_flow_rate_min': 0.8*self.acid_flow_rate ,
+        'sulphuric_acid_cost_max': 0.458,
+        'sulphuric_acid_cost_min': 0.088,   
+        'acid_flow_rate_max': 0.16,
+        'acid_flow_rate_min': 0.1314,
         'acid_flow_rate_m3_s_max': 1.2*self.acid_flow_rate_m3_s ,
         'acid_flow_rate_m3_s_min': 0.8*self.acid_flow_rate_m3_s, 
         'acid_transport_max': 1.2*self.acid_transport , 
         'acid_transport_min': 0.8*self.acid_transport , 
-        'volume_fertilizer_per_person_max': 1.2*self.volume_fertilizer_per_person  ,
-        'volume_fertilizer_per_person_min': 0.8*self.volume_fertilizer_per_person ,
+        'volume_fertilizer_per_acid_max': 1.2*self.volume_fertilizer_per_acid  ,
+        'volume_fertilizer_per_acid_min': 0.8*self.volume_fertilizer_per_acid ,
         'volume_bottle_max': 1.2*self.volume_bottle  ,
         'volume_bottle_min': 0.8*self.volume_bottle  ,
         'bottle_thickness_max': 1.2*self.bottle_thickness,  
@@ -231,6 +232,7 @@ class Parameters_values():
     def uncertainty(self):
         new_params = Parameters_values()
         maxmin = self.max_min()
+        new_params.percent_served = np.random.uniform(maxmin['percent_served_min'],maxmin['percent_served_max'])
         new_params.PVC_lifetime = np.random.uniform(maxmin['PVC_lifetime_min'],maxmin['PVC_lifetime_max'])
         new_params.resin_density = np.random.uniform(maxmin['resin_density_min'],maxmin['resin_density_max'])
         new_params.resin_cost_kg = np.random.uniform(maxmin['resin_cost_kg_min'],maxmin['resin_cost_kg_max'])
@@ -277,10 +279,8 @@ class Parameters_values():
         new_params.sulphuric_acid_energy = np.random.uniform(maxmin['sulphuric_acid_energy_min'],maxmin['sulphuric_acid_energy_max'])
         new_params.sulphuric_acid_GHG = np.random.uniform(maxmin['sulphuric_acid_GHG_min'],maxmin['sulphuric_acid_GHG_max'])
         new_params.acid_density = np.random.uniform(maxmin['acid_density_min'],maxmin['acid_density_max'])
-        #acid_per_resin = 0.01#kg/kg ### CHECK
-        new_params.acid_per_resin_L = np.random.uniform(maxmin['acid_per_resin_L_min'],maxmin['acid_per_resin_L_max'])
+        new_params.acid_per_resin_L_kg = np.random.uniform(maxmin['acid_per_resin_L_kg_min'],maxmin['acid_per_resin_L_kg_max'])
         new_params.sulphuric_acid_cost = np.random.uniform(maxmin['sulphuric_acid_cost_min'],maxmin['sulphuric_acid_cost_max'])
-        #sulphuric_acid_cost = 0.013 #$/kg 
         new_params.acid_flow_rate = np.random.uniform(maxmin['acid_flow_rate_min'],maxmin['acid_flow_rate_max'])
         new_params.acid_transport = np.random.uniform(maxmin['acid_transport_min'],maxmin['acid_transport_max'])
         new_params.volume_fertilizer_per_acid = np.random.uniform(maxmin['volume_fertilizer_per_acid_min'],maxmin['volume_fertilizer_per_acid_max'])
@@ -298,6 +298,11 @@ class Parameters_values():
     def sensitivity(self, parameter, direction):
         new_params = Parameters_values()
         maxmin = self.max_min()
+        if parameter == 'percent_served':  
+            if direction == 'minus':  
+                new_params.percent_served = self.percent_served - (maxmin['percent_served_max'] - maxmin['percent_served_min'])/10 
+            if direction == 'plus':
+                new_params.percent_served = self.percent_served + (maxmin['percent_served_max'] - maxmin['percent_served_min'])/10 
         if parameter == 'PVC_lifetime':  
             if direction == 'minus':  
                 new_params.PVC_lifetime = self.PVC_lifetime - (maxmin['PVC_lifetime_max'] - maxmin['PVC_lifetime_min'])/10 
@@ -513,11 +518,11 @@ class Parameters_values():
                 new_params.acid_density = self.acid_density - (maxmin['acid_density_max'] -  maxmin['acid_density_min'])/10 
             if direction == 'plus':
                 new_params.acid_density = self.acid_density + (maxmin['acid_density_max'] -  maxmin['acid_density_min'])/10 
-        if parameter == 'acid_per_resin_L':
+        if parameter == 'acid_per_resin_L_kg':
             if direction == 'minus':
-                new_params.acid_per_resin_L = self.acid_per_resin_L - (maxmin['acid_per_resin_L_max'] -  maxmin['acid_per_resin_L_min'])/10 
+                new_params.acid_per_resin_L_kg = self.acid_per_resin_L_kg - (maxmin['acid_per_resin_L_kg_max'] -  maxmin['acid_per_resin_L_kg_min'])/10 
             if direction == 'plus':
-                new_params.acid_per_resin_L = self.acid_per_resin_L + (maxmin['acid_per_resin_L_max'] -  maxmin['acid_per_resin_L_min'])/10 
+                new_params.acid_per_resin_L_kg = self.acid_per_resin_L_kg + (maxmin['acid_per_resin_L_kg_max'] -  maxmin['acid_per_resin_L_kg_min'])/10 
         if parameter == 'sulphuric_acid_cost':
             if direction == 'minus':
                 new_params.sulphuric_acid_cost = self.sulphuric_acid_cost - (maxmin['sulphuric_acid_cost_max'] -  maxmin['sulphuric_acid_cost_min'])/10 

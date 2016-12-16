@@ -70,8 +70,14 @@ def LCA_urine_model(number_of_people_per_facility, distance_regen, truck_num, Pa
 
 
 def LCA_collection(number_of_people_total, distance_collection, Parameters):
-	tons = (Parameters.volume_fertilizer_per_person*number_of_people_total*Parameters.percent_served*Parameters.fertilizer_density)/(Parameters.collection_times_per_year*1000)
-	Logistics_collect = logistics(tons, distance_collection, Parameters)
+	Resin = resin(number_of_people_total, Parameters)
+	Regeneration = regeneration(Resin.mass_resin_household(), number_of_people_total, Parameters)
+	Bottling = bottling(number_of_people_total, Regeneration.mass_sulphuric_facility(), Parameters)
+	tons = (Bottling.volume_ferilizer()*Parameters.fertilizer_density)/(Parameters.collection_times_per_year*1000)
+	num_trucks = tons/10
+	ton_truck = tons/num_trucks
+	distance = distance_collection*num_trucks
+	Logistics_collect = logistics(ton_truck, distance, Parameters)
 	logistics_collect_energy = Logistics_collect.transportation_energy()
 	logistics_collect_GHG = Logistics_collect.transportation_GHG()
 	logistics_collect_cost = Logistics_collect.transportation_cost()

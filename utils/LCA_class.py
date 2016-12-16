@@ -22,7 +22,7 @@ def find_transport_energy(tons, km, lifetime, Parameters, mode = 'truck'):
     
 def find_transport_GHG(tons,km, lifetime, Parameters, mode = 'truck'):
     if mode == 'truck':
-        transport_GHG = tons*Parameters.transport_GHG_kg_km*km/(lifetime)
+        transport_GHG = Parameters.truck_payload*Parameters.transport_GHG_kg_km*km/(lifetime)
     if mode == 'train':
         transport_GHG = tons*Parameters.train_GHG_kg_km*km/(lifetime)
     return transport_GHG #kg_y
@@ -250,11 +250,11 @@ class pump_flow():
 class regeneration():
     def __init__(self, mass_resin, number_of_people_per_facility, Parameters):
         self.Parameters = Parameters
-        self.mass_resin=mass_resin
-        self.number_of_houses_per_facility = number_of_people_per_facility/self.Parameters.household_size
+        self.mass_resin = mass_resin
+        self.number_of_houses_per_facility = number_of_people_per_facility*self.Parameters.percent_served/self.Parameters.household_size
         
     def mass_sulphuric_facility(self):
-        mass_sulphuric_facility=self.mass_resin*self.number_of_houses_per_facility*self.Parameters.percent_served*self.Parameters.acid_per_resin*self.Parameters.porosity*365/self.Parameters.time_between_catridge_regeneration
+        mass_sulphuric_facility = self.mass_resin*self.number_of_houses_per_facility*self.Parameters.acid_per_resin*self.Parameters.porosity*365/self.Parameters.time_between_catridge_regeneration
         return mass_sulphuric_facility #kg_y
     
     def sulphuric_energy(self):
@@ -282,7 +282,7 @@ class bottling():
         self.number_of_people_per_facility = number_of_people_per_facility
         
     def volume_ferilizer(self):
-        volume_ferilizer_facility=self.Parameters.volume_fertilizer_per_person*self.number_of_people_per_facility*self.Parameters.percent_served*365/self.Parameters.time_between_catridge_regeneration
+        volume_ferilizer_facility=self.Parameters.volume_fertilizer_per_acid*self.mass_acid/(self.Parameters.acid_density*1000)
         return volume_ferilizer_facility #L/y
 
     def area_cylinder(self):

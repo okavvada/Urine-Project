@@ -32,7 +32,7 @@ def Run_LCA_model(path, n_regen, n_collection, logistics, analysis, parameter = 
 	Total_COST = pd.DataFrame()
 
 	for index, row in distance_regeneration.iterrows():
-	    number_of_people_per_facility= row['num_people']
+	    number_of_people_per_facility = row['num_people']
 	    distance_regen = row['total_dist_m']
 	    truck_num = np.ceil(row['trucks_num'])
 	    ENERGY, GHG, COST = LCA_urine_model(number_of_people_per_facility, distance_regen, truck_num, Parameters)
