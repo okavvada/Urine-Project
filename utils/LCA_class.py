@@ -131,7 +131,7 @@ class flow_equalization_plastic():
         return volume #m3
     
     def area_cylinder(self):
-        radius = math.sqrt(self.volume()/(math.pi*self.Parameters.tank_height))
+        radius = math.sqrt(abs(self.volume()/(math.pi*self.Parameters.tank_height)))
         area = 2*math.pi*radius*self.Parameters.tank_height+2*math.pi*radius**2
         return area
     

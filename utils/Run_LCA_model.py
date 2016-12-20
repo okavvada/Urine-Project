@@ -48,9 +48,11 @@ def Run_LCA_model(path, n_regen, n_collection, logistics, analysis, parameter = 
 	Total_COST_regen=pd.DataFrame(Total_COST_regen).T
 	Total_people = distance_regeneration['num_people'].sum()*Parameters.percent_served
 
-	print ('Total_people = {}'.format(Total_people))
-	print ('truck_num = {}'.format(distance_regeneration['trucks_num'].sum()))
-	print ('dist = {}'.format(distance_regeneration['total_dist_m'].sum()))
+
+	#print ('Total_people = {}'.format(Total_people))
+	#print ('truck_num = {}'.format(distance_regeneration['trucks_num'].sum()))
+	#print ('dist = {}'.format(distance_regeneration['total_dist_m'].sum()))
+
 
 	Total_Energy_collect, Total_GHG_collect, Total_COST_collect = LCA_collection(Total_people, distance_collection, Parameters)
 
