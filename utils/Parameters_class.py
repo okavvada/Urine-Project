@@ -65,6 +65,7 @@ class Parameters_values():
         self.electricity_cost = 0.1 # $/kWh
         self.specific_weight = 1 #kN/m3
         self.pump_lifetime = 10
+
         self.sulphuric_acid_energy = 1.7 #MJ/kg Ecoinvent
         self.sulphuric_acid_GHG = 0.12 #kg/kg Ecoinvent
         self.acid_density = 1840 #g/L
@@ -73,6 +74,21 @@ class Parameters_values():
         self.sulphuric_acid_cost = 0.273 #$/kg ### CHECK
         self.acid_flow_rate = 22.5 # mL/min
         self.acid_flow_rate_m3_s = self.acid_flow_rate/(60*1000*1000) #m3/s
+        
+        self.Nitricacid_density = 1840 #g/L
+        self.Nitricacid_per_resin_L_kg = 0.000135  #L/g 
+        self.Nitricacid_per_resin = self.Nitricacid_per_resin_L_kg*self.Nitricacid_density #g/g
+        self.Nitric_acid_energy = 25.2 #MJ/kg Ecoinvent
+        self.Nitric_acid_GHG = 6.2 #kg/kg Ecoinvent
+        self.Nitric_acid_cost = 
+
+        self.Hydrochloricacid_density = 1840 #g/L
+        self.Hydrochloricacid_per_resin_L_kg = 0.000135  #L/g 
+        self.Hydrochloricacid_per_resin = self.Hydrochloricacid_per_resin_L_kg*self.Hydrochloricacid_density #g/g
+        self.Hydrochloric_acid_energy = 5.2 #MJ/kg Ecoinvent
+        self.Hydrochloric_acid_GHG = 0.3 #kg/kg Ecoinvent
+        self.Hydrochloric_acid_cost = 
+
         self.acid_transport = 193 #km WEST
         self.volume_fertilizer_per_acid = 149 #L/L #CHECK
         self.fertilizer_density = 1.8 #kg/L 

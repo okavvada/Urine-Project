@@ -9,7 +9,7 @@ from utils.logistics_functions import *
 from utils.LCA_urine_model import LCA_urine_model, LCA_collection
 from utils.logistics_model import logistics_model
 
-def Run_LCA_model(path, n_regen, n_collection, logistics, analysis, parameter = None, direction = None):
+def Run_LCA_model(path, n_regen, n_collection, logistics, analysis, acid_type, parameter = None, direction = None):
 	Parameters = Parameters_values()
 
 	if analysis == 'Normal':
@@ -35,7 +35,7 @@ def Run_LCA_model(path, n_regen, n_collection, logistics, analysis, parameter = 
 	    number_of_people_per_facility = row['num_people']
 	    distance_regen = row['total_dist_m']
 	    truck_num = np.ceil(row['trucks_num'])
-	    ENERGY, GHG, COST = LCA_urine_model(number_of_people_per_facility, distance_regen, truck_num, Parameters)
+	    ENERGY, GHG, COST = LCA_urine_model(number_of_people_per_facility, distance_regen, truck_num, Parameters, acid_type)
 	    Total_Energy = Total_Energy.append(ENERGY)
 	    Total_GHG = Total_GHG.append(GHG)
 	    Total_COST = Total_COST.append(COST)
@@ -48,13 +48,7 @@ def Run_LCA_model(path, n_regen, n_collection, logistics, analysis, parameter = 
 	Total_COST_regen=pd.DataFrame(Total_COST_regen).T
 	Total_people = distance_regeneration['num_people'].sum()*Parameters.percent_served
 
-
-	#print ('Total_people = {}'.format(Total_people))
-	#print ('truck_num = {}'.format(distance_regeneration['trucks_num'].sum()))
-	#print ('dist = {}'.format(distance_regeneration['total_dist_m'].sum()))
-
-
-	Total_Energy_collect, Total_GHG_collect, Total_COST_collect = LCA_collection(Total_people, distance_collection, Parameters)
+	Total_Energy_collect, Total_GHG_collect, Total_COST_collect = LCA_collection(Total_people, distance_collection, Parameters, acid_type)
 
 	Total_Energy_total = Total_Energy_regen
 	Total_GHG_total = Total_GHG_regen

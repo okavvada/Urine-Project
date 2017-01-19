@@ -7,7 +7,7 @@ import math
 from utils.LCA_class import resin, catridge, flow_equalization_plastic, pump_flow, regeneration, logistics, trucks, regeneration_facility, bottling
 
 
-def LCA_urine_model(number_of_people_per_facility, distance_regen, truck_num, Parameters):
+def LCA_urine_model(number_of_people_per_facility, distance_regen, truck_num, Parameters, acid_type):
 
 	Resin = resin(number_of_people_per_facility, Parameters)
 
@@ -17,7 +17,7 @@ def LCA_urine_model(number_of_people_per_facility, distance_regen, truck_num, Pa
 
 	Pump = pump_flow(Catridge.diameter, Catridge.catridge_length(), number_of_people_per_facility, Parameters)
 
-	Regeneration = regeneration(Resin.mass_resin_household(), number_of_people_per_facility, Parameters)
+	Regeneration = regeneration(Resin.mass_resin_household(), number_of_people_per_facility, Parameters, acid_type)
 
 	Bottling = bottling(number_of_people_per_facility, Regeneration.mass_sulphuric_facility(), Parameters)
 
@@ -69,9 +69,9 @@ def LCA_urine_model(number_of_people_per_facility, distance_regen, truck_num, Pa
 	return Total_ENERGY_plot, Total_GHG_plot, Total_COST_plot
 
 
-def LCA_collection(number_of_people_total, distance_collection, Parameters):
+def LCA_collection(number_of_people_total, distance_collection, Parameters, acid_type):
 	Resin = resin(number_of_people_total, Parameters)
-	Regeneration = regeneration(Resin.mass_resin_household(), number_of_people_total, Parameters)
+	Regeneration = regeneration(Resin.mass_resin_household(), number_of_people_total, Parameters, acid_type)
 	Bottling = bottling(number_of_people_total, Regeneration.mass_sulphuric_facility(), Parameters)
 	tons = (Bottling.volume_ferilizer()*Parameters.fertilizer_density)/(Parameters.collection_times_per_year*1000)
 	num_trucks = tons/10

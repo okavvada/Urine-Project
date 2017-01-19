@@ -248,25 +248,40 @@ class pump_flow():
 
 
 class regeneration():
-    def __init__(self, mass_resin, number_of_people_per_facility, Parameters):
+    def __init__(self, mass_resin, number_of_people_per_facility, Parameters, acid_type):
         self.Parameters = Parameters
         self.mass_resin = mass_resin
         self.number_of_houses_per_facility = number_of_people_per_facility*self.Parameters.percent_served/self.Parameters.household_size
+        if acid_type == 'Sulfuric':
+            self.acid_per_resin = self.Parameters.acid_per_resin
+            self.acid_energy = self.Parameters.sulphuric_acid_energy
+            self.acid_GHG = self.Parameters.sulphuric_acid_GHG
+            self.acid_cost= self.Parameters.sulphuric_acid_cost
+        if acid_type == 'Nitric':
+            self.acid_per_resin = self.Parameters.Nitricacid_per_resin
+            self.acid_energy = self.Parameters.Nitric_acid_energy
+            self.acid_GHG = self.Parameters.Nitric_acid_GHG
+            self.acid_cost= self.Parameters.Nitric_acid_cost
+        if acid_type == 'Hydrochloric':
+            self.acid_per_resin = self.Parameters.Hydrochloricacid_per_resin
+            self.acid_energy = self.Parameters.Hydrochloric_acid_energy
+            self.acid_GHG = self.Parameters.Hydrochloric_acid_GHG
+            self.acid_cost= self.Parameters.Hydrochloric_acid_cost
         
     def mass_sulphuric_facility(self):
-        mass_sulphuric_facility = self.mass_resin*self.number_of_houses_per_facility*self.Parameters.acid_per_resin*self.Parameters.porosity*365/self.Parameters.time_between_catridge_regeneration
+        mass_sulphuric_facility = self.mass_resin*self.number_of_houses_per_facility*self.acid_per_resin*self.Parameters.porosity*365/self.Parameters.time_between_catridge_regeneration
         return mass_sulphuric_facility #kg_y
     
     def sulphuric_energy(self):
-        sulphuric_energy = self.mass_sulphuric_facility()*self.Parameters.sulphuric_acid_energy
+        sulphuric_energy = self.mass_sulphuric_facility()*self.acid_energy
         return sulphuric_energy #MJ_y
     
     def sulphuric_GHG(self):
-        sulphuric_GHG = self.mass_sulphuric_facility()*self.Parameters.sulphuric_acid_GHG
+        sulphuric_GHG = self.mass_sulphuric_facility()*self.acid_GHG 
         return sulphuric_GHG #kg_y
 
     def sulphuric_cost(self):
-        sulphuric_cost = self.mass_sulphuric_facility()*self.Parameters.sulphuric_acid_cost
+        sulphuric_cost = self.mass_sulphuric_facility()*self.acid_cost
         return sulphuric_cost #kg_y
 
     def acid_transport(self):
