@@ -6,6 +6,8 @@ class Parameters_values():
     def __init__(self):
         self.percent_served = 0.5 #percent of pop served
         self.catridge_diameter = 25.4 #mm
+        self.catridge_thickness = 0.005 #m
+        self.catridge_lifetime = 5
         self.PVC_lifetime = 50 #years
         self.resin_density = 750 #g/L
         self.resin_cost_kg = 2 #$/kg #### CHECK with Will
@@ -22,7 +24,7 @@ class Parameters_values():
         self.time_between_catridge_regeneration = 7 #days
         self.time_for_regeneration = 1.5 #h/day
         self.urine_production = 1.42 #L/person-day
-        self.household_size = 2.54 #people
+        self.household_size = 2.54/1.5#people/cartridge
         self.flow_equalization_retention_time = 1  #day
         self.tank_height = 0.5 #m
         self.tank_thickness = 0.002 #m
@@ -57,9 +59,15 @@ class Parameters_values():
         self.plastic_cost = 300  #$/m3 alibaba
         self.plastic_density = 20 #kg/m3
         self.plastic_lifetime = 50 #years
+        self.fiberglass_density = 1.5 #kg/L
+        self.fiberglass_lifetime = 10 #years
         self.plastic_energy_MJ_kg = self.plastic_energy*self.plastic_cost/self.plastic_density
         self.plastic_GHG_kg_kg = self.plastic_GHG*self.plastic_cost/self.plastic_density
         self.plastic_cost_kg = self.plastic_cost/self.plastic_density
+        self.fiberglass_energy_MJ_kg = 36 #Ecoinvent
+        self.fiberglass_GHG_kg_kg = 2.9 #Ecoinvent
+        self.fiberglass_cost = 1955 # $/m3 Boyer
+        self.fiberglass_cost_kg = self.fiberglass_cost/(1000*self.fiberglass_density)
         self.motor_efficiency = 0.95 
         self.electricity_EF = 0.083 #kgCO2/kWh
         self.electricity_cost = 0.1 # $/kWh
@@ -69,39 +77,49 @@ class Parameters_values():
         self.sulphuric_acid_energy = 1.7 #MJ/kg Ecoinvent
         self.sulphuric_acid_GHG = 0.12 #kg/kg Ecoinvent
         self.acid_density = 1840 #g/L
-        self.acid_per_resin_L_kg = 0.000135  #L/g 
-        self.acid_per_resin = self.acid_per_resin_L_kg*self.acid_density #g/g
-        self.sulphuric_acid_cost = 0.273 #$/kg ### CHECK
+        self.acid_per_resin_L_g = 0.000135  #L/g 
+        self.acid_per_resin = self.acid_per_resin_L_g*self.acid_density #g/g
+        self.sulphuric_acid_cost = 0.27 #$/kg
         self.acid_flow_rate = 22.5 # mL/min
         self.acid_flow_rate_m3_s = self.acid_flow_rate/(60*1000*1000) #m3/s
         
-        self.Nitricacid_density = 1840 #g/L
-        self.Nitricacid_per_resin_L_kg = 0.000135  #L/g 
-        self.Nitricacid_per_resin = self.Nitricacid_per_resin_L_kg*self.Nitricacid_density #g/g
-        self.Nitric_acid_energy = 25.2 #MJ/kg Ecoinvent
-        self.Nitric_acid_GHG = 6.2 #kg/kg Ecoinvent
-        self.Nitric_acid_cost = 
+        self.Nitricacid_density = 1510 #g/L
+        self.Nitricacid_per_resin_L_L = 0.23 # L/L
+        self.Nitricacid_per_resin = self.Nitricacid_per_resin_L_L*self.Nitricacid_density/self.resin_density #g/g
+        self.Nitric_acid_energy = 12.6 #MJ/kg Ecoinvent
+        self.Nitric_acid_GHG = 3.1 #kg/kg Ecoinvent
+        self.Nitric_acid_cost = 0.2867 #$/kg 
 
-        self.Hydrochloricacid_density = 1840 #g/L
-        self.Hydrochloricacid_per_resin_L_kg = 0.000135  #L/g 
-        self.Hydrochloricacid_per_resin = self.Hydrochloricacid_per_resin_L_kg*self.Hydrochloricacid_density #g/g
-        self.Hydrochloric_acid_energy = 5.2 #MJ/kg Ecoinvent
-        self.Hydrochloric_acid_GHG = 0.3 #kg/kg Ecoinvent
-        self.Hydrochloric_acid_cost = 
+        self.Hydrochloricacid_density = 1000 #g/L
+        self.Hydrochloricacid_per_resin_L_L = 0.3 # L/L
+        self.Hydrochloricacid_per_resin = self.Hydrochloricacid_per_resin_L_L*self.Hydrochloricacid_density/self.resin_density #g/g
+        self.Hydrochloric_acid_energy = 11.2 #MJ/kg Ecoinvent
+        self.Hydrochloric_acid_GHG = 0.82 #kg/kg Ecoinvent
+        self.Hydrochloric_acid_cost = 0.285 #$/kg 
 
         self.acid_transport = 193 #km WEST
-        self.volume_fertilizer_per_acid = 149 #L/L #CHECK
+        self.volume_fertilizer_per_acid = 149 #L/L 
         self.fertilizer_density = 1.8 #kg/L 
         self.volume_bottle = 1 #L
         self.bottle_height = 0.3
-        self.bottle_thickness = 0.005 #m
-        self.bottle_lifetime = 5 #y
-        self.collection_times_per_year = 12
+        self.bottle_thickness = 0.001 #m
+        self.bottle_lifetime = 10 #y
+        self.collection_times_per_year = 52
         self.facility_manufacturing_energy = 0 #MJ
         self.facility_manufacturing_GHG = 0 #kg
         self.facility_lifetime = 50 # y
         self.min_facility_cost = 100000
         self.facility_cost_regression = 220.2
+
+        self.ureafertilizer_molar_mass = 0.132 #kg/mol
+        self.conventional_fertilizer_molar_mass = 0.080 #kg/mol
+        self.fertilizer_energy = 55 #MJ/kgN Ecoinvent ammonium nitrate
+        self.fertilizer_GHG = 8.5 #kg/kgN Ecoinvent ammonium nitrate
+        self.fertilizer_cost = 1.7 #$/kgN  #https://www.noble.org/news/publications/ag-news-and-views/2012/june/summer-nitrogen-sources---which-is-best/
+        self.kgN_per_kg_fertilizer = 0.35  #
+        self.wages = 240 #$/day
+        self.num_employees = 2 #per facility
+
 
     def max_min(self):
         maxmin = {

@@ -71,7 +71,9 @@ def find_distance_regeneration_scheduled(dataframe, k_means_labels):
             point = (row['lat_lat'], row['lon_lon'])
             cluster_center_meters[i].append(point)
         if len(size_all[i]) != 0:
-            trucks = len(cluster_center_meters[i])/100
+            trucks = len(cluster_center_meters[i])/(100)
+            if trucks<1:
+                trucks = 1
             if trucks > 1:
                 for j in range (0, len(cluster_center_meters[i]), 100):
                     total_distance_truck = total_distance(optimized_travelling_salesman(cluster_center_meters[i][j:j+100]))/(1000)
@@ -81,7 +83,7 @@ def find_distance_regeneration_scheduled(dataframe, k_means_labels):
 
         total_peop = size_all[i]['nu_peo_emp'].sum()
         trucks_num = int(trucks)
-        totals = (i, total_peop, trucks, total_distance_schedule)
+        totals = (i, total_peop, trucks_num, total_distance_schedule)
         size_all_distance.append(totals)
     totals_all_df = pd.DataFrame(size_all_distance, columns=['cluster', 'num_people', 'trucks_num' ,'total_dist_m'])   
     return totals_all_df
@@ -233,7 +235,7 @@ def facility_manufacturing_curve_power(houses):
     return cost
 
 def facility_manufacturing_curve(houses,a):
-    required_area = 10+houses*0.004/1
+    required_area = 10+houses*0.004
     cost = (a*required_area)*12
     return cost #$/y
 

@@ -21,7 +21,7 @@ def LCA_urine_model(number_of_people_per_facility, distance_regen, truck_num, Pa
 
 	Bottling = bottling(number_of_people_per_facility, Regeneration.mass_sulphuric_facility(), Parameters)
 
-	tons = (Resin.mass_resin_household()*number_of_people_per_facility*Parameters.percent_served/Parameters.household_size + Catridge.mass_PVC())/(1000*truck_num)
+	tons = (Resin.mass_resin_household()*number_of_people_per_facility*Parameters.percent_served/Parameters.household_size + Catridge.mass_fiberglass())/(1000*truck_num)
 
 	Logistics_regen = logistics(tons, distance_regen, Parameters)
 
@@ -57,14 +57,14 @@ def LCA_urine_model(number_of_people_per_facility, distance_regen, truck_num, Pa
 	Total_COST=pd.DataFrame(Total_COST)
 	Total_COST_plot=Total_COST.transpose()
 
-	Total_ENERGY_plot.columns=['Resin manufacturing', 'Catridge manufacturing', 'Tank manufacturing', 'Pump operation', 'Pump manufacturing', 
-	                          'Acid manufacturing', 'Logistics_regen', 'trucks manufacturing', 'Bottling', 'Material transport']
+	Total_ENERGY_plot.columns=['Resin manufacturing', 'Cartridge manufacturing', 'Tank manufacturing', 'Pump operation', 'Pump manufacturing', 
+	                          'Acid manufacturing', 'Cartridge collection', 'Trucks manufacturing', 'Bottling', 'Material transport']
 
-	Total_GHG_plot.columns=['Resin manufacturing', 'Catridge manufacturing', 'Tank manufacturing', 'Pump operation', 'Pump manufacturing', 
-	                          'Acid manufacturing', 'Logistics_regen', 'trucks manufacturing', 'Bottling', 'Material transport']
+	Total_GHG_plot.columns=['Resin manufacturing', 'Cartridge manufacturing', 'Tank manufacturing', 'Pump operation', 'Pump manufacturing', 
+	                          'Acid manufacturing', 'Cartridge collection', 'Trucks manufacturing', 'Bottling', 'Material transport']
 
-	Total_COST_plot.columns=['Resin manufacturing', 'Catridge manufacturing', 'Tank manufacturing', 'Pump operation', 'Pump manufacturing', 
-	                          'Acid manufacturing', 'Logistics_regen', 'trucks manufacturing', 'facility space', 'Bottling', 'Material transport']
+	Total_COST_plot.columns=['Resin manufacturing', 'Cartridge manufacturing', 'Tank manufacturing', 'Pump operation', 'Pump manufacturing', 
+	                          'Acid manufacturing', 'Cartridge collection', 'Trucks manufacturing', 'Renting facility space', 'Bottling', 'Material transport']
 
 	return Total_ENERGY_plot, Total_GHG_plot, Total_COST_plot
 
@@ -73,13 +73,29 @@ def LCA_collection(number_of_people_total, distance_collection, Parameters, acid
 	Resin = resin(number_of_people_total, Parameters)
 	Regeneration = regeneration(Resin.mass_resin_household(), number_of_people_total, Parameters, acid_type)
 	Bottling = bottling(number_of_people_total, Regeneration.mass_sulphuric_facility(), Parameters)
-	tons = (Bottling.volume_ferilizer()*Parameters.fertilizer_density)/(Parameters.collection_times_per_year*1000)
-	num_trucks = tons/10
+	tons = (Bottling.volume_ferilizer()*Parameters.fertilizer_density)/(1000)/Parameters.collection_times_per_year
+	num_trucks = tons/20
 	ton_truck = tons/num_trucks
-	distance = distance_collection*num_trucks
+	distance = distance_collection
 	Logistics_collect = logistics(ton_truck, distance, Parameters)
 	logistics_collect_energy = Logistics_collect.transportation_energy()
 	logistics_collect_GHG = Logistics_collect.transportation_GHG()
 	logistics_collect_cost = Logistics_collect.transportation_cost()
 
 	return logistics_collect_energy, logistics_collect_GHG, logistics_collect_cost
+
+def fertilizer_offset(number_of_people_total, Parameters, acid_type):
+	Resin = resin(number_of_people_total, Parameters)
+	Regeneration = regeneration(Resin.mass_resin_household(), number_of_people_total, Parameters, acid_type)
+	Bottling = bottling(number_of_people_total, Regeneration.mass_sulphuric_facility(), Parameters)
+	kg_fert = (Bottling.volume_ferilizer()*Parameters.fertilizer_density)
+	print ("fertilizer kg %s" %kg_fert)
+	mass_N_offset = kg_fert/((Parameters.ureafertilizer_molar_mass)/(2*Parameters.molar_mass_N/1000)) #kgN
+    
+	energy_offset = -mass_N_offset*Parameters.fertilizer_energy
+	GHG_offset = -mass_N_offset*Parameters.fertilizer_GHG
+	Cost_offset = -mass_N_offset*Parameters.fertilizer_cost
+
+	return energy_offset, GHG_offset, Cost_offset
+
+

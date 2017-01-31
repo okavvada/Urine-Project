@@ -84,39 +84,55 @@ class catridge():
     def catridge_length(self):
         catridge_length = self.catridge_volume()/1000/(math.pi*((self.diameter)/2/1000)**2) #m
         return catridge_length
+
+    def area_cylinder(self):
+        radius = math.sqrt(self.catridge_volume()/1000/(math.pi*self.catridge_length()))
+        area = 2*math.pi*radius*self.catridge_length()+2*math.pi*radius**2
+        return area
     
-    def mass_PVC(self):
-        diameter_mm=self.diameter
-        diameter=find_nearest(nominal_diameter_list,diameter_mm)
-        pipe_index=pipe_construction_data.set_index('size_mm')
-        pipe_weight_kg=pipe_index.Wt_kg_m[diameter]*self.catridge_length()*self.number_of_houses_per_facility*self.Parameters.percent_served
-        return pipe_weight_kg
+    def mass_fiberglass(self):
+        area = self.area_cylinder()       
+        mass = area*self.Parameters.catridge_thickness*self.Parameters.fiberglass_density*1000
+        return mass
+    
+    # def mass_PVC(self):
+    #     diameter_mm=self.diameter
+    #     diameter=find_nearest(nominal_diameter_list,diameter_mm)
+    #     pipe_index=pipe_construction_data.set_index('size_mm')
+    #     pipe_weight_kg=pipe_index.Wt_kg_m[diameter]*self.catridge_length()*self.number_of_houses_per_facility*self.Parameters.percent_served
+    #     return pipe_weight_kg
 
     def PVC_energy(self):
-        pipe_index=pipe_construction_data.set_index('size_mm')
-        diameter_mm=self.diameter
-        diameter=find_nearest(nominal_diameter_list,diameter_mm)
-        PVC_energy_MJ=pipe_index.Embodied_Energy_MJ_kg[diameter]*self.mass_PVC()/self.Parameters.PVC_lifetime
+        #pipe_index=pipe_construction_data.set_index('size_mm')
+        #diameter_mm=self.diameter
+        #diameter=find_nearest(nominal_diameter_list,diameter_mm)
+        #PVC_energy_MJ=pipe_index.Embodied_Energy_MJ_kg[diameter]*self.mass_PVC()/self.Parameters.PVC_lifetime
+        mass = self.mass_fiberglass()
+        PVC_energy_MJ = mass*self.Parameters.fiberglass_energy_MJ_kg/self.Parameters.catridge_lifetime
         return PVC_energy_MJ # MJ_y
 
     def PVC_GHG(self):
-        pipe_index=pipe_construction_data.set_index('size_mm')
-        diameter_mm=self.diameter
-        diameter=find_nearest(nominal_diameter_list,diameter_mm)
-        PVC_GHG_kg=pipe_index.Emissions_kgCO2_eq_m[diameter]*self.catridge_length()*self.number_of_houses_per_facility*self.Parameters.percent_served/self.Parameters.PVC_lifetime
+        #pipe_index=pipe_construction_data.set_index('size_mm')
+        #diameter_mm=self.diameter
+        #diameter=find_nearest(nominal_diameter_list,diameter_mm)
+        #PVC_GHG_kg=pipe_index.Emissions_kgCO2_eq_m[diameter]*self.catridge_length()*self.number_of_houses_per_facility*self.Parameters.percent_served/self.Parameters.PVC_lifetime
+        mass = self.mass_fiberglass()
+        PVC_GHG_kg = mass*self.Parameters.fiberglass_GHG_kg_kg/self.Parameters.catridge_lifetime
         return PVC_GHG_kg # kg_y
 
     def PVC_cost(self):
-        pipe_index=pipe_construction_data.set_index('size_mm')
-        diameter_mm=self.diameter
-        diameter=find_nearest(nominal_diameter_list,diameter_mm)
-        PVC_cost=pipe_index.cost_2012_m[diameter]*self.catridge_length()*self.number_of_houses_per_facility*self.Parameters.percent_served/self.Parameters.PVC_lifetime
+        #pipe_index=pipe_construction_data.set_index('size_mm')
+        #diameter_mm=self.diameter
+        #diameter=find_nearest(nominal_diameter_list,diameter_mm)
+        #PVC_cost=pipe_index.cost_2012_m[diameter]*self.catridge_length()*self.number_of_houses_per_facility*self.Parameters.percent_served/self.Parameters.PVC_lifetime
+        mass = self.mass_fiberglass()
+        PVC_cost = mass*self.Parameters.fiberglass_cost_kg/self.Parameters.catridge_lifetime
         return PVC_cost # $_y
 
     def cartridge_transport(self):
-        Transport_energy = find_transport_energy(self.mass_PVC()/1000, self.Parameters.km, self.Parameters.PVC_lifetime, self.Parameters, mode='truck')
-        Transport_GHG = find_transport_GHG(self.mass_PVC()/1000, self.Parameters.km, self.Parameters.PVC_lifetime, self.Parameters, mode='truck')
-        Transport_cost = find_transport_cost(self.mass_PVC()/1000, self.Parameters.km, self.Parameters.PVC_lifetime, self.Parameters, mode='truck')
+        Transport_energy = find_transport_energy(self.mass_fiberglass()/1000, self.Parameters.km, self.Parameters.fiberglass_lifetime, self.Parameters, mode='truck')
+        Transport_GHG = find_transport_GHG(self.mass_fiberglass()/1000, self.Parameters.km, self.Parameters.fiberglass_lifetime, self.Parameters, mode='truck')
+        Transport_cost = find_transport_cost(self.mass_fiberglass()/1000, self.Parameters.km, self.Parameters.fiberglass_lifetime, self.Parameters, mode='truck')
         return Transport_energy,Transport_GHG,Transport_cost
 
 
@@ -297,39 +313,39 @@ class bottling():
         self.number_of_people_per_facility = number_of_people_per_facility
         
     def volume_ferilizer(self):
-        volume_ferilizer_facility=self.Parameters.volume_fertilizer_per_acid*self.mass_acid/(self.Parameters.acid_density*1000)
+        volume_ferilizer_facility=self.Parameters.volume_fertilizer_per_acid*self.mass_acid/(self.Parameters.acid_density/1000)
         return volume_ferilizer_facility #L/y
 
     def area_cylinder(self):
-        radius = self.Parameters.volume_bottle/1000/(math.pi*self.Parameters.bottle_height)
+        radius = math.sqrt(self.Parameters.volume_bottle/1000/(math.pi*self.Parameters.bottle_height))
         area = 2*math.pi*radius*self.Parameters.bottle_height+2*math.pi*radius**2
         return area
     
     def mass_plastic(self):
         area = self.area_cylinder()       
-        mass = area*self.Parameters.bottle_thickness*self.Parameters.plastic_density
-        mass_total = self.volume_ferilizer()/self.Parameters.volume_bottle*mass
+        mass = area*self.Parameters.bottle_thickness*self.Parameters.fiberglass_density*1000
+        mass_total = self.volume_ferilizer()/self.Parameters.volume_bottle*mass/(self.Parameters.collection_times_per_year/2)
         return mass_total
         
     def plastic_energy(self):
         mass = self.mass_plastic()
-        plastic_energy = mass*self.Parameters.plastic_energy_MJ_kg/self.Parameters.bottle_lifetime
+        plastic_energy = mass*self.Parameters.fiberglass_energy_MJ_kg/self.Parameters.bottle_lifetime
         return plastic_energy #MJ_y
 
     def plastic_GHG(self):
         mass = self.mass_plastic()
-        plastic_GHG = mass*self.Parameters.plastic_GHG_kg_kg/self.Parameters.bottle_lifetime
+        plastic_GHG = mass*self.Parameters.fiberglass_GHG_kg_kg/self.Parameters.bottle_lifetime
         return plastic_GHG #kg_y
 
     def plastic_cost(self):
         mass = self.mass_plastic()
-        plastic_cost = mass*self.Parameters.plastic_cost_kg/self.Parameters.bottle_lifetime
+        plastic_cost = mass*self.Parameters.fiberglass_cost_kg/self.Parameters.bottle_lifetime
         return plastic_cost # $_y
 
     def bottle_transport(self):
-        Transport_energy = find_transport_energy(self.mass_plastic()/1000, self.Parameters.km, self.Parameters.plastic_lifetime, self.Parameters, mode='truck')
-        Transport_GHG = find_transport_GHG(self.mass_plastic()/1000, self.Parameters.km, self.Parameters.plastic_lifetime, self.Parameters, mode='truck')
-        Transport_cost = find_transport_cost(self.mass_plastic()/1000, self.Parameters.km, self.Parameters.plastic_lifetime, self.Parameters, mode='truck')
+        Transport_energy = find_transport_energy(self.mass_plastic()/1000, self.Parameters.km, self.Parameters.bottle_lifetime, self.Parameters, mode='truck')
+        Transport_GHG = find_transport_GHG(self.mass_plastic()/1000, self.Parameters.km, self.Parameters.bottle_lifetime, self.Parameters, mode='truck')
+        Transport_cost = find_transport_cost(self.mass_plastic()/1000, self.Parameters.km, self.Parameters.bottle_lifetime, self.Parameters, mode='truck')
         return Transport_energy,Transport_GHG,Transport_cost
 
 
@@ -365,7 +381,7 @@ class regeneration_facility():
         return total_GHG
 
     def total_cost(self):
-        total_cost = facility_manufacturing_curve(self.number_of_houses_per_facility*self.Parameters.percent_served, self.Parameters.facility_cost_regression)
+        total_cost = facility_manufacturing_curve(self.number_of_houses_per_facility*self.Parameters.percent_served*0.5, self.Parameters.facility_cost_regression)
         return total_cost
 
 
