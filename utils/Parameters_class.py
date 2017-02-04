@@ -5,9 +5,9 @@ import numpy as np
 class Parameters_values():
     def __init__(self):
         self.percent_served = 0.5 #percent of pop served
-        self.catridge_diameter = 25.4 #mm
+        self.catridge_diameter = 12 #cm
         self.catridge_thickness = 0.005 #m
-        self.catridge_lifetime = 5
+        self.catridge_lifetime = 10
         self.PVC_lifetime = 50 #years
         self.resin_density = 750 #g/L
         self.resin_cost_kg = 2 #$/kg #### CHECK with Will
@@ -22,6 +22,7 @@ class Parameters_values():
         self.adsorption_density = 4.9 #mmolN/g resin
         self.molar_mass_N = 14.0067 #g/mol
         self.time_between_catridge_regeneration = 7 #days
+        self.time_between_catridge_regeneration_2 = 7
         self.time_for_regeneration = 1.5 #h/day
         self.urine_production = 1.42 #L/person-day
         self.household_size = 2.54/1.5#people/cartridge
@@ -33,15 +34,17 @@ class Parameters_values():
         self.steel_sheet_mass = 186.9 #kg
         self.steel_sheet_area = 3.72 #m2
         self.steel_lifetime = 50 #years
-        self.transport_GHG_kg_km= 0.410 #kgCo2/ton-km Taptich
-        self.carbon_content = 0.3 #kgdiesel/kgco2 (EIA)
-        self.energy_content = 44 #MJ/kgd (EIA)
-        self.transport_energy_MJ_km = 2.7 #MJ/ton-km #Mathews
-        self.diesel_cost = 2.2 #$/gal (EIA)
+        self.diesel_cost = 2.3 #$/gal (EIA)
         self.truck_mpg = 10 
         self.truck_payload = 4.7 #tons
         self.transport_cost_km = 0.08 # $/ton-km
         self.km = 60 #km
+        self.transport_GHG_kg_km= 0.410 #kgCo2/ton-km Taptich
+        self.carbon_content = 10 #kgco2/gal d (EIA)
+        self.energy_content = 46.8 #MJ/kgd (EIA)
+        self.diesel_density = 0.832 #kg/L
+        #self.transport_energy_MJ_km = 2.7 #MJ/ton-km #Mathews
+        self.transport_energy_MJ_km = self.transport_GHG_kg_km/self.carbon_content*3.6*self.energy_content*self.diesel_density #MJ/ton-km
         self.truck_manuf_energy = 0.89 #MJ/$
         self.truck_manuf_GHG = 0.06 #kgCO2/$
         self.truck_milage = 1500000
@@ -50,7 +53,7 @@ class Parameters_values():
         self.truck_manufacturing_energy = self.truck_manuf_energy*self.truck_cost/(self.truck_milage/self.truck_milage_y) #MJ/y
         self.truck_manufacturing_GHG = self.truck_manuf_GHG*self.truck_cost/(self.truck_milage/self.truck_milage_y) #kg/y
         self.truck_cost_y = self.truck_cost/(self.truck_milage/self.truck_milage_y) #$/y
-        self.truck_payload = 5 #tons
+        self.truck_payload = 3.5 #tons
         self.train_energy_MJ_km = 0.3 #MJ/ton-km #Mathews
         self.train_GHG_kg_km = 0.025 #kgCo2/ton-km
         self.train_cost_km = 0.01 # $/ton-km
@@ -98,7 +101,8 @@ class Parameters_values():
         self.Hydrochloric_acid_cost = 0.285 #$/kg 
 
         self.acid_transport = 193 #km WEST
-        self.volume_fertilizer_per_acid = 149 #L/L 
+        self.volume_fertilizer_per_acid = 1 #L/L 
+        self.mass_N_per_cartridge = 0.12849 #kgN per cartridge
         self.fertilizer_density = 1.8 #kg/L 
         self.volume_bottle = 1 #L
         self.bottle_height = 0.3
@@ -110,6 +114,7 @@ class Parameters_values():
         self.facility_lifetime = 50 # y
         self.min_facility_cost = 100000
         self.facility_cost_regression = 220.2
+        self.trucks_serving = 200
 
         self.ureafertilizer_molar_mass = 0.132 #kg/mol
         self.conventional_fertilizer_molar_mass = 0.080 #kg/mol
@@ -117,7 +122,8 @@ class Parameters_values():
         self.fertilizer_GHG = 8.5 #kg/kgN Ecoinvent ammonium nitrate
         self.fertilizer_cost = 1.7 #$/kgN  #https://www.noble.org/news/publications/ag-news-and-views/2012/june/summer-nitrogen-sources---which-is-best/
         self.kgN_per_kg_fertilizer = 0.35  #
-        self.wages = 240 #$/day
+        self.wages_truck = 128 #$/day
+        self.wages_facility = 296 #$/day
         self.num_employees = 2 #per facility
 
 
@@ -149,8 +155,8 @@ class Parameters_values():
         'time_for_regeneration_min': 1.16,
         'urine_production_max': 2.4,
         'urine_production_min': 0.8,
-        'household_size_max': 4,
-        'household_size_min': 2.53,
+        'household_size_max': 1.2*self.household_size,
+        'household_size_min': 0.8*self.household_size,
         'flow_equalization_retention_time_max': 1.2,
         'flow_equalization_retention_time_min': 0.8,
         'tank_thickness_max': 1.2*self.tank_thickness,
@@ -203,6 +209,12 @@ class Parameters_values():
         'plastic_GHG_min': 0.8*self.plastic_GHG,
         'plastic_cost_max': 1.2*self.plastic_cost, 
         'plastic_cost_min': 0.8*self.plastic_cost ,
+        'fiberglass_energy_max': 1.2*self.fiberglass_energy_MJ_kg, 
+        'fiberglass_energy_min': 0.8*self.fiberglass_energy_MJ_kg ,
+        'fiberglass_GHG_max': 1.2*self.fiberglass_GHG_kg_kg,
+        'fiberglass_GHG_min': 0.8*self.fiberglass_GHG_kg_kg,
+        'fiberglass_cost_max': 1.2*self.fiberglass_cost, 
+        'fiberglass_cost_min': 0.8*self.fiberglass_cost ,
         'plastic_density_max': 1.2*self.plastic_density , 
         'plastic_density_min': 0.8*self.plastic_density ,
         'plastic_lifetime_max': 1.2*self.plastic_lifetime,  
@@ -227,14 +239,14 @@ class Parameters_values():
         'sulphuric_acid_energy_min': 0.8*self.sulphuric_acid_energy , 
         'sulphuric_acid_GHG_max': 1.2*self.sulphuric_acid_GHG  ,
         'sulphuric_acid_GHG_min': 0.8*self.sulphuric_acid_GHG  ,
-        'acid_density_max': 1840,
-        'acid_density_min': 1831,
+        'acid_density_max': 1.2*self.acid_density,
+        'acid_density_min': 0.8*self.acid_density,
         'acid_per_resin_L_kg_max': 0.0001426,
         'acid_per_resin_L_kg_min': 0.00009613,
         'acid_per_resin_max': 1.2*self.acid_per_resin,
         'acid_per_resin_min': 0.8*self.acid_per_resin  , 
-        'sulphuric_acid_cost_max': 0.458,
-        'sulphuric_acid_cost_min': 0.088,   
+        'sulphuric_acid_cost_max': 1.2*self.sulphuric_acid_cost,
+        'sulphuric_acid_cost_min':0.8*self.sulphuric_acid_cost,   
         'acid_flow_rate_max': 20.2,
         'acid_flow_rate_min': 24.7,
         'acid_flow_rate_m3_s_max': 1.2*self.acid_flow_rate_m3_s ,
@@ -302,6 +314,9 @@ class Parameters_values():
         new_params.plastic_energy = np.random.uniform(maxmin['plastic_energy_min'],maxmin['plastic_energy_max'])
         new_params.plastic_GHG = np.random.uniform(maxmin['plastic_GHG_min'],maxmin['plastic_GHG_max'])
         new_params.plastic_cost = np.random.uniform(maxmin['plastic_cost_min'],maxmin['plastic_cost_max'])
+        new_params.fiberglass_energy_MJ_kg = np.random.uniform(maxmin['fiberglass_energy_min'],maxmin['fiberglass_energy_max'])
+        new_params.fiberglass_GHG_kg_kg = np.random.uniform(maxmin['fiberglass_GHG_min'],maxmin['fiberglass_GHG_max'])
+        new_params.fiberglass_cost = np.random.uniform(maxmin['fiberglass_cost_min'],maxmin['fiberglass_cost_max'])
         new_params.plastic_density = np.random.uniform(maxmin['plastic_density_min'],maxmin['plastic_density_max'])
         new_params.plastic_lifetime = np.random.uniform(maxmin['plastic_lifetime_min'],maxmin['plastic_lifetime_max'])
         new_params.motor_efficiency = np.random.uniform(maxmin['motor_efficiency_min'],maxmin['motor_efficiency_max']) 
@@ -491,6 +506,21 @@ class Parameters_values():
                 new_params.plastic_GHG = self.plastic_GHG - (maxmin['plastic_GHG_max'] -  maxmin['plastic_GHG_min'])/10 
             if direction == 'plus':
                 new_params.plastic_GHG = self.plastic_GHG + (maxmin['plastic_GHG_max'] -  maxmin['plastic_GHG_min'])/10 
+        if parameter == 'fiberglass_energy_MJ_kg':
+            if direction == 'minus':
+                new_params.fiberglass_energy_MJ_kg = self.fiberglass_energy_MJ_kg - (maxmin['fiberglass_energy_max'] -  maxmin['fiberglass_energy_min'])/10 
+            if direction == 'plus':
+                new_params.fiberglass_energy_MJ_kg = self.fiberglass_energy_MJ_kg + (maxmin['fiberglass_energy_max'] -  maxmin['fiberglass_energy_min'])/10 
+        if parameter == 'fiberglass_GHG_kg_kg':
+            if direction == 'minus':
+                new_params.fiberglass_GHG_kg_kg = self.fiberglass_GHG_kg_kg - (maxmin['fiberglass_GHG_max'] -  maxmin['fiberglass_GHG_min'])/10 
+            if direction == 'plus':
+                new_params.fiberglass_GHG_kg_kg = self.fiberglass_GHG_kg_kg + (maxmin['fiberglass_GHG_max'] -  maxmin['fiberglass_GHG_min'])/10 
+        if parameter == 'fiberglass_cost':  
+            if direction == 'minus':  
+                new_params.fiberglass_cost = self.fiberglass_cost - (maxmin['fiberglass_cost_max'] -  maxmin['fiberglass_cost_min'])/10 
+            if direction == 'plus':
+                new_params.fiberglass_cost = self.fiberglass_cost + (maxmin['fiberglass_cost_max'] -  maxmin['fiberglass_cost_min'])/10 
         if parameter == 'plastic_cost':  
             if direction == 'minus':  
                 new_params.plastic_cost = self.plastic_cost - (maxmin['plastic_cost_max'] -  maxmin['plastic_cost_min'])/10 

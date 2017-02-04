@@ -11,6 +11,9 @@ import random
 import warnings
 from geopy.distance import vincenty
 
+from utils.Parameters_class import Parameters_values
+
+Parameters = Parameters_values()
 
 def read_buildings(path):
     building_SF = pd.read_csv(path)
@@ -54,7 +57,11 @@ def clustering(dataframe, n):
     return k_means_labels, k_means_cluster_centers
     
 
-def find_distance_regeneration_scheduled(dataframe, k_means_labels):
+def find_distance_regeneration_scheduled(dataframe, k_means_labels, scenario):
+    if scenario == 'Urine':
+        trucks_serving = 100
+    if scenario == 'Resin':
+        trucks_serving = Parameters.trucks_serving
     size_all= []
     for i in range (k_means_labels.max()+1):
         my_members = k_means_labels==i
@@ -71,12 +78,12 @@ def find_distance_regeneration_scheduled(dataframe, k_means_labels):
             point = (row['lat_lat'], row['lon_lon'])
             cluster_center_meters[i].append(point)
         if len(size_all[i]) != 0:
-            trucks = len(cluster_center_meters[i])/(100)
+            trucks = len(cluster_center_meters[i])/(trucks_serving)
             if trucks<1:
                 trucks = 1
             if trucks > 1:
-                for j in range (0, len(cluster_center_meters[i]), 100):
-                    total_distance_truck = total_distance(optimized_travelling_salesman(cluster_center_meters[i][j:j+100]))/(1000)
+                for j in range (0, len(cluster_center_meters[i]), trucks_serving):
+                    total_distance_truck = total_distance(optimized_travelling_salesman(cluster_center_meters[i][j:j+trucks_serving]))/(1000)
                     total_distance_schedule = total_distance_schedule + total_distance_truck
             else:
                 total_distance_schedule = total_distance(optimized_travelling_salesman(cluster_center_meters[i]))/(1000)
@@ -234,8 +241,21 @@ def facility_manufacturing_curve_power(houses):
     cost = min_facility_cost*(required_area/10)**0.6
     return cost
 
-def facility_manufacturing_curve(houses,a):
-    required_area = 10+houses*0.004
+def facility_manufacturing_curve(houses, diameter, length, a, scenario):
+    if scenario == 'Resin':
+        required_volume = 4*diameter/100*diameter/100*length*houses*0.5
+        work_area = 20
+        storage_area = required_volume/2
+        fertilizer_volume = 1.5*houses*0.252/1000
+        fertilizer_area = fertilizer_volume/2
+        required_area = work_area+storage_area+fertilizer_area
+        #required_area = 10+houses*0.004
+    if scenario == 'Urine':
+        required_volume = houses*Parameters.time_between_catridge_regeneration*Parameters.urine_production*Parameters.household_size*1.5/1000
+        storage_area = required_volume/2
+        work_area = 20
+        required_area = work_area+storage_area
+
     cost = (a*required_area)*12
     return cost #$/y
 

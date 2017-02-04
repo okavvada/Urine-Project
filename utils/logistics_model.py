@@ -16,11 +16,12 @@ from utils.Parameters_class import Parameters_values
 Parameters = Parameters_values()
 
 class logistics_model():
-	def __init__(self, path, n_regen, n_collection, logistics):
+	def __init__(self, path, n_regen, n_collection, logistics, scenario):
 		self.path =path
 		self.n_regen = n_regen
 		self.n_collection = n_collection
 		self.logistics = logistics
+		self.scenario = scenario
 
 	def return_dataframe_buildings(self):
 		building_virtual_buildings_df = pd.read_csv(self.path)
@@ -75,8 +76,8 @@ class logistics_model():
 		time_now = time.time()
 
 		print ("Start calculating distances...")
-		distance_regeneration = find_distance_regeneration_scheduled(building_virtual_buildings_df, k_means_labels_regen)
-		distance_regeneration['total_dist_m'] = distance_regeneration['total_dist_m']*365/Parameters.time_between_catridge_regeneration
+		distance_regeneration = find_distance_regeneration_scheduled(building_virtual_buildings_df, k_means_labels_regen, self.scenario)
+		distance_regeneration['total_dist_m_y'] = distance_regeneration['total_dist_m']*365/Parameters.time_between_catridge_regeneration_2
 		time_end = time.time() - time_now
 		print ("calc distances took time %s" %time_end)
 
