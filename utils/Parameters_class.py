@@ -100,6 +100,12 @@ class Parameters_values():
         self.Hydrochloric_acid_GHG = 0.82 #kg/kg Ecoinvent
         self.Hydrochloric_acid_cost = 0.285 #$/kg 
 
+        self.Sodiumchloride_per_resin_g_L = 214 # g/L
+        self.Sodiumchloride_per_resin = self.Sodiumchloride_per_resin_g_L/self.resin_density #g/g
+        self.Sodiumchloride_energy = 2.1 #MJ/kg Ecoinvent
+        self.Sodiumchloride_GHG = 0.18 #kg/kg Ecoinvent
+        self.Sodiumchloride_cost = 0.0695 #$/kg 
+
         self.acid_transport = 193 #km WEST
         self.volume_fertilizer_per_acid = 1 #L/L 
         self.mass_N_per_cartridge = 0.12849 #kgN per cartridge

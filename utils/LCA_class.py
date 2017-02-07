@@ -283,6 +283,11 @@ class regeneration():
             self.acid_energy = self.Parameters.Hydrochloric_acid_energy
             self.acid_GHG = self.Parameters.Hydrochloric_acid_GHG
             self.acid_cost= self.Parameters.Hydrochloric_acid_cost
+        if acid_type == 'SodiumChloride':
+            self.acid_per_resin = self.Parameters.Sodiumchloride_per_resin
+            self.acid_energy = self.Parameters.Sodiumchloride_energy
+            self.acid_GHG = self.Parameters.Sodiumchloride_GHG
+            self.acid_cost= self.Parameters.Sodiumchloride_cost
         
     def mass_sulphuric_facility(self):
         mass_sulphuric_facility = self.mass_resin*self.number_of_cartridges_per_facility*self.acid_per_resin*self.Parameters.porosity*365/self.Parameters.time_between_catridge_regeneration
