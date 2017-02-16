@@ -13,6 +13,7 @@ nominal_diameter_list=np.array(pipe_construction_data['size_mm'])
 pump_size_list=np.array(pump_construction_data['Rating_hp'])
 
 
+
 def find_transport_energy(tons, km, lifetime, Parameters, mode = 'truck'):
     if mode == 'truck':
         transport_energy = Parameters.truck_payload*Parameters.transport_energy_MJ_km*km/(lifetime)
