@@ -115,7 +115,7 @@ def LCA_collection(number_of_people_total, distance_collection, Parameters, acid
 
 def fertilizer_offset(number_of_people_total, Parameters, acid_type):
 	number_of_cartridges_per_facility = number_of_people_total/Parameters.household_size
-	mass_N_offset = number_of_cartridges_per_facility*Parameters.mass_N_per_cartridge #kgN
+	mass_N_offset = number_of_cartridges_per_facility*Parameters.mass_N_per_cartridge #kgN/y
 	energy_offset = -mass_N_offset*Parameters.fertilizer_energy
 	GHG_offset = -mass_N_offset*Parameters.fertilizer_GHG
 	Cost_offset = -mass_N_offset*Parameters.fertilizer_cost

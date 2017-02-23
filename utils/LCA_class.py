@@ -30,8 +30,8 @@ def find_transport_GHG(tons,km, lifetime, Parameters, mode = 'truck'):
 
 def find_transport_cost(tons, km, lifetime, Parameters, truck_num, mode = 'truck'):
     if mode == 'truck':
-        #transport_cost = tons*Parameters.transport_cost_km*km/(lifetime)
-        transport_cost = Parameters.diesel_cost/(Parameters.truck_mpg*1.6)*km/(lifetime)
+        transport_cost = Parameters.truck_payload*Parameters.transport_cost_km*km/(lifetime)
+        #transport_cost = Parameters.diesel_cost/(Parameters.truck_mpg*1.6)*km/(lifetime)
     if mode == 'train':
         transport_cost = tons*Parameters.train_cost_km*km/(lifetime)
     return transport_cost #$_y

@@ -36,15 +36,15 @@ class Parameters_values():
         self.steel_lifetime = 50 #years
         self.diesel_cost = 2.3 #$/gal (EIA)
         self.truck_mpg = 10 
-        self.truck_payload = 4.7 #tons
-        self.transport_cost_km = 0.08 # $/ton-km
+        #self.transport_cost_km = 0.08 # $/ton-km
         self.km = 60 #km
-        self.transport_GHG_kg_km= 0.410 #kgCo2/ton-km Taptich
-        self.carbon_content = 10 #kgco2/gal d (EIA)
-        self.energy_content = 46.8 #MJ/kgd (EIA)
+        self.transport_GHG_kg_km= 0.850 #kgCo2/ton-km Taptich
+        self.carbon_content = 10.1 #kgco2/gal d (EIA)
+        self.energy_content = 48 #MJ/kgd (EIA)
         self.diesel_density = 0.832 #kg/L
         #self.transport_energy_MJ_km = 2.7 #MJ/ton-km #Mathews
-        self.transport_energy_MJ_km = self.transport_GHG_kg_km/self.carbon_content*3.6*self.energy_content*self.diesel_density #MJ/ton-km
+        self.transport_energy_MJ_km = self.transport_GHG_kg_km/self.carbon_content*3.8*self.energy_content*self.diesel_density #MJ/ton-km
+        self.transport_cost_km = self.transport_GHG_kg_km/self.carbon_content*self.diesel_cost # $/ton-km
         self.truck_manuf_energy = 0.89 #MJ/$
         self.truck_manuf_GHG = 0.06 #kgCO2/$
         self.truck_milage = 1500000
@@ -53,7 +53,7 @@ class Parameters_values():
         self.truck_manufacturing_energy = self.truck_manuf_energy*self.truck_cost/(self.truck_milage/self.truck_milage_y) #MJ/y
         self.truck_manufacturing_GHG = self.truck_manuf_GHG*self.truck_cost/(self.truck_milage/self.truck_milage_y) #kg/y
         self.truck_cost_y = self.truck_cost/(self.truck_milage/self.truck_milage_y) #$/y
-        self.truck_payload = 3.5 #tons
+        self.truck_payload = 3.2 #tons
         self.train_energy_MJ_km = 0.3 #MJ/ton-km #Mathews
         self.train_GHG_kg_km = 0.025 #kgCo2/ton-km
         self.train_cost_km = 0.01 # $/ton-km
@@ -77,38 +77,46 @@ class Parameters_values():
         self.specific_weight = 1 #kN/m3
         self.pump_lifetime = 10
 
-        self.sulphuric_acid_energy = 1.7 #MJ/kg Ecoinvent
-        self.sulphuric_acid_GHG = 0.12 #kg/kg Ecoinvent
+        self.sulphuric_acid_energy = 5 #MJ/kg Gabi
+        self.sulphuric_acid_GHG = 0.254 #kg/kg Gabi
+        # self.sulphuric_acid_energy = 1.7 #MJ/kg Ecoinvent
+        # self.sulphuric_acid_GHG = 0.12 #kg/kg Ecoinvent
         self.acid_density = 1840 #g/L
-        self.acid_per_resin_L_g = 0.000135  #L/g 
+        self.acid_per_resin_L_g = 0.00013  #L/g 
         self.acid_per_resin = self.acid_per_resin_L_g*self.acid_density #g/g
         self.sulphuric_acid_cost = 0.27 #$/kg
         self.acid_flow_rate = 22.5 # mL/min
         self.acid_flow_rate_m3_s = self.acid_flow_rate/(60*1000*1000) #m3/s
         
         self.Nitricacid_density = 1510 #g/L
-        self.Nitricacid_per_resin_L_L = 0.23 # L/L
+        self.Nitricacid_per_resin_L_L = 0.2 # L/L
         self.Nitricacid_per_resin = self.Nitricacid_per_resin_L_L*self.Nitricacid_density/self.resin_density #g/g
-        self.Nitric_acid_energy = 12.6 #MJ/kg Ecoinvent
-        self.Nitric_acid_GHG = 3.1 #kg/kg Ecoinvent
+        # self.Nitric_acid_energy = 12.6 #MJ/kg Ecoinvent
+        # self.Nitric_acid_GHG = 3.1 #kg/kg Ecoinvent
+        self.Nitric_acid_energy = 13 #MJ/kg Gabi
+        self.Nitric_acid_GHG = 3 #kg/kg Gabi
         self.Nitric_acid_cost = 0.2867 #$/kg 
 
         self.Hydrochloricacid_density = 1000 #g/L
         self.Hydrochloricacid_per_resin_L_L = 0.3 # L/L
         self.Hydrochloricacid_per_resin = self.Hydrochloricacid_per_resin_L_L*self.Hydrochloricacid_density/self.resin_density #g/g
-        self.Hydrochloric_acid_energy = 11.2 #MJ/kg Ecoinvent
-        self.Hydrochloric_acid_GHG = 0.82 #kg/kg Ecoinvent
+        # self.Hydrochloric_acid_energy = 11.2 #MJ/kg Ecoinvent
+        # self.Hydrochloric_acid_GHG = 0.82 #kg/kg Ecoinvent
+        self.Hydrochloric_acid_energy = 5.9 #MJ/kg Gabi
+        self.Hydrochloric_acid_GHG = 0.22 #kg/kg Gabi
         self.Hydrochloric_acid_cost = 0.285 #$/kg 
 
         self.Sodiumchloride_per_resin_g_L = 214 # g/L
         self.Sodiumchloride_per_resin = self.Sodiumchloride_per_resin_g_L/self.resin_density #g/g
-        self.Sodiumchloride_energy = 2.1 #MJ/kg Ecoinvent
-        self.Sodiumchloride_GHG = 0.18 #kg/kg Ecoinvent
+        #self.Sodiumchloride_energy = 2.1 #MJ/kg Ecoinvent
+        #self.Sodiumchloride_GHG = 0.18 #kg/kg Ecoinvent
+        self.Sodiumchloride_energy = 1.4 #MJ/kg Gabi
+        self.Sodiumchloride_GHG = 0.0937 #kg/kg Gabi
         self.Sodiumchloride_cost = 0.0695 #$/kg 
 
         self.acid_transport = 193 #km WEST
         self.volume_fertilizer_per_acid = 1 #L/L 
-        self.mass_N_per_cartridge = 0.12849 #kgN per cartridge
+        self.mass_N_per_cartridge = self.N_urine*self.urine_production*self.household_size*365/1000 #kgN per cartridge per year
         self.fertilizer_density = 1.8 #kg/L 
         self.volume_bottle = 1 #L
         self.bottle_height = 0.3
@@ -124,8 +132,10 @@ class Parameters_values():
 
         self.ureafertilizer_molar_mass = 0.132 #kg/mol
         self.conventional_fertilizer_molar_mass = 0.080 #kg/mol
-        self.fertilizer_energy = 55 #MJ/kgN Ecoinvent ammonium nitrate
-        self.fertilizer_GHG = 8.5 #kg/kgN Ecoinvent ammonium nitrate
+        #self.fertilizer_energy = 55 #MJ/kgN Ecoinvent ammonium nitrate
+        #self.fertilizer_GHG = 8.5 #kg/kgN Ecoinvent ammonium nitrate
+        self.fertilizer_energy = 15 #MJ/kgN Gabi ammonium nitrate
+        self.fertilizer_GHG = 1.8 #kg/kgN Gabi ammonium nitrate
         self.fertilizer_cost = 1.7 #$/kgN  #https://www.noble.org/news/publications/ag-news-and-views/2012/june/summer-nitrogen-sources---which-is-best/
         self.kgN_per_kg_fertilizer = 0.35  #
         self.wages_truck = 128 #$/day
