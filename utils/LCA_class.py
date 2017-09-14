@@ -6,8 +6,8 @@ import math
 
 from utils.logistics_functions import *
 
-pipe_construction_data = pd.read_csv('pipe_construction_data.csv')
-pump_construction_data = pd.read_csv('pump_construction_data.csv')
+pipe_construction_data = pd.read_csv('..\inputs\pipe_construction_data.csv')
+pump_construction_data = pd.read_csv('..\inputs\pump_construction_data.csv')
 pipe_construction_data=pipe_construction_data[pipe_construction_data['Material']=='PVC']
 nominal_diameter_list=np.array(pipe_construction_data['size_mm'])
 pump_size_list=np.array(pump_construction_data['Rating_hp'])
@@ -97,36 +97,18 @@ class catridge():
         kg = area*self.Parameters.catridge_thickness*self.Parameters.fiberglass_density*1000
         return mass
     
-    # def mass_PVC(self):
-    #     diameter_mm=self.diameter
-    #     diameter=find_nearest(nominal_diameter_list,diameter_mm)
-    #     pipe_index=pipe_construction_data.set_index('size_mm')
-    #     pipe_weight_kg=pipe_index.Wt_kg_m[diameter]*self.catridge_length()*self.number_of_cartridges_per_facility*self.Parameters.percent_served
-    #     return pipe_weight_kg
 
     def PVC_energy(self):
-        #pipe_index=pipe_construction_data.set_index('size_mm')
-        #diameter_mm=self.diameter
-        #diameter=find_nearest(nominal_diameter_list,diameter_mm)
-        #PVC_energy_MJ=pipe_index.Embodied_Energy_MJ_kg[diameter]*self.mass_PVC()/self.Parameters.PVC_lifetime
         mass = self.mass_fiberglass()
         PVC_energy_MJ = mass*self.Parameters.fiberglass_energy_MJ_kg/self.Parameters.catridge_lifetime
         return PVC_energy_MJ # MJ_y
 
     def PVC_GHG(self):
-        #pipe_index=pipe_construction_data.set_index('size_mm')
-        #diameter_mm=self.diameter
-        #diameter=find_nearest(nominal_diameter_list,diameter_mm)
-        #PVC_GHG_kg=pipe_index.Emissions_kgCO2_eq_m[diameter]*self.catridge_length()*self.number_of_cartridges_per_facility*self.Parameters.percent_served/self.Parameters.PVC_lifetime
         mass = self.mass_fiberglass()
         PVC_GHG_kg = mass*self.Parameters.fiberglass_GHG_kg_kg/self.Parameters.catridge_lifetime
         return PVC_GHG_kg # kg_y
 
     def PVC_cost(self):
-        #pipe_index=pipe_construction_data.set_index('size_mm')
-        #diameter_mm=self.diameter
-        #diameter=find_nearest(nominal_diameter_list,diameter_mm)
-        #PVC_cost=pipe_index.cost_2012_m[diameter]*self.catridge_length()*self.number_of_cartridges_per_facility*self.Parameters.percent_served/self.Parameters.PVC_lifetime
         mass = self.mass_fiberglass()
         PVC_cost = mass*self.Parameters.fiberglass_cost_kg/self.Parameters.catridge_lifetime
         return PVC_cost # $_y
@@ -329,23 +311,23 @@ class bottling():
     
     def mass_plastic(self):
         area = self.area_cylinder()       
-        mass = area*self.Parameters.bottle_thickness*self.Parameters.fiberglass_density*1000
-        mass_total = self.volume_ferilizer()/self.Parameters.volume_bottle*mass/(self.Parameters.collection_times_per_year/2)
+        mass = area*self.Parameters.bottle_thickness*self.Parameters.plastic_density
+        mass_total = self.volume_ferilizer()/self.Parameters.volume_bottle*mass
         return mass_total
         
     def plastic_energy(self):
         mass = self.mass_plastic()
-        plastic_energy = mass*self.Parameters.fiberglass_energy_MJ_kg/self.Parameters.bottle_lifetime
+        plastic_energy = mass*self.Parameters.plastic_energy_MJ_kg
         return plastic_energy #MJ_y
 
     def plastic_GHG(self):
         mass = self.mass_plastic()
-        plastic_GHG = mass*self.Parameters.fiberglass_GHG_kg_kg/self.Parameters.bottle_lifetime
+        plastic_GHG = mass*self.Parameters.plastic_GHG_kg_kg
         return plastic_GHG #kg_y
 
     def plastic_cost(self):
         mass = self.mass_plastic()
-        plastic_cost = mass*self.Parameters.fiberglass_cost_kg/self.Parameters.bottle_lifetime
+        plastic_cost = mass*self.Parameters.plastic_cost_kg
         return plastic_cost # $_y
 
     def bottle_transport(self):

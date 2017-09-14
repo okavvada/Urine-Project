@@ -12,7 +12,7 @@ class Parameters_values():
         self.resin_density = 750 #g/L
         self.resin_cost_kg = 2 #$/kg #### CHECK with Will
         self.resin_energy_MJ_kg = 30 #MJ/kg ion exchange resin EcoInvent
-        self.resin_GHG_kg_kg= 1 #kg/kg ion exchange resin Econinvent
+        self.resin_GHG_kg_kg = 1 #kg/kg ion exchange resin Econinvent
         self.resin_transport = 300 #km 
         self.porosity = 0.61
         self.hydraulic_conductivity = 0.00253 #m/s
@@ -36,13 +36,11 @@ class Parameters_values():
         self.steel_lifetime = 50 #years
         self.diesel_cost = 2.3 #$/gal (EIA)
         self.truck_mpg = 10 
-        #self.transport_cost_km = 0.08 # $/ton-km
         self.km = 60 #km
         self.transport_GHG_kg_km= 0.850 #kgCo2/ton-km Taptich
         self.carbon_content = 10.1 #kgco2/gal d (EIA)
         self.energy_content = 48 #MJ/kgd (EIA)
         self.diesel_density = 0.832 #kg/L
-        #self.transport_energy_MJ_km = 2.7 #MJ/ton-km #Mathews
         self.transport_energy_MJ_km = self.transport_GHG_kg_km/self.carbon_content*3.8*self.energy_content*self.diesel_density #MJ/ton-km
         self.transport_cost_km = self.transport_GHG_kg_km/self.carbon_content*self.diesel_cost # $/ton-km
         self.truck_manuf_energy = 0.89 #MJ/$
@@ -78,9 +76,7 @@ class Parameters_values():
         self.pump_lifetime = 10
 
         self.sulphuric_acid_energy = 5 #MJ/kg Gabi
-        self.sulphuric_acid_GHG = 0.254 #kg/kg Gabi
-        # self.sulphuric_acid_energy = 1.7 #MJ/kg Ecoinvent
-        # self.sulphuric_acid_GHG = 0.12 #kg/kg Ecoinvent
+        self.sulphuric_acid_GHG = 0.26 #kg/kg Gabi
         self.acid_density = 1840 #g/L
         self.acid_per_resin_L_g = 0.00013  #L/g 
         self.acid_per_resin = self.acid_per_resin_L_g*self.acid_density #g/g
@@ -91,8 +87,6 @@ class Parameters_values():
         self.Nitricacid_density = 1510 #g/L
         self.Nitricacid_per_resin_L_L = 0.2 # L/L
         self.Nitricacid_per_resin = self.Nitricacid_per_resin_L_L*self.Nitricacid_density/self.resin_density #g/g
-        # self.Nitric_acid_energy = 12.6 #MJ/kg Ecoinvent
-        # self.Nitric_acid_GHG = 3.1 #kg/kg Ecoinvent
         self.Nitric_acid_energy = 13 #MJ/kg Gabi
         self.Nitric_acid_GHG = 3 #kg/kg Gabi
         self.Nitric_acid_cost = 0.2867 #$/kg 
@@ -100,16 +94,12 @@ class Parameters_values():
         self.Hydrochloricacid_density = 1000 #g/L
         self.Hydrochloricacid_per_resin_L_L = 0.3 # L/L
         self.Hydrochloricacid_per_resin = self.Hydrochloricacid_per_resin_L_L*self.Hydrochloricacid_density/self.resin_density #g/g
-        # self.Hydrochloric_acid_energy = 11.2 #MJ/kg Ecoinvent
-        # self.Hydrochloric_acid_GHG = 0.82 #kg/kg Ecoinvent
         self.Hydrochloric_acid_energy = 5.9 #MJ/kg Gabi
         self.Hydrochloric_acid_GHG = 0.22 #kg/kg Gabi
         self.Hydrochloric_acid_cost = 0.285 #$/kg 
 
         self.Sodiumchloride_per_resin_g_L = 214 # g/L
         self.Sodiumchloride_per_resin = self.Sodiumchloride_per_resin_g_L/self.resin_density #g/g
-        #self.Sodiumchloride_energy = 2.1 #MJ/kg Ecoinvent
-        #self.Sodiumchloride_GHG = 0.18 #kg/kg Ecoinvent
         self.Sodiumchloride_energy = 1.4 #MJ/kg Gabi
         self.Sodiumchloride_GHG = 0.0937 #kg/kg Gabi
         self.Sodiumchloride_cost = 0.0695 #$/kg 
@@ -132,21 +122,20 @@ class Parameters_values():
 
         self.ureafertilizer_molar_mass = 0.132 #kg/mol
         self.conventional_fertilizer_molar_mass = 0.080 #kg/mol
-        #self.fertilizer_energy = 55 #MJ/kgN Ecoinvent ammonium nitrate
-        #self.fertilizer_GHG = 8.5 #kg/kgN Ecoinvent ammonium nitrate
         self.fertilizer_energy = 15 #MJ/kgN Gabi ammonium nitrate
         self.fertilizer_GHG = 1.8 #kg/kgN Gabi ammonium nitrate
         self.fertilizer_cost = 1.7 #$/kgN  #https://www.noble.org/news/publications/ag-news-and-views/2012/june/summer-nitrogen-sources---which-is-best/
         self.kgN_per_kg_fertilizer = 0.35  #
         self.wages_truck = 128 #$/day
-        self.wages_facility = 296 #$/day
+        self.wages_facility = 128 #$/day prduction occupation
         self.num_employees = 2 #per facility
+        self.cartridge_per_employee = 30 # per hour
 
 
     def max_min(self):
         maxmin = {
-        'percent_served_max': 80,
-        'percent_served_min':30,
+        'percent_served_max': 70,
+        'percent_served_min':40,
         'PVC_lifetime_max': 80,
         'PVC_lifetime_min': 20,
         'resin_cost_kg_max': 1.2*self.resin_cost_kg,
@@ -257,8 +246,8 @@ class Parameters_values():
         'sulphuric_acid_GHG_min': 0.8*self.sulphuric_acid_GHG  ,
         'acid_density_max': 1.2*self.acid_density,
         'acid_density_min': 0.8*self.acid_density,
-        'acid_per_resin_L_kg_max': 0.0001426,
-        'acid_per_resin_L_kg_min': 0.00009613,
+        'acid_per_resin_L_g_max': 0.0001426,
+        'acid_per_resin_L_g_min': 0.00009613,
         'acid_per_resin_max': 1.2*self.acid_per_resin,
         'acid_per_resin_min': 0.8*self.acid_per_resin  , 
         'sulphuric_acid_cost_max': 1.2*self.sulphuric_acid_cost,
@@ -343,7 +332,7 @@ class Parameters_values():
         new_params.sulphuric_acid_energy = np.random.uniform(maxmin['sulphuric_acid_energy_min'],maxmin['sulphuric_acid_energy_max'])
         new_params.sulphuric_acid_GHG = np.random.uniform(maxmin['sulphuric_acid_GHG_min'],maxmin['sulphuric_acid_GHG_max'])
         new_params.acid_density = np.random.uniform(maxmin['acid_density_min'],maxmin['acid_density_max'])
-        new_params.acid_per_resin_L_kg = np.random.uniform(maxmin['acid_per_resin_L_kg_min'],maxmin['acid_per_resin_L_kg_max'])
+        new_params.acid_per_resin_L_g = np.random.uniform(maxmin['acid_per_resin_L_g_min'],maxmin['acid_per_resin_L_g_max'])
         new_params.sulphuric_acid_cost = np.random.uniform(maxmin['sulphuric_acid_cost_min'],maxmin['sulphuric_acid_cost_max'])
         new_params.acid_flow_rate = np.random.uniform(maxmin['acid_flow_rate_min'],maxmin['acid_flow_rate_max'])
         new_params.acid_transport = np.random.uniform(maxmin['acid_transport_min'],maxmin['acid_transport_max'])
@@ -665,3 +654,123 @@ class Parameters_values():
         return new_params
 
 
+    # def sensitivity(self, parameter, direction):
+    #     new_params = Parameters_values()
+    #     maxmin = self.max_min()
+    #     if parameter == 'percent_served':  
+    #         new_params.percent_served = np.random.uniform(maxmin['percent_served_min'],maxmin['percent_served_max'])
+    #     if parameter == 'PVC_lifetime':  
+    #         new_params.PVC_lifetime = np.random.uniform(maxmin['PVC_lifetime_min'],maxmin['PVC_lifetime_max'])
+    #     if parameter == 'resin_cost_kg': 
+    #         new_params.resin_cost_kg = np.random.uniform(maxmin['resin_cost_kg_min'],maxmin['resin_cost_kg_max'])
+    #     if parameter == 'resin_energy_MJ_kg':
+    #         new_params.resin_energy_MJ_kg = np.random.uniform(maxmin['resin_energy_MJ_kg_min'],maxmin['resin_energy_MJ_kg_max'])
+    #     if parameter == 'resin_GHG_kg_kg':
+    #         new_params.resin_GHG_kg_kg = np.random.uniform(maxmin['resin_GHG_kg_kg_min'],maxmin['resin_GHG_kg_kg_max'])
+    #     if parameter == 'resin_transport':
+    #         new_params.resin_transport = np.random.uniform(maxmin['resin_transport_min'],maxmin['resin_transport_max'])
+    #     if parameter == 'hydraulic_conductivity':
+    #         new_params.hydraulic_conductivity = np.random.uniform(maxmin['hydraulic_conductivity_min'],maxmin['hydraulic_conductivity_max'])
+    #     if parameter == 'resin_lifetime':
+    #         new_params.resin_lifetime = np.random.uniform(maxmin['resin_lifetime_min'],maxmin['resin_lifetime_max'])
+    #     if parameter == 'N_urine':
+    #         new_params.N_urine = np.random.uniform(maxmin['N_urine_min'],maxmin['N_urine_max'])
+    #     if parameter == 'adsorption_density':
+    #         new_params.adsorption_density = np.random.uniform(maxmin['adsorption_density_min'],maxmin['adsorption_density_max'])
+    #     if parameter == 'time_between_catridge_regeneration':
+    #         new_params.time_between_catridge_regeneration = np.random.uniform(maxmin['time_between_catridge_regeneration_min'],maxmin['time_between_catridge_regeneration_max'])
+    #     if parameter == 'time_for_regeneration':
+    #         new_params.time_for_regeneration = np.random.uniform(maxmin['time_for_regeneration_min'],maxmin['time_for_regeneration_max'])
+    #     if parameter == 'urine_production':
+    #         new_params.urine_production = np.random.uniform(maxmin['urine_production_min'],maxmin['urine_production_max'])
+    #     if parameter == 'household_size':
+    #         new_params.household_size = np.random.uniform(maxmin['household_size_min'],maxmin['household_size_max'])
+    #     if parameter == 'flow_equalization_retention_time':
+    #         new_params.flow_equalization_retention_time = np.random.uniform(maxmin['flow_equalization_retention_time_min'],maxmin['flow_equalization_retention_time_max'])
+    #     if parameter == 'tank_thickness':
+    #         new_params.tank_thickness = np.random.uniform(maxmin['tank_thickness_min'],maxmin['tank_thickness_max'])
+    #     if parameter == 'steel_GHG':
+    #         new_params.steel_GHG = np.random.uniform(maxmin['steel_GHG_min'],maxmin['steel_GHG_max'])
+    #     if parameter == 'steel_energy':
+    #         new_params.steel_energy = np.random.uniform(maxmin['steel_energy_min'],maxmin['steel_energy_max'])
+    #     if parameter == 'steel_sheet_mass':
+    #         new_params.steel_sheet_mass = np.random.uniform(maxmin['steel_sheet_mass_min'],maxmin['steel_sheet_mass_max'])
+    #     if parameter == 'steel_lifetime':
+    #         new_params.steel_lifetime = np.random.uniform(maxmin['steel_lifetime_min'],maxmin['steel_lifetime_max'])
+    #     if parameter == 'transport_energy_MJ_km':
+    #         new_params.transport_energy_MJ_km = np.random.uniform(maxmin['transport_energy_MJ_km_min'],maxmin['transport_energy_MJ_km_max'])
+    #     if parameter == 'transport_GHG_kg_km':
+    #         new_params.transport_GHG_kg_km = np.random.uniform(maxmin['transport_GHG_kg_km_min'],maxmin['transport_GHG_kg_km_max'])
+    #     if parameter == 'diesel_cost':
+    #         new_params.diesel_cost = np.random.uniform(maxmin['diesel_cost_min'],maxmin['diesel_cost_max'])
+    #     if parameter == 'truck_mpg':
+    #         new_params.truck_mpg = np.random.uniform(maxmin['truck_mpg_min'],maxmin['truck_mpg_max'])
+    #     if parameter == 'km':
+    #         new_params.km = np.random.uniform(maxmin['km_min'],maxmin['km_max'])
+    #     if parameter == 'truck_manuf_energy':
+    #         new_params.truck_manuf_energy =  np.random.uniform(maxmin['truck_manuf_energy_min'],maxmin['truck_manuf_energy_max'])
+    #     if parameter == 'truck_manuf_GHG':
+    #         new_params.truck_manuf_GHG = np.random.uniform(maxmin['truck_manuf_GHG_min'],maxmin['truck_manuf_GHG_max'])
+    #     if parameter == 'truck_milage':
+    #         new_params.truck_milage =  np.random.uniform(maxmin['truck_milage_min'],maxmin['truck_milage_max'])
+    #     if parameter == 'truck_cost':
+    #         new_params.truck_cost =  np.random.uniform(maxmin['truck_cost_min'],maxmin['truck_cost_max'])
+    #     if parameter == 'truck_milage_y':
+    #         new_params.truck_milage_y =  np.random.uniform(maxmin['truck_milage_y_min'],maxmin['truck_milage_y_max'])
+    #     if parameter == 'plastic_energy':
+    #         new_params.plastic_energy =  np.random.uniform(maxmin['plastic_energy_min'],maxmin['plastic_energy_max']) 
+    #     if parameter == 'plastic_GHG':
+    #         new_params.plastic_GHG = np.random.uniform(maxmin['plastic_GHG_min'],maxmin['plastic_GHG_max'])
+    #     if parameter == 'fiberglass_cost':  
+    #         new_params.fiberglass_cost =  np.random.uniform(maxmin['fiberglass_cost_min'],maxmin['fiberglass_cost_max'])
+    #     if parameter == 'plastic_cost':  
+    #         new_params.plastic_cost =  np.random.uniform(maxmin['plastic_cost_min'],maxmin['plastic_cost_max'])
+    #     if parameter == 'plastic_density':
+    #         new_params.plastic_density = np.random.uniform(maxmin['plastic_density_min'],maxmin['plastic_density_max'])
+    #     if parameter == 'plastic_lifetime':
+    #         new_params.plastic_lifetime =  np.random.uniform(maxmin['plastic_lifetime_min'],maxmin['plastic_lifetime_max'])
+    #     if parameter == 'motor_efficiency': 
+    #         new_params.motor_efficiency =   np.random.uniform(maxmin['motor_efficiency_min'],maxmin['motor_efficiency_max'])
+    #     if parameter == 'electricity_EF':
+    #         new_params.electricity_EF =  np.random.uniform(maxmin['electricity_EF_min'],maxmin['electricity_EF_max'])
+    #     if parameter == 'electricity_cost':
+    #         new_params.electricity_cost =  np.random.uniform(maxmin['electricity_cost_min'],maxmin['electricity_cost_max'])
+    #     if parameter == 'specific_weight':
+    #         new_params.specific_weight = np.random.uniform(maxmin['specific_weight_min'],maxmin['specific_weight_max'])
+    #     if parameter == 'pump_lifetime':
+    #         new_params.pump_lifetime =  np.random.uniform(maxmin['pump_lifetime_min'],maxmin['pump_lifetime_max'])
+    #     if parameter == 'sulphuric_acid_energy':
+    #         new_params.sulphuric_acid_energy = np.random.uniform(maxmin['sulphuric_acid_energy_min'],maxmin['sulphuric_acid_energy_max'])
+    #     if parameter == 'sulphuric_acid_GHG':
+    #         new_params.sulphuric_acid_GHG =np.random.uniform(maxmin['sulphuric_acid_GHG_min'],maxmin['sulphuric_acid_GHG_max'])
+    #     if parameter == 'acid_density':
+    #         new_params.acid_density =  np.random.uniform(maxmin['acid_density_min'],maxmin['acid_density_max'])
+    #     if parameter == 'acid_per_resin_L_g':
+    #         new_params.acid_per_resin_L_g = np.random.uniform(maxmin['acid_per_resin_L_g_min'],maxmin['acid_per_resin_L_g_max'])
+    #     if parameter == 'sulphuric_acid_cost':
+    #         new_params.sulphuric_acid_cost = np.random.uniform(maxmin['sulphuric_acid_cost_min'],maxmin['sulphuric_acid_cost_max'])
+    #     if parameter == 'acid_flow_rate':
+    #         new_params.acid_flow_rate =  np.random.uniform(maxmin['acid_flow_rate_min'],maxmin['acid_flow_rate_max'])
+    #     if parameter == 'acid_transport':
+    #         new_params.acid_transport = np.random.uniform(maxmin['acid_transport_min'],maxmin['acid_transport_max']) 
+    #     if parameter == 'volume_fertilizer_per_acid':
+    #         new_params.volume_fertilizer_per_acid = np.random.uniform(maxmin['volume_fertilizer_per_acid_min'],maxmin['volume_fertilizer_per_acid_max'])
+    #     if parameter == 'volume_bottle':
+    #         new_params.volume_bottle =  np.random.uniform(maxmin['volume_bottle_min'],maxmin['volume_bottle_max'])
+    #     if parameter == 'bottle_thickness':
+    #         new_params.bottle_thickness = np.random.uniform(maxmin['bottle_thickness_min'],maxmin['bottle_thickness_max'])
+    #     if parameter == 'bottle_lifetime':
+    #         new_params.bottle_lifetime =  np.random.uniform(maxmin['bottle_lifetime_min'],maxmin['bottle_lifetime_max'])
+    #     if parameter == 'collection_times_per_year':
+    #         new_params.collection_times_per_year =np.random.uniform(maxmin['collection_times_per_year_min'],maxmin['collection_times_per_year_max'])
+    #     if parameter == 'facility_manufacturing_energy':
+    #         new_params.facility_manufacturing_energy = np.random.uniform(maxmin['facility_manufacturing_energy_min'],maxmin['facility_manufacturing_energy_max'])
+    #     if parameter == 'facility_manufacturing_GHG':
+    #         new_params.facility_manufacturing_GHG =  np.random.uniform(maxmin['facility_manufacturing_GHG_min'],maxmin['facility_manufacturing_GHG_max'])
+    #     if parameter == 'facility_lifetime':
+    #         new_params.facility_lifetime = np.random.uniform(maxmin['facility_lifetime_min'],maxmin['facility_lifetime_max'])
+    #     if parameter == 'min_facility_cost':
+    #         new_params.min_facility_cost =  np.random.uniform(maxmin['min_facility_cost_min'],maxmin['min_facility_cost_max'])
+    #     if parameter == 'facility_cost_regression':
+    #         new_params.facility_cost_regression = np.random.uniform(maxmin['facility_cost_regression_min'],maxmin['facility_cost_regression_max'])
+    #     return new_params

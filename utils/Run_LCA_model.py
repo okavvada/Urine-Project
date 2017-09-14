@@ -41,7 +41,7 @@ def Run_LCA_model(path, n_regen, n_collection, logistics, analysis, acid_type, s
 	    Total_Energy = Total_Energy.append(ENERGY)
 	    Total_GHG = Total_GHG.append(GHG)
 	    Total_COST = Total_COST.append(COST)
-	    trucks += truck_num/Parameters.time_between_catridge_regeneration_2
+	    trucks += truck_num
 
 	Total_Energy_regen = Total_Energy.sum()
 	Total_Energy_regen=pd.DataFrame(Total_Energy_regen).T
@@ -71,17 +71,15 @@ def Run_LCA_model(path, n_regen, n_collection, logistics, analysis, acid_type, s
 
 	if scenario == 'Urine':
 
-		#energy_offset, GHG_offset, Cost_offset = fertilizer_offset(Total_people_served, Parameters, acid_type)
-
 		Total_Energy_total = Total_Energy_regen
 		Total_GHG_total = Total_GHG_regen
 		Total_COST_total = Total_COST_regen
 
-		# Total_Energy_total['Fertilizer offset'] = energy_offset
-		# Total_GHG_total['Fertilizer offset'] = GHG_offset
-		# Total_COST_total['Fertilizer offset'] = Cost_offset
+	employee_number_per_facility = employees_number(Total_people_served, n_regen)
 
-	Total_COST_total['Labor'] = trucks*Parameters.wages_truck*200 + n_regen*Parameters.num_employees*Parameters.wages_facility*200
+	Total_COST_total['Labor'] = trucks*Parameters.wages_truck*200 + n_regen*employee_number_per_facility*Parameters.wages_facility*200
+	Total_COST_total['Labor_trucks'] = trucks*Parameters.wages_truck*200
+	Total_COST_total['Labor_facility'] = n_regen*employee_number_per_facility*Parameters.wages_facility*200
 
 	Total_Energy_m3=Total_Energy_total/(3.6*Parameters.urine_production*365*Total_people_served/1000)
 	Total_Energy_m3['n_facilities'] = n_regen
@@ -90,4 +88,4 @@ def Run_LCA_model(path, n_regen, n_collection, logistics, analysis, acid_type, s
 	Total_COST_m3 = Total_COST_total/(Parameters.urine_production*365*Total_people_served/1000)
 	Total_COST_m3['n_facilities'] = n_regen
 
-	return Total_Energy_m3, Total_GHG_m3, Total_COST_m3
+	return Total_Energy_m3, Total_GHG_m3, Total_COST_m3, Parameters

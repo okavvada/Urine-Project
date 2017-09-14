@@ -259,6 +259,13 @@ def facility_manufacturing_curve(houses, diameter, length, a, scenario):
     cost = (a*required_area)*12
     return cost #$/y
 
+def employees_number(houses, n_regen):
+    cartridges = houses/Parameters.household_size
+    cartridge_per_facility = cartridges/n_regen
+    employees_per_facility = cartridge_per_facility/(Parameters.cartridge_per_employee*8*5)
+    return employees_per_facility
+
+
 def pareto_frontier(Xs, Ys, maxX = True, maxY = True):
 # Sort the list in either ascending or descending order of X
     myList = sorted([[Xs[i], Ys[i]] for i in range(len(Xs))], reverse=maxX)
