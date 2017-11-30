@@ -21,22 +21,8 @@ def read_buildings(path):
 
 def get_virtual_buildings(path):
     building_SF = read_buildings(path)
-    building_SF['num_people_int']=building_SF.num_people.round()
-    building_SF_array=np.array(building_SF)
-
-    building_virtual_buildings=[]
-    for row in building_SF_array:
-        for i in range(int(row[-1])):
-            building_virtual_buildings.append(row)
-
-    columns=['gid', 'fid_buildi', 'objname', 'numfaces', 'num_floor',
-       'fid_landus', 'blklot', 'block_num', 'lot_num', 'resunits',
-       'landuse', 'bldgsqft', 'yrbuilt', 'area_m2', 'county',
-       'fid_tabblo', 'tractce10', 'housing10', 'lat', 'lon',
-       'num_people', 'pop10', 'lat_lat', 'lon_lon', 'num_people_int']
-
-    building_virtual_buildings_df=pd.DataFrame(building_virtual_buildings, columns=columns)
-    return building_virtual_buildings_df
+    building_SF['num_people_int']=building_SF.nu_peo_emp.round()
+    return building_SF
 
 def find_unique(data, field):
     data_not_null=data[data[field].notnull()]
